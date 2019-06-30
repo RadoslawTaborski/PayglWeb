@@ -33,7 +33,6 @@ namespace PayglWeb
             }
 
             app.UseStaticFiles();
-            app.UseNodeModules((Microsoft.AspNetCore.Hosting.IHostingEnvironment)env);
 
             app.UseMvc(cfg =>
             {
