@@ -1,0 +1,11 @@
+{
+  "Settings": {
+    "DataBase": {
+      "Address": "localhost",
+      "Port": "3306",
+      "Login": "root",
+      "Password": "",
+      "Table": "paygl"
+    }
+  }
+}
