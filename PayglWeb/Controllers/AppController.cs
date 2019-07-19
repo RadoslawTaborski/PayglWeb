@@ -12,7 +12,6 @@ namespace PayglWeb.Controllers
     {
         public IActionResult Index()
         {
-            var a = Service.getUser();
             ViewBag.Title = "Main";
             return View();
         }
