@@ -1,6 +1,5 @@
 ﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
 using DataBaseWithBusinessLogicConnector.DalEntities;
-using DataBaseWithBusinessLogicConnector.DalEntityMappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

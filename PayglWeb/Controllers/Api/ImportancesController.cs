@@ -31,5 +31,18 @@ namespace PayglWeb.Controllers.Api
                 return BadRequest("Failed");
             }
         }
+
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                return Ok(_repository.GetImportance(id));
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
     }
 }

@@ -22,39 +22,39 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             _adapterHelper = new AdapterHelper(connector, Table, _columns.Keys.ToList());
         }
 
-        public void Delete(DalOperationsGroupTag entity)
+        public void Delete(DalOperationsGroupTags entity)
         {
             _adapterHelper.Delete(entity.Id);
         }
 
-        public IEnumerable<DalOperationsGroupTag> GetAll(string filter = "")
+        public IEnumerable<DalOperationsGroupTags> GetAll(string filter = "")
         {
-            var result = new List<DalOperationsGroupTag>();
+            var result = new List<DalOperationsGroupTags>();
 
             var data = _adapterHelper.GetAll(filter);
 
             for (var i = 0; i < data.Tables[0].Rows.Count; ++i)
             {
                 var dataRow = data.Tables[0].Rows[i].ItemArray;
-                result.Add(new DalOperationsGroupTag(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), int.Parse(dataRow[2].ToString())));
+                result.Add(new DalOperationsGroupTags(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), int.Parse(dataRow[2].ToString())));
             }
 
             return result;
         }
 
-        public DalOperationsGroupTag GetById(int? id)
+        public DalOperationsGroupTags GetById(int? id)
         {
             var data = _adapterHelper.GetById(id);
 
             if (data.Tables.Count <= 0) return null;
 
             var dataRow = data.Tables[0].Rows[0].ItemArray;
-            var result = new DalOperationsGroupTag(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), int.Parse(dataRow[2].ToString()));
+            var result = new DalOperationsGroupTags(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), int.Parse(dataRow[2].ToString()));
 
             return result;
         }
 
-        public int Insert(DalOperationsGroupTag entity)
+        public int Insert(DalOperationsGroupTags entity)
         {
             var id = _adapterHelper.ToStr(entity.Id, _columns["id"]);
             var operationId = _adapterHelper.ToStr(entity.OperationsGroupId, _columns["operation_group_id"]);
@@ -62,7 +62,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             return _adapterHelper.Insert(id, operationId, tagId);
         }
 
-        public void Update(DalOperationsGroupTag entity)
+        public void Update(DalOperationsGroupTags entity)
         {
             var id = _adapterHelper.ToStr(entity.Id, _columns["id"]);
             var operationId = _adapterHelper.ToStr(entity.OperationsGroupId, _columns["operation_group_id"]);

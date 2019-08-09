@@ -16,9 +16,9 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         private List<ApiOperation> _operations;
         private ApiUser _user;
         private OperationMapper _operationMapper;
-        private List<DalOperationsGroupTag> _dalRelations;
+        private List<DalOperationsGroupTags> _dalRelations;
 
-        public void Update(OperationMapper operationMapper, List<ApiImportance> importances, List<ApiTag> tags, List<ApiFrequency> frequencies, List<ApiOperation> operations, ApiUser user, List<DalOperationsGroupTag> relations)
+        public void Update(OperationMapper operationMapper, List<ApiImportance> importances, List<ApiTag> tags, List<ApiFrequency> frequencies, List<ApiOperation> operations, ApiUser user, List<DalOperationsGroupTags> relations)
         {
             _importances = importances;
             _frequencies = frequencies;
@@ -54,10 +54,10 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             return result;
         }
 
-        public (IEnumerable<DalOperationsGroup>, IEnumerable<DalOperationsGroupTag>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) ConvertToDALEntitiesCollection(IEnumerable<ApiOperationsGroup> dataEntities)
+        public (IEnumerable<DalOperationsGroup>, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) ConvertToDALEntitiesCollection(IEnumerable<ApiOperationsGroup> dataEntities)
         {
             var result1 = new List<DalOperationsGroup>();
-            var result2 = new List<DalOperationsGroupTag>();
+            var result2 = new List<DalOperationsGroupTags>();
             var result3 = new List<DalOperation>();
             var result4 = new List<DalOperationTags>();
             var result5 = new List<DalOperationDetails>();
@@ -76,7 +76,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             return (result1, result2, result3, result4, result5);
         }
 
-        public (DalOperationsGroup, IEnumerable<DalOperationsGroupTag>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) ConvertToDALEntity(ApiOperationsGroup businessEntity)
+        public (DalOperationsGroup, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) ConvertToDALEntity(ApiOperationsGroup businessEntity)
         {
             if (businessEntity?.User == null || businessEntity.Frequency == null || businessEntity.Importance == null)
             {
@@ -84,10 +84,10 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             }
             var result1 = new DalOperationsGroup(businessEntity.Id, businessEntity.User.Id, businessEntity.Description, businessEntity.Frequency.Id, businessEntity.Importance.Id, businessEntity.Date);
 
-            var result2 = new List<DalOperationsGroupTag>();
+            var result2 = new List<DalOperationsGroupTags>();
             foreach (var tag in businessEntity.Tags)
             {
-                result2.Add(new DalOperationsGroupTag(null, businessEntity.Id, tag.Id));
+                result2.Add(new DalOperationsGroupTags(null, businessEntity.Id, tag.Id));
             }
 
             var tmp = _operationMapper.ConvertToDALEntitiesCollection(businessEntity.Operations);

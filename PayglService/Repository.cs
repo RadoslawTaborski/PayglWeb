@@ -3,7 +3,6 @@ using DataAccess.Interfaces;
 using DataBaseWithBusinessLogicConnector;
 using DataBaseWithBusinessLogicConnector.DbAdapters;
 using DataBaseWithBusinessLogicConnector.DalEntities;
-using DataBaseWithBusinessLogicConnector.DalEntityMappers;
 using DataBaseWithBusinessLogicConnector.DalApiMappers;
 using DataBaseWithBusinessLogicConnector.Entities;
 using System;
@@ -51,16 +50,16 @@ namespace PayglService
         #endregion
 
         #region Mappers
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.LanguageMapper LanguageMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.UserMapper UserMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.UserDetailsMapper UserDetailsMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.TransactionTypeMapper TransactionTypeMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.TransferTypeMapper TransferTypeMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.FrequencyMapper FrequencyMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.ImportanceMapper ImportanceMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.TagMapper TagMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.OperationMapper OperationMapper { get; set; }
-        private DataBaseWithBusinessLogicConnector.DalApiMappers.OperationsGroupMapper OperationsGroupMapper { get; set; }
+        private LanguageMapper LanguageMapper { get; set; }
+        private UserMapper UserMapper { get; set; }
+        private UserDetailsMapper UserDetailsMapper { get; set; }
+        private TransactionTypeMapper TransactionTypeMapper { get; set; }
+        private TransferTypeMapper TransferTypeMapper { get; set; }
+        private FrequencyMapper FrequencyMapper { get; set; }
+        private ImportanceMapper ImportanceMapper { get; set; }
+        private TagMapper TagMapper { get; set; }
+        private OperationMapper OperationMapper { get; set; }
+        private OperationsGroupMapper OperationsGroupMapper { get; set; }
         #endregion
 
         public Repository(IDataBaseManagerFactory dbEngine)
@@ -84,17 +83,16 @@ namespace PayglService
             OperationsGroupAdapter = new OperationsGroupAdapter(DbConnector);
             OperationsGroupRelationAdapter = new OperationsGroupTagAdapter(DbConnector);
 
-            LanguageMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.LanguageMapper();
-            UserMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.UserMapper();
-            UserDetailsMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.UserDetailsMapper();
-
-            TransactionTypeMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.TransactionTypeMapper();
-            TransferTypeMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.TransferTypeMapper();
-            FrequencyMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.FrequencyMapper();
-            ImportanceMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.ImportanceMapper();
-            TagMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.TagMapper();
-            OperationMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.OperationMapper();
-            OperationsGroupMapper = new DataBaseWithBusinessLogicConnector.DalApiMappers.OperationsGroupMapper();
+            LanguageMapper = new LanguageMapper();
+            UserMapper = new UserMapper();
+            UserDetailsMapper = new UserDetailsMapper();
+            TransactionTypeMapper = new TransactionTypeMapper();
+            TransferTypeMapper = new TransferTypeMapper();
+            FrequencyMapper = new FrequencyMapper();
+            ImportanceMapper = new ImportanceMapper();
+            TagMapper = new TagMapper();
+            OperationMapper = new OperationMapper();
+            OperationsGroupMapper = new OperationsGroupMapper();
 
             LoadUserAndLanguage();
             LoadAttributes();
@@ -107,10 +105,19 @@ namespace PayglService
             return TransactionTypes;
         }
 
+        public ApiTransactionType GetTransactionType(int id)
+        {
+            return TransactionTypes.Where(x=>x.Id==id).FirstOrDefault();
+        }
+
         public IEnumerable<ApiTransferType> GetTransferTypes()
         {
             return TransferTypes;
+        }
 
+        public ApiTransferType GetTransferType(int id)
+        {
+            return TransferTypes.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<ApiFrequency> GetFrequencies()
@@ -118,9 +125,19 @@ namespace PayglService
             return Frequencies;
         }
 
+        public ApiFrequency GetFrequency(int id)
+        {
+            return Frequencies.Where(x=>x.Id==id).FirstOrDefault();
+        }
+
         public IEnumerable<ApiImportance> GetImportances()
         {
             return Importances;
+        }
+
+        public ApiImportance GetImportance(int id)
+        {
+            return Importances.Where(x=>x.Id==id).FirstOrDefault();
         }
 
         public IEnumerable<ApiTag> GetTags()
@@ -128,9 +145,29 @@ namespace PayglService
             return Tags;
         }
 
+        public ApiTag GetTag(int id)
+        {
+            return Tags.Where(x=>x.Id==id).FirstOrDefault();
+        }
+
         public IEnumerable<ApiOperation> GetOperations()
         {
             return Operations;
+        }
+
+        public ApiOperation GetOperation(int id)
+        {
+            return Operations.Where(x=>x.Id==id).FirstOrDefault();
+        }
+
+        public (IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperations(IEnumerable<ApiOperation> apiObjects)
+        {
+            return OperationMapper.ConvertToDALEntitiesCollection(apiObjects);
+        }
+
+        public (DalOperation, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperation(ApiOperation apiObjects)
+        {
+            return OperationMapper.ConvertToDALEntity(apiObjects);
         }
 
         public IEnumerable<ApiOperationsGroup> GetOperationsGroups()
@@ -138,7 +175,20 @@ namespace PayglService
             return OperationsGroups;
         }
 
+        public ApiOperationsGroup GetOperationsGroup(int id)
+        {
+            return OperationsGroups.Where(x => x.Id == id).FirstOrDefault();
+        }
 
+        public (IEnumerable<DalOperationsGroup>, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroups(IEnumerable<ApiOperationsGroup> apiObjects)
+        {
+            return OperationsGroupMapper.ConvertToDALEntitiesCollection(apiObjects);
+        }
+
+        public (DalOperationsGroup, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroup(ApiOperationsGroup apiObjects)
+        {
+            return OperationsGroupMapper.ConvertToDALEntity(apiObjects);
+        }
 
         private void LoadUserAndLanguage()
         {
@@ -206,11 +256,6 @@ namespace PayglService
 
             OperationsGroupMapper.Update(OperationMapper, Importances,Tags,Frequencies, Operations, User, relations);
             OperationsGroups = OperationsGroupMapper.ConvertToApiEntitiesCollection(OperationsGroupAdapter.GetAll($"user_id={User.Id}")).ToList();
-        }
-
-        public (IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperations(IEnumerable<ApiOperation> apiObjects)
-        {
-            return OperationMapper.ConvertToDALEntitiesCollection(apiObjects);
         }
     }
 }

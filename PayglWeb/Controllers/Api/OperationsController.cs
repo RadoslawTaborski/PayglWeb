@@ -25,8 +25,21 @@ namespace PayglWeb.Controllers.Api
             try
             {
                 var result = JsonConvert.SerializeObject(_repository.GetOperations(), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore } );
-                var tmp = _repository.GetOperations();
-                var rasult2 = _repository.GetDalOperations(tmp);
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                var result = JsonConvert.SerializeObject(_repository.GetOperation(id), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
 
                 return Ok(result);
             }
@@ -41,7 +54,9 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                return Ok();
+                var dalOperation = _repository.GetDalOperation(operation);
+
+                return Created($"api/operations/{1}", operation); //TODO: not hardcode 1
             }
             catch (Exception)
             {

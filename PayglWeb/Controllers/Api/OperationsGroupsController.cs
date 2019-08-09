@@ -33,12 +33,29 @@ namespace PayglWeb.Controllers.Api
             }
         }
 
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                var result = JsonConvert.SerializeObject(_repository.GetOperationsGroup(id), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody]ApiOperationsGroup group)
         {
             try
             {
-                return Ok();
+                var dalOperationsGroup = _repository.GetDalOperationsGroup(group);
+
+                return Created($"api/operationsgroups/{1}",group); //TODO: not hardcode 1
             }
             catch (Exception)
             {

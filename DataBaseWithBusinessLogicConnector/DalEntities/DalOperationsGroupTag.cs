@@ -1,12 +1,12 @@
 ﻿namespace DataBaseWithBusinessLogicConnector.DalEntities
 {
-    public class DalOperationsGroupTag
+    public class DalOperationsGroupTags
     {
         public int? Id { get; private set; }
         public int? OperationsGroupId { get; private set; }
         public int? TagId { get; private set; }
 
-        public DalOperationsGroupTag(int? id, int? operationsGroupId, int? tagId)
+        public DalOperationsGroupTags(int? id, int? operationsGroupId, int? tagId)
         {
             Id = id;
             OperationsGroupId = operationsGroupId;
