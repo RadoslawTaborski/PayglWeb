@@ -16,90 +16,72 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public Importance Importance { get; private set; }
         public TransactionType TransactionType { get; private set; }
         public DateTime Date { get; private set; }
-        public List<RelTag> Tags { get; private set; }
+        public List<Tag> Tags { get; private set; }
         public List<Operation> Operations { get; private set; }
-        public bool IsDirty { get; set; }
 
-        public OperationsGroup(int? id, User user, string description, Frequency frequency, Importance importance, DateTime date)
+        public OperationsGroup(int? id, User user, string description, Frequency frequency, Importance importance, DateTime date, List<Tag> tags, List<Operation> operations)
         {
             Id = id;
             User = user;
             Description = description;
-            Amount = decimal.Zero;
             Frequency = frequency;
             Importance = importance;
             Date = date;
-            Tags = new List<RelTag>();
-            Operations = new List<Operation>();
-            IsDirty = true;
+            Tags = tags;
+            Operations = operations;
         }
 
         public void SetOperations(IEnumerable<Operation> operations)
         {
             Operations = operations.ToList();
-            IsDirty = true;
         }
 
         public void AddOperation(Operation operation)
         {
             Operations.Add(operation);
-            IsDirty = true;
         }
 
         public void RemoveOperation(Operation operation)
         {
             Operations.Remove(operation);
-            IsDirty = true;
         }
 
         public void RemoveAllOperations()
         {
             Operations.Clear();
-            IsDirty = true;
         }
 
-        public void SetTags(IEnumerable<RelTag> tags)
+        public void SetTags(IEnumerable<Tag> tags)
         {
             Tags = tags.ToList();
-            IsDirty = true;
         }
 
         public void AddTag(Tag tag)
         {
-            if (!Tags.Any(t => t.Tag.Text == tag.Text))
+            if (!Tags.Any(t => t.Text == tag.Text))
             {
-                var relTag = new RelTag(null, tag, Id);
-                Tags.Add(relTag);
+                Tags.Add(tag);
             }
-            else
-            {
-                Tags.Where(t => t.Tag.Text == tag.Text).First().IsMarkForDeletion = false;
-            }
-            IsDirty = true;
         }
 
-        public void RemoveTag(RelTag tag)
+        public void RemoveTag(Tag tag)
         {
             Tags.Remove(tag);
-            IsDirty = true;
         }
 
         public void RemoveAllTags()
         {
             Tags.Clear();
-            IsDirty = true;
         }
 
         public void SetFrequence(Frequency frequency)
         {
             Frequency = frequency;
-            IsDirty = true;
         }
 
         public void SetImportance(Importance importance)
         {
             Importance = importance;
-            IsDirty = true;
         }
 
         public void UpdateId(int? id)
@@ -115,13 +97,11 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public void SetDescription(string text)
         {
             Description = text;
-            IsDirty = true;
         }
 
         public void SetDate(DateTime date)
         {
             Date = date;
-            IsDirty = true;
         }
 
         public void UpdateAmount(List<TransactionType> types)
@@ -145,6 +125,14 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             else
             {
                 TransactionType = types.First(t => t.Text == strings.income);
+            }
+        }
+
+        public void UpdateOperationsParent()
+        {
+            foreach(var operation in Operations)
+            {
+                operation.SetParent(this);
             }
         }
     }

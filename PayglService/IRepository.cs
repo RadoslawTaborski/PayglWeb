@@ -1,4 +1,6 @@
-﻿using DataBaseWithBusinessLogicConnector.Dal.DalEntities;
+﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
+using DataBaseWithBusinessLogicConnector.DalEntities;
+using DataBaseWithBusinessLogicConnector.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +11,13 @@ namespace PayglService
 {
     public interface IRepository
     {
-        IEnumerable<DalLanguage> GetLanguages();
-        IEnumerable<DalUser> GetUsers();
-        IEnumerable<DalUserDetails> GetUsersDetails();
-        IEnumerable<DalTransactionType> GetTransactionTypes();
-        IEnumerable<DalTransferType> GetTransferTypes();
-        IEnumerable<DalFrequency> GetFrequencies();
-        IEnumerable<DalImportance> GetImportancies();
-        IEnumerable<DalTag> GetTags();
-        IEnumerable<DalOperation> GetOperations();
-        IEnumerable<DalOperationDetails> GetOperationsDetails();
-        IEnumerable<DalOperationTags> GetOperationTags();
-        IEnumerable<DalOperationsGroup> GetDalOperationsGroups();
-        IEnumerable<DalOperationsGroupTag> GetOperationsGroupTags();
+        IEnumerable<ApiTransactionType> GetTransactionTypes();
+        IEnumerable<ApiTransferType> GetTransferTypes();
+        IEnumerable<ApiFrequency> GetFrequencies();
+        IEnumerable<ApiImportance> GetImportances();
+        IEnumerable<ApiTag> GetTags();
+        IEnumerable<ApiOperation> GetOperations();
+        (IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperations(IEnumerable<ApiOperation> apiObjects);
+        IEnumerable<ApiOperationsGroup> GetOperationsGroups();
     }
 }

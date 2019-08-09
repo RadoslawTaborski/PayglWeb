@@ -17,13 +17,12 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public Importance Importance { get; private set; }
         public DateTime Date { get; private set; }
         public string ReceiptPath { get; private set; }
-        public List<RelTag> Tags { get; private set; }
+        public List<Tag> Tags { get; private set; }
         public List<OperationDetails> DetailsList { get; private set; }
-        public bool IsDirty { get; set; }
         public string Description { get; private set; }
         public string ShortDescription { get; private set; }
 
-        public Operation(int? id, OperationsGroup parent, User user, string description, decimal amount, TransactionType transactionType, TransferType transferType, Frequency frequency, Importance importance, DateTime date, string receiptPath)
+        public Operation(int? id, OperationsGroup parent, User user, string description, decimal amount, TransactionType transactionType, TransferType transferType, Frequency frequency, Importance importance, DateTime date, string receiptPath, List<Tag> tags, List<OperationDetails> details)
         {
             Id = id;
             Parent = parent;
@@ -37,9 +36,8 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             Importance = importance;
             Date = date;
             ReceiptPath = receiptPath;
-            Tags = new List<RelTag>();
-            DetailsList = new List<OperationDetails>();
-            IsDirty = true;
+            Tags = tags;
+            DetailsList = details;
 
             parent?.AddOperation(this);
         }
@@ -47,13 +45,11 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public void SetDetailsList(IEnumerable<OperationDetails> detailsCollection)
         {
             DetailsList = detailsCollection.ToList();
-            IsDirty = true;
         }
 
-        public void SetTags(IEnumerable<RelTag> tags)
+        public void SetTags(IEnumerable<Tag> tags)
         {
             Tags = tags.ToList();
-            IsDirty = true;
         }
 
         public void SetParent(OperationsGroup parent)
@@ -61,49 +57,34 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             Parent?.RemoveOperation(this);
             Parent = parent;
             Parent?.AddOperation(this);
-            IsDirty = true;
         }
 
         public void SetShortDescription(string newDescription)
         {
             ShortDescription = newDescription;
-            IsDirty = true;
         }
 
         public void AddTag(Tag tag)
         {
-            if (Tags.All(t => t.Tag.Text != tag.Text))
+            if (Tags.All(t => t.Text != tag.Text))
             {
-                var relTag = new RelTag(null, tag, Id);
-                var relOperation = new RelOperation(null, this, tag.Id);
-                Tags.Add(relTag);
-
-                tag.AddOperation(relOperation);
+                Tags.Add(tag);
             }
-            else
-            {
-                Tags.First(t => t.Tag.Text == tag.Text).IsMarkForDeletion = false;
-            }
-            IsDirty = true;
         }
 
-        public void RemoveTag(RelTag tag)
+        public void RemoveTag(Tag tag)
         {
             Tags.Remove(tag);
-            tag.Tag.RemoveOperation(tag.Tag.Operations.First(o => o.Operation == this));
-            IsDirty = true;
         }
 
         public void SetFrequency(Frequency frequency)
         {
             Frequency = frequency;
-            IsDirty = true;
         }
 
         public void SetImportance(Importance importance)
         {
             Importance = importance;
-            IsDirty = true;
         }
 
         public void UpdateId(int? id)
@@ -119,38 +100,32 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public void SetDescription(string text)
         {
             Description = text;
-            IsDirty = true;
         }
 
         public void SetTransaction(TransactionType transactionType)
         {
             TransactionType = transactionType;
-            IsDirty = true;
         }
 
         public void SetTransfer(TransferType transferType)
         {
             TransferType = transferType;
-            IsDirty = true;
         }
 
         public void SetDate(DateTime date)
         {
             Date = date;
-            IsDirty = true;
         }
 
         public void SetAmount(decimal? value)
         {
             if (!value.HasValue) return;
             Amount = value.Value;
-            IsDirty = true;
         }
 
         public void RemoveAllTags()
         {
             Tags.Clear();
-            IsDirty = true;
         }
     }
 }

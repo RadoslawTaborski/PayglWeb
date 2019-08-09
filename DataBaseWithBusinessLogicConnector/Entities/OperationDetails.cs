@@ -8,7 +8,6 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public string Name { get; private set; }
         public double Quantity { get; private set; }
         public decimal Amount { get; private set; }
-        public bool IsDirty { get; set; }
 
         public OperationDetails(int? id, string name, double quantity, decimal amount)
         {
@@ -16,7 +15,6 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             Name = name;
             Quantity = quantity;
             Amount = amount;
-            IsDirty = true;
         }
 
         public void UpdateId(int? id)
