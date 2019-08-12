@@ -11,14 +11,14 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
     public class OperationMapper
     {
         private UserMapper _userMapper;
-        private FrequenceMapper _frequencyMapper;
+        private FrequencyMapper _frequencyMapper;
         private ImportanceMapper _importanceMapper;
         private TagMapper _tagMapper;
         private TransactionTypeMapper _transactionTypeMapper;
         private TransferTypeMapper _transferTypeMapper;
         private OperationDetailsMapper _detailsMapper;
 
-        public OperationMapper(UserMapper userMapper, FrequenceMapper frequencyMapper, ImportanceMapper importanceMapper, TagMapper tagMapper, TransactionTypeMapper transactionTypeMapper, TransferTypeMapper transferTypeMapper, OperationDetailsMapper detailsMapper)
+        public OperationMapper(UserMapper userMapper, FrequencyMapper frequencyMapper, ImportanceMapper importanceMapper, TagMapper tagMapper, TransactionTypeMapper transactionTypeMapper, TransferTypeMapper transferTypeMapper, OperationDetailsMapper detailsMapper)
         {
             _userMapper = userMapper;
             _frequencyMapper = frequencyMapper;

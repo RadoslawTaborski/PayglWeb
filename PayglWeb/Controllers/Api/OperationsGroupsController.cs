@@ -33,6 +33,23 @@ namespace PayglWeb.Controllers.Api
             }
         }
 
+        [HttpGet("{from}/{to}")]
+        public IActionResult Get(string from, string to, bool withoutParent)
+        {
+            try
+            {
+                DateTime dtFrom = DateTime.Parse(from);
+                DateTime dtTo = DateTime.Parse(to);
+                var result = JsonConvert.SerializeObject(_repository.GetOperationsGroups(dtFrom, dtTo), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
@@ -50,7 +67,7 @@ namespace PayglWeb.Controllers.Api
 
         [HttpPost]
         public IActionResult Post([FromBody]ApiOperationsGroup group)
-        {
+        { //TODO: validators
             try
             {
                 var dalOperationsGroup = _repository.GetDalOperationsGroup(group);

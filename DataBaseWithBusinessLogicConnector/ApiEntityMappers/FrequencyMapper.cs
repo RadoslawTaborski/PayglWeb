@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
 {
-    public class FrequenceMapper
+    public class FrequencyMapper
     {
         public IEnumerable<Frequency> ConvertToEntitiesCollection(IEnumerable<ApiFrequency> dataEntities)
         {

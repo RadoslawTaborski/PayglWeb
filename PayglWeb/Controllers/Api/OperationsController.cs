@@ -34,6 +34,55 @@ namespace PayglWeb.Controllers.Api
             }
         }
 
+        [HttpGet("{withoutParent:bool}")]
+        public IActionResult Get(bool withoutParent)
+        {
+            try
+            {
+                var result = JsonConvert.SerializeObject(_repository.GetOperations(withoutParent), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
+        [HttpGet("{from}/{to}/{withoutParent:bool}")]
+        public IActionResult Get(string from, string to, bool withoutParent)
+        {
+            try
+            {
+                DateTime dtFrom = DateTime.Parse(from);
+                DateTime dtTo = DateTime.Parse(to);
+                var result = JsonConvert.SerializeObject(_repository.GetOperations(dtFrom,dtTo,withoutParent), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
+        [HttpGet("{from}/{to}")]
+        public IActionResult Get(string from, string to)
+        {
+            try
+            {
+                DateTime dtFrom = DateTime.Parse(from);
+                DateTime dtTo = DateTime.Parse(to);
+                var result = JsonConvert.SerializeObject(_repository.GetOperations(dtFrom, dtTo), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
@@ -51,7 +100,7 @@ namespace PayglWeb.Controllers.Api
 
         [HttpPost]
         public IActionResult Post([FromBody]ApiOperation operation)
-        {
+        { //TODO: validators
             try
             {
                 var dalOperation = _repository.GetDalOperation(operation);

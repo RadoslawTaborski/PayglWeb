@@ -107,7 +107,7 @@ namespace PayglService
 
         public ApiTransactionType GetTransactionType(int id)
         {
-            return TransactionTypes.Where(x=>x.Id==id).FirstOrDefault();
+            return TransactionTypes.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<ApiTransferType> GetTransferTypes()
@@ -127,7 +127,7 @@ namespace PayglService
 
         public ApiFrequency GetFrequency(int id)
         {
-            return Frequencies.Where(x=>x.Id==id).FirstOrDefault();
+            return Frequencies.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<ApiImportance> GetImportances()
@@ -137,7 +137,7 @@ namespace PayglService
 
         public ApiImportance GetImportance(int id)
         {
-            return Importances.Where(x=>x.Id==id).FirstOrDefault();
+            return Importances.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<ApiTag> GetTags()
@@ -147,17 +147,36 @@ namespace PayglService
 
         public ApiTag GetTag(int id)
         {
-            return Tags.Where(x=>x.Id==id).FirstOrDefault();
+            return Tags.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<ApiOperation> GetOperations()
+        public IEnumerable<ApiOperation> GetOperations(bool withoutParent = false)
         {
-            return Operations;
+            if (!withoutParent)
+            {
+                return Operations;
+            }
+            else
+            {
+                return Operations.Where(x => x.GroupId == null);
+            }
         }
 
         public ApiOperation GetOperation(int id)
         {
-            return Operations.Where(x=>x.Id==id).FirstOrDefault();
+            return Operations.Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<ApiOperation> GetOperations(DateTime from, DateTime to, bool withoutParent = false)
+        {
+            if (!withoutParent)
+            {
+                return Operations.Where(x => DateTime.Parse(x.Date) >= from && DateTime.Parse(x.Date) <= to);
+            }
+            else
+            {
+                return Operations.Where(x => DateTime.Parse(x.Date) > from && DateTime.Parse(x.Date) < to && x.GroupId == null);
+            }
         }
 
         public (IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperations(IEnumerable<ApiOperation> apiObjects)
@@ -173,6 +192,11 @@ namespace PayglService
         public IEnumerable<ApiOperationsGroup> GetOperationsGroups()
         {
             return OperationsGroups;
+        }
+
+        public IEnumerable<ApiOperationsGroup> GetOperationsGroups(DateTime from, DateTime to)
+        {
+            return OperationsGroups.Where(x => DateTime.Parse(x.Date) >= from && DateTime.Parse(x.Date) <= to);
         }
 
         public ApiOperationsGroup GetOperationsGroup(int id)
@@ -212,9 +236,9 @@ namespace PayglService
             }
             Language = Languages.Where(l => l.Id == dalUser.LanguageId).First();
             UserDetails = UserDetailsMapper.ConvertToApiEntity(UserDetailsAdapter.GetById(dalUser.DetailsId));
-            UserMapper.Update(Language,UserDetails);
+            UserMapper.Update(Language, UserDetails);
 
-            User = UserMapper.ConvertToApiEntity(dalUser);          
+            User = UserMapper.ConvertToApiEntity(dalUser);
         }
 
         private void LoadAttributes()
@@ -254,7 +278,7 @@ namespace PayglService
 
             var relations = OperationsGroupRelationAdapter.GetAll(filter).ToList();
 
-            OperationsGroupMapper.Update(OperationMapper, Importances,Tags,Frequencies, Operations, User, relations);
+            OperationsGroupMapper.Update(OperationMapper, Importances, Tags, Frequencies, Operations, User, relations);
             OperationsGroups = OperationsGroupMapper.ConvertToApiEntitiesCollection(OperationsGroupAdapter.GetAll($"user_id={User.Id}")).ToList();
         }
     }
