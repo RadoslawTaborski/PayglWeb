@@ -5,6 +5,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
     public class TransferType : IEntity, IParameter
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public string Text { get; private set; }
 
         public TransferType(int? id, string text)

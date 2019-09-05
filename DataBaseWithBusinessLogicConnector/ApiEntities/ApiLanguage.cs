@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiLanguage
+    public class ApiLanguage : IEntity
     {
         public int? Id { get;  set; }
+        public bool IsDirty { get; set; }
         public string ShortName { get;  set; }
         public string FullName { get;  set; }
 
@@ -21,6 +23,10 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
 
         public ApiLanguage()
         {
+        }
+        public void UpdateId(int? id)
+        {
+            Id = id;
         }
     }
 }

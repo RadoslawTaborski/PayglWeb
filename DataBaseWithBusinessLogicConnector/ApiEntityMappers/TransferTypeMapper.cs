@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public TransferType ConvertToEntity(ApiTransferType dataEntity)
         {
             var result = new TransferType(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -41,6 +42,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public ApiTransferType ConvertToApiEntity(TransferType dataEntity)
         {
             var result = new ApiTransferType(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

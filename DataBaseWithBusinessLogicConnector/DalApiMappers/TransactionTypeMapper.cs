@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiTransactionType ConvertToApiEntity(DalTransactionType dataEntity)
         {
             var result = new ApiTransactionType(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

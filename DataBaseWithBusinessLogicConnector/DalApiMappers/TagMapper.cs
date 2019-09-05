@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiTag ConvertToApiEntity(DalTag dataEntity)
         {
             var result = new ApiTag(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

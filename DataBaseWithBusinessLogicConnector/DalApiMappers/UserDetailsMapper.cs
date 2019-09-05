@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiUserDetails ConvertToApiEntity(DalUserDetails dataEntity)
         {
             var result = new ApiUserDetails(dataEntity.Id, dataEntity.LastName, dataEntity.FirstName);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

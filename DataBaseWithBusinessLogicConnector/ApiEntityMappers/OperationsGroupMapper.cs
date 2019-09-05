@@ -13,12 +13,12 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         private UserMapper _userMapper;
         private FrequencyMapper _frequencyMapper;
         private ImportanceMapper _importanceMapper;
-        private TagMapper _tagMapper;
+        private RelationTagMapper _tagMapper;
         private TransactionTypeMapper _transactionTypeMapper;
         private TransferTypeMapper _transferTypeMapper;
         private OperationMapper _operationMapper;
 
-        public OperationsGroupMapper(UserMapper userMapper, FrequencyMapper frequencyMapper, ImportanceMapper importanceMapper, TagMapper tagMapper, TransactionTypeMapper transactionTypeMapper, TransferTypeMapper transferTypeMapper, OperationMapper operationMapper)
+        public OperationsGroupMapper(UserMapper userMapper, FrequencyMapper frequencyMapper, ImportanceMapper importanceMapper, RelationTagMapper tagMapper, TransactionTypeMapper transactionTypeMapper, TransferTypeMapper transferTypeMapper, OperationMapper operationMapper)
         {
             _userMapper = userMapper;
             _frequencyMapper = frequencyMapper;
@@ -49,6 +49,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var user = _userMapper.ConvertToEntity(dataEntity.User);
             DateTime.TryParse(dataEntity.Date, out DateTime date);
             var result = new OperationsGroup(dataEntity.Id, user, dataEntity.Description, frequency, importance, date,tags,operations);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -71,6 +72,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var tags = _tagMapper.ConvertToApiEntitiesCollection(dataEntity.Tags).ToArray();
             var operations = _operationMapper.ConvertToApiEntitiesCollection(dataEntity.Operations).ToArray();
             var result = new ApiOperationsGroup(dataEntity.Id, user, dataEntity.Description, frequency, importance, dataEntity.Date.ToString("yyyy-MM-dd"),tags,operations);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

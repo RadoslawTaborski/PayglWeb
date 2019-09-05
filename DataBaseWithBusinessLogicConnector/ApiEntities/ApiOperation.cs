@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiOperation
+    public class ApiOperation : IEntity
     {
         public int? Id { get;  set; }
+        public bool IsDirty { get; set; }
         public int? GroupId { get;  set; }
         public ApiUser User { get;  set; }
         public decimal Amount { get;  set; }
@@ -18,12 +20,12 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
         public ApiImportance Importance { get;  set; }
         public string Date { get;  set; }
         public string ReceiptPath { get;  set; }
-        public ApiTag[] Tags { get;  set; }
+        public ApiRelTag[] Tags { get;  set; }
         public ApiOperationDetails[] DetailsList { get;  set; }
         public string Description { get;  set; }
 
         public ApiOperation() {}
-        public ApiOperation(int? id, int? groupId, ApiUser user, decimal amount, ApiTransactionType transactionType, ApiTransferType transferType, ApiFrequency frequency, ApiImportance importance, string date, string receiptPath, ApiTag[] tags, ApiOperationDetails[] detailsList, string description)
+        public ApiOperation(int? id, int? groupId, ApiUser user, decimal amount, ApiTransactionType transactionType, ApiTransferType transferType, ApiFrequency frequency, ApiImportance importance, string date, string receiptPath, ApiRelTag[] tags, ApiOperationDetails[] detailsList, string description)
         {
             Id = id;
             GroupId = groupId;
@@ -38,6 +40,10 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
             Tags = tags;
             DetailsList = detailsList;
             Description = description;
+        }
+        public void UpdateId(int? id)
+        {
+            Id = id;
         }
     }
 }

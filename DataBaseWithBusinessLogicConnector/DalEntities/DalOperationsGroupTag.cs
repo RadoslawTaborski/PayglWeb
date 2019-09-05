@@ -3,6 +3,7 @@
     public class DalOperationsGroupTags
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public int? OperationsGroupId { get; private set; }
         public int? TagId { get; private set; }
 

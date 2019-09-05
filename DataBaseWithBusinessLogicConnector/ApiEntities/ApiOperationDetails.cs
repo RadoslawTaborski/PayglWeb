@@ -1,12 +1,14 @@
-﻿using System;
+﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiOperationDetails
+    public class ApiOperationDetails : IEntity
     {
         public int? Id { get;  set; }
+        public bool IsDirty { get; set; }
         public string Name { get;  set; }
         public double Quantity { get;  set; }
         public decimal Amount { get;  set; }
@@ -21,6 +23,10 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
 
         public ApiOperationDetails()
         {
+        }
+        public void UpdateId(int? id)
+        {
+            Id = id;
         }
     }
 }

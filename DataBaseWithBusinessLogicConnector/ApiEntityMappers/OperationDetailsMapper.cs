@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public OperationDetails ConvertToEntity(ApiOperationDetails dataEntity)
         {
             var result = new OperationDetails(dataEntity.Id, dataEntity.Name,dataEntity.Quantity,dataEntity.Amount);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -41,6 +42,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public ApiOperationDetails ConvertToApiEntity(OperationDetails dataEntity)
         {
             var result = new ApiOperationDetails(dataEntity.Id, dataEntity.Name,dataEntity.Quantity, dataEntity.Amount);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

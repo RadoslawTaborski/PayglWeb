@@ -23,6 +23,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiUser ConvertToApiEntity(DalUser dataEntity)
         {
             var result = new ApiUser(dataEntity.Id, dataEntity.Login, _language, _userDetails);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

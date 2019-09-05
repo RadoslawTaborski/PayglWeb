@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public TransactionType ConvertToEntity(ApiTransactionType dataEntity)
         {
             var result = new TransactionType(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -41,6 +42,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public ApiTransactionType ConvertToApiEntity(TransactionType dataEntity)
         {
             var result = new ApiTransactionType(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

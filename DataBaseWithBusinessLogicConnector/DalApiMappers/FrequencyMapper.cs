@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiFrequency ConvertToApiEntity(DalFrequency dataEntity)
         {
             var result = new ApiFrequency(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

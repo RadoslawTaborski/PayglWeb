@@ -5,7 +5,7 @@
       "Port": "3306",
       "Login": "root",
       "Password": "",
-      "Table": "paygl"
+      "Table": "paygl_2"
     }
   }
 }

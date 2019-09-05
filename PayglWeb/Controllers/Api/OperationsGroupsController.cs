@@ -70,7 +70,7 @@ namespace PayglWeb.Controllers.Api
         { //TODO: validators
             try
             {
-                var dalOperationsGroup = _repository.GetDalOperationsGroup(group);
+                _repository.UpdateOperationsGroupComplex(group);
 
                 return Created($"api/operationsgroups/{1}",group); //TODO: not hardcode 1
             }

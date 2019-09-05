@@ -8,6 +8,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
     public class Operation : IEntity, IOperation
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public OperationsGroup Parent { get; private set; }
         public User User { get; private set; }
         public decimal Amount { get; private set; }
@@ -17,12 +18,12 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public Importance Importance { get; private set; }
         public DateTime Date { get; private set; }
         public string ReceiptPath { get; private set; }
-        public List<Tag> Tags { get; private set; }
+        public List<RelTag> Tags { get; private set; }
         public List<OperationDetails> DetailsList { get; private set; }
         public string Description { get; private set; }
         public string ShortDescription { get; private set; }
 
-        public Operation(int? id, OperationsGroup parent, User user, string description, decimal amount, TransactionType transactionType, TransferType transferType, Frequency frequency, Importance importance, DateTime date, string receiptPath, List<Tag> tags, List<OperationDetails> details)
+        public Operation(int? id, OperationsGroup parent, User user, string description, decimal amount, TransactionType transactionType, TransferType transferType, Frequency frequency, Importance importance, DateTime date, string receiptPath, List<RelTag> tags, List<OperationDetails> details)
         {
             Id = id;
             Parent = parent;
@@ -47,7 +48,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             DetailsList = detailsCollection.ToList();
         }
 
-        public void SetTags(IEnumerable<Tag> tags)
+        public void SetTags(IEnumerable<RelTag> tags)
         {
             Tags = tags.ToList();
         }
@@ -64,15 +65,15 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             ShortDescription = newDescription;
         }
 
-        public void AddTag(Tag tag)
+        public void AddTag(RelTag tag)
         {
-            if (Tags.All(t => t.Text != tag.Text))
+            if (Tags.All(t => t.Tag.Text != tag.Tag.Text))
             {
                 Tags.Add(tag);
             }
         }
 
-        public void RemoveTag(Tag tag)
+        public void RemoveTag(RelTag tag)
         {
             Tags.Remove(tag);
         }

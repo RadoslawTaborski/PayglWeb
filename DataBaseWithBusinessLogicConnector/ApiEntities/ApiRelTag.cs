@@ -1,26 +1,22 @@
-﻿using DataBaseWithBusinessLogicConnector.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiImportance : IEntity
+    public class ApiRelTag
     {
         public int? Id { get; set; }
         public bool IsDirty { get; set; }
-        public string Text { get; set; }
+        public ApiTag Tag { get; set; }
 
-        public ApiImportance(int? id, string text)
+        public ApiRelTag(int? id, ApiTag tag)
         {
             Id = id;
-            Text = text;
+            Tag = tag;
         }
 
-        public ApiImportance()
+        public ApiRelTag()
         {
         }
 

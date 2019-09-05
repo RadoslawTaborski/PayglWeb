@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public UserDetails ConvertToEntity(ApiUserDetails dataEntity)
         {
             var result = new UserDetails(dataEntity.Id, dataEntity.LastName, dataEntity.FirstName);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -41,6 +42,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public ApiUserDetails ConvertToApiEntity(UserDetails dataEntity)
         {
             var result = new ApiUserDetails(dataEntity.Id, dataEntity.LastName, dataEntity.FirstName);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

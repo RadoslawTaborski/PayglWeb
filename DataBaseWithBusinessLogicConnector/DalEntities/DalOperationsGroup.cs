@@ -5,6 +5,7 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
     public class DalOperationsGroup: IDalEntity
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public int? UserId { get; private set; }
         public string Description { get; private set; }
         public int? FrequencyId { get; private set; }

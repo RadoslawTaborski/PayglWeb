@@ -13,12 +13,12 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         private UserMapper _userMapper;
         private FrequencyMapper _frequencyMapper;
         private ImportanceMapper _importanceMapper;
-        private TagMapper _tagMapper;
+        private RelationTagMapper _tagMapper;
         private TransactionTypeMapper _transactionTypeMapper;
         private TransferTypeMapper _transferTypeMapper;
         private OperationDetailsMapper _detailsMapper;
 
-        public OperationMapper(UserMapper userMapper, FrequencyMapper frequencyMapper, ImportanceMapper importanceMapper, TagMapper tagMapper, TransactionTypeMapper transactionTypeMapper, TransferTypeMapper transferTypeMapper, OperationDetailsMapper detailsMapper)
+        public OperationMapper(UserMapper userMapper, FrequencyMapper frequencyMapper, ImportanceMapper importanceMapper, RelationTagMapper tagMapper, TransactionTypeMapper transactionTypeMapper, TransferTypeMapper transferTypeMapper, OperationDetailsMapper detailsMapper)
         {
             _userMapper = userMapper;
             _frequencyMapper = frequencyMapper;
@@ -51,6 +51,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var details = _detailsMapper.ConvertToEntitiesCollection(dataEntity.DetailsList);
             DateTime.TryParse(dataEntity.Date, out DateTime date);
             var result = new Operation(dataEntity.Id, null, user,dataEntity.Description,dataEntity.Amount,transactionType,transferType,frequency,importance,date,dataEntity.ReceiptPath,tags.ToList(), details.ToList());
+            result.IsDirty = dataEntity.IsDirty;
 
             return result;
         }
@@ -76,6 +77,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var tags = _tagMapper.ConvertToApiEntitiesCollection(dataEntity.Tags).ToArray();
             var details = _detailsMapper.ConvertToApiEntitiesCollection(dataEntity.DetailsList).ToArray();
             var result = new ApiOperation(dataEntity.Id, dataEntity.Parent.Id, user, dataEntity.Amount, transactionType, transferType,frequency, importance, dataEntity.Date.ToString("yyyy-MM-dd"),dataEntity.ReceiptPath, tags, details, dataEntity.Description);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

@@ -103,7 +103,7 @@ namespace PayglWeb.Controllers.Api
         { //TODO: validators
             try
             {
-                var dalOperation = _repository.GetDalOperation(operation);
+                _repository.UpdateOperationComplex(operation);
 
                 return Created($"api/operations/{1}", operation); //TODO: not hardcode 1
             }

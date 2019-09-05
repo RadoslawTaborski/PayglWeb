@@ -12,17 +12,18 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
     {
         private List<ApiImportance> _importances;
         private List<ApiFrequency> _frequencies;
-        private List<ApiTag> _tags;
         private List<ApiOperation> _operations;
         private ApiUser _user;
         private OperationMapper _operationMapper;
         private List<DalOperationsGroupTags> _dalRelations;
 
+        private RelationTagMapper _tagMapper = new RelationTagMapper();
+
         public void Update(OperationMapper operationMapper, List<ApiImportance> importances, List<ApiTag> tags, List<ApiFrequency> frequencies, List<ApiOperation> operations, ApiUser user, List<DalOperationsGroupTags> relations)
         {
             _importances = importances;
             _frequencies = frequencies;
-            _tags = tags;
+            _tagMapper.Update(tags);
             _dalRelations = relations;
             _operations = operations;
             _operationMapper = operationMapper;
@@ -47,10 +48,11 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             var importance = _importances.First(f => f.Id == dataEntity.ImportanceId);
             var operations = _operations.Where(o => o.GroupId == dataEntity.Id).ToArray();
 
-            var tagsid = _dalRelations.Where(t => t.OperationsGroupId == dataEntity.Id).Select(t => t.TagId);
-            var tags = _tags.Where(t => tagsid.Contains(t.Id)).ToArray();
+            var dalTags = _dalRelations.Where(t => t.OperationsGroupId == dataEntity.Id);
+            var tags = _tagMapper.ConvertToApiEntitiesCollection(dalTags).ToArray();
 
-            var result = new ApiOperationsGroup(dataEntity.Id, _user, dataEntity.Description, frequency, importance, dataEntity.Date, tags, operations); 
+            var result = new ApiOperationsGroup(dataEntity.Id, _user, dataEntity.Description, frequency, importance, dataEntity.Date, tags, operations);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -83,6 +85,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
                 throw new ArgumentException(Properties.strings.ExWrongParameters);
             }
             var result1 = new DalOperationsGroup(businessEntity.Id, businessEntity.User.Id, businessEntity.Description, businessEntity.Frequency.Id, businessEntity.Importance.Id, businessEntity.Date);
+            result1.IsDirty = businessEntity.IsDirty;
 
             var result2 = new List<DalOperationsGroupTags>();
             foreach (var tag in businessEntity.Tags)

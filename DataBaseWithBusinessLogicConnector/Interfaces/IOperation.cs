@@ -11,7 +11,7 @@ namespace DataBaseWithBusinessLogicConnector.Interfaces
         Frequency Frequency { get; }
         Importance Importance { get; }
         DateTime Date { get; }
-        List<Tag> Tags { get; }
+        List<RelTag> Tags { get; }
         string Description { get; }
     }
 }

@@ -5,6 +5,7 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
     public class DalUser : IDalEntity
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public string Login { get; private set; }
         public string Password { get; private set; }
         public int? LanguageId { get; private set; }

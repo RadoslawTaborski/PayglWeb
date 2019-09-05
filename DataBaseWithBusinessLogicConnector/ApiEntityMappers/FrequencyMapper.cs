@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public Frequency ConvertToEntity(ApiFrequency dataEntity)
         {
             var result = new Frequency(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -41,6 +42,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public ApiFrequency ConvertToApiEntity(Frequency dataEntity)
         {
             var result = new ApiFrequency(dataEntity.Id, dataEntity.Text);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

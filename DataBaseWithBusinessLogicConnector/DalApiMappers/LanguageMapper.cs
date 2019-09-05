@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiLanguage ConvertToApiEntity(DalLanguage dataEntity)
         {
             var result = new ApiLanguage(dataEntity.Id, dataEntity.ShortName, dataEntity.FullName);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

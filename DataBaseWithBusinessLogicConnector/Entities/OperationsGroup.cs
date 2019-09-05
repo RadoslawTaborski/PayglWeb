@@ -9,6 +9,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
     public class OperationsGroup : IEntity, IOperation
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public User User { get; private set; }
         public decimal Amount { get; private set; }
         public string Description { get; private set; }
@@ -16,10 +17,10 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public Importance Importance { get; private set; }
         public TransactionType TransactionType { get; private set; }
         public DateTime Date { get; private set; }
-        public List<Tag> Tags { get; private set; }
+        public List<RelTag> Tags { get; private set; }
         public List<Operation> Operations { get; private set; }
 
-        public OperationsGroup(int? id, User user, string description, Frequency frequency, Importance importance, DateTime date, List<Tag> tags, List<Operation> operations)
+        public OperationsGroup(int? id, User user, string description, Frequency frequency, Importance importance, DateTime date, List<RelTag> tags, List<Operation> operations)
         {
             Id = id;
             User = user;
@@ -51,20 +52,20 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             Operations.Clear();
         }
 
-        public void SetTags(IEnumerable<Tag> tags)
+        public void SetTags(IEnumerable<RelTag> tags)
         {
             Tags = tags.ToList();
         }
 
-        public void AddTag(Tag tag)
+        public void AddTag(RelTag tag)
         {
-            if (!Tags.Any(t => t.Text == tag.Text))
+            if (!Tags.Any(t => t.Tag.Text == tag.Tag.Text))
             {
                 Tags.Add(tag);
             }
         }
 
-        public void RemoveTag(Tag tag)
+        public void RemoveTag(RelTag tag)
         {
             Tags.Remove(tag);
         }

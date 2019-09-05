@@ -1,17 +1,20 @@
 ﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace DataBaseWithBusinessLogicConnector.Entities
 {
-    public class Importance : IEntity, IParameter
+    public class RelTag : IEntity
     {
         public int? Id { get; private set; }
         public bool IsDirty { get; set; }
-        public string Text { get; private set; }
+        public Tag Tag { get; private set; }
 
-        public Importance(int? id, string text)
+        public RelTag(int? id, Tag tag)
         {
             Id = id;
-            Text = text;
+            Tag = tag;
         }
 
         public void UpdateId(int? id)
@@ -21,7 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
 
         public override string ToString()
         {
-            return Text;
+            return Tag.ToString();
         }
     }
 }

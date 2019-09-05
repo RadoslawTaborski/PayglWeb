@@ -3,5 +3,6 @@
     public interface IDalEntity
     {
         int? Id { get; }
+        bool IsDirty { get; set; }
     }
 }

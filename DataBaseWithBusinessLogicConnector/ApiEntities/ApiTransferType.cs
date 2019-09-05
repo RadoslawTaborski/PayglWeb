@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiTransferType
+    public class ApiTransferType : IEntity
     {
         public int? Id { get;  set; }
+        public bool IsDirty { get; set; }
         public string Text { get;  set; }
 
         public ApiTransferType(int? id, string text)
@@ -19,6 +21,10 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
 
         public ApiTransferType()
         {
+        }
+        public void UpdateId(int? id)
+        {
+            Id = id;
         }
     }
 }

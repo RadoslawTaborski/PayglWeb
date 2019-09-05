@@ -37,5 +37,8 @@ namespace PayglService
         IEnumerable<ApiOperationsGroup> GetOperationsGroups(DateTime from, DateTime to);
         (IEnumerable<DalOperationsGroup>, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroups(IEnumerable<ApiOperationsGroup> apiObjects);
         (DalOperationsGroup, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroup(ApiOperationsGroup apiObjects);
+
+        void UpdateOperationsGroupComplex(ApiOperationsGroup group);
+        void UpdateOperationComplex(ApiOperation newOperation);
     }
 }

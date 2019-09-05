@@ -24,6 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public Language ConvertToEntity(ApiLanguage dataEntity)
         {
             var result = new Language(dataEntity.Id, dataEntity.ShortName, dataEntity.FullName);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -41,6 +42,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public ApiLanguage ConvertToApiEntity(Language dataEntity)
         {
             var result = new ApiLanguage(dataEntity.Id, dataEntity.ShortName, dataEntity.FullName);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

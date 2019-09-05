@@ -35,6 +35,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var language = _languageMapper.ConvertToEntity(dataEntity.Language);
             var userDetails = _userDetailsMapper.ConvertToEntity(dataEntity.Details);
             var result = new User(dataEntity.Id, dataEntity.Login, language, userDetails);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -54,6 +55,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var language = _languageMapper.ConvertToApiEntity(dataEntity.Language);
             var userDetails = _userDetailsMapper.ConvertToApiEntity(dataEntity.Details);
             var result = new ApiUser(dataEntity.Id, dataEntity.Login, language, userDetails);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
     }

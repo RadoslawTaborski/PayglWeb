@@ -5,6 +5,7 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
     public class DalFrequency : IDalEntity
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public string Text { get; private set; }
         public int? LanguageId { get; private set; }
 

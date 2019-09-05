@@ -5,6 +5,7 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
     public class DalOperationTags : IDalEntity
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public int? OperationId { get; private set; }
         public int? TagId { get; private set; }
 

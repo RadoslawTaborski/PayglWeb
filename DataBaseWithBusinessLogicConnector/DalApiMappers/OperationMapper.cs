@@ -14,11 +14,12 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         private List<ApiFrequency> _frequencies;
         private List<ApiTransactionType> _transactionTypes;
         private List<ApiTransferType> _transferTypes;
-        private List<ApiTag> _tags;
         private ApiUser _user;
 
         private List<DalOperationTags> _dalRelations;
         private List<DalOperationDetails> _dalDetails;
+
+        private RelationTagMapper tagMapper = new RelationTagMapper();
 
         public void Update(List<ApiImportance> importances, List<ApiFrequency> frequencies, List<ApiTransactionType> transactionTypes, List<ApiTransferType> transferTypes, List<ApiTag> tags, ApiUser user, List<DalOperationTags> dalRelations, List<DalOperationDetails> dalDetails)
         {
@@ -26,7 +27,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             _frequencies = frequencies;
             _transactionTypes = transactionTypes;
             _transferTypes = transferTypes;
-            _tags = tags;
+            tagMapper.Update(tags);
             _user = user;
             _dalRelations = dalRelations;
             _dalDetails = dalDetails;
@@ -51,13 +52,14 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             var transferType = _transferTypes.First(f => f.Id == dataEntity.TransferTypeId);
             var transactionType = _transactionTypes.First(f => f.Id == dataEntity.TransactionTypeId);
 
-            var tagsid = _dalRelations.Where(t => t.OperationId == dataEntity.Id).Select(t=>t.TagId);
-            var tags = _tags.Where(t=>tagsid.Contains(t.Id)).ToArray();
+            var dalTags = _dalRelations.Where(t => t.OperationId == dataEntity.Id);
+            var tags = tagMapper.ConvertToApiEntitiesCollection(dalTags).ToArray();
 
             var dalDetails = _dalDetails.Where(d => d.OperationId == dataEntity.Id);
             var details = new OperationDetailsMapper().ConvertToApiEntitiesCollection(dalDetails).ToArray();
 
-            var result = new ApiOperation(dataEntity.Id, dataEntity.ParentId, _user,dataEntity.Amount, transactionType,transferType,frequency,importance,dataEntity.Date,dataEntity.ReceiptPath, tags, details, dataEntity.Description);
+            var result = new ApiOperation(dataEntity.Id, dataEntity.ParentId, _user,dataEntity.Amount, transactionType, transferType,frequency,importance,dataEntity.Date,dataEntity.ReceiptPath, tags, details, dataEntity.Description);
+            result.IsDirty = dataEntity.IsDirty;
             return result;
         }
 
@@ -85,11 +87,13 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
                 throw new ArgumentException(Properties.strings.ExWrongParameters);
             }
             var result1 = new DalOperation(businessEntity.Id, businessEntity.GroupId, businessEntity.User.Id, businessEntity.Description, businessEntity.Amount, businessEntity.TransactionType.Id, businessEntity.TransferType.Id, businessEntity.Frequency.Id, businessEntity.Importance.Id, businessEntity.Date, businessEntity.ReceiptPath);
+            result1.IsDirty = businessEntity.IsDirty;
 
             var result2 = new List<DalOperationTags>();
             foreach(var tag in businessEntity.Tags)
             {
-                result2.Add(new DalOperationTags(null, businessEntity.Id, tag.Id));
+                var operationTag = new DalOperationTags(null, businessEntity.Id, tag.Id);
+                result2.Add(operationTag);
             }
             var result3 = new List<DalOperationDetails>();
 

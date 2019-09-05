@@ -5,6 +5,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
     public class Frequency : IEntity, IParameter
     {
         public int? Id { get; private set; }
+        public bool IsDirty { get; set; }
         public string Text { get; private set; }
 
         public Frequency(int? id, string text)
