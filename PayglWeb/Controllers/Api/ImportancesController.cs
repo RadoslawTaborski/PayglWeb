@@ -2,6 +2,7 @@
 using DataBaseWithBusinessLogicConnector.DalEntities;
 using Microsoft.AspNetCore.Mvc;
 using PayglService;
+using PayglWeb.Controllers.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                return Ok(_repository.GetImportances());
+                var json = JsonHelper.JsonFromIEntity(_repository.GetImportances(), "IsDirty", "IsMarkForDeletion");
+                return Ok(json);
             }
             catch (Exception)
             {
@@ -37,7 +39,8 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                return Ok(_repository.GetImportance(id));
+                var json = JsonHelper.JsonFromIEntity(_repository.GetImportance(id), "IsDirty", "IsMarkForDeletion");
+                return Ok(json);
             }
             catch (Exception)
             {

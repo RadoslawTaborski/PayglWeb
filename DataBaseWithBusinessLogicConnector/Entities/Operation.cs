@@ -9,6 +9,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
     {
         public int? Id { get; private set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public OperationsGroup Parent { get; private set; }
         public User User { get; private set; }
         public decimal Amount { get; private set; }

@@ -32,6 +32,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
 
             var result = new RelTag(dataEntity.Id, tag);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
 
@@ -52,6 +53,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
 
             var result = new ApiRelTag(dataEntity.Id, tag);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
     }

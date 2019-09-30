@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PayglService;
+using PayglWeb.Controllers.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,8 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                return Ok(_repository.GetTransferTypes());
+                var json = JsonHelper.JsonFromIEntity(_repository.GetTransferTypes(), "IsDirty", "IsMarkForDeletion");
+                return Ok(json);
             }
             catch (Exception)
             {
@@ -35,7 +37,8 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                return Ok(_repository.GetTransferType(id));
+                var json = JsonHelper.JsonFromIEntity(_repository.GetTransferType(id), "IsDirty", "IsMarkForDeletion");
+                return Ok(json);
             }
             catch (Exception)
             {

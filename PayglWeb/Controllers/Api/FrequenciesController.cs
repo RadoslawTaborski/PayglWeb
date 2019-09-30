@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using PayglService;
+using PayglWeb.Controllers.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,8 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                return Ok(_repository.GetFrequencies());
+                var json = JsonHelper.JsonFromIEntity(_repository.GetFrequencies(), "IsDirty", "IsMarkForDeletion");
+                return Ok(json);
             }
             catch (Exception)
             {
@@ -35,7 +38,8 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                return Ok(_repository.GetFrequency(id));
+                var json = JsonHelper.JsonFromIEntity(_repository.GetFrequency(id), "IsDirty", "IsMarkForDeletion");
+                return Ok(json);
             }
             catch (Exception)
             {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PayglService;
+using PayglWeb.Controllers.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace PayglWeb.Controllers.Api
             try
             {
                 var result = JsonConvert.SerializeObject(_repository.GetOperationsGroups(), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
+                result = JsonHelper.JsonArrayWithoutTags(result, "IsDirty", "IsMarkForDeletion");
                 return Ok(result);
             }
             catch (Exception)
@@ -41,7 +43,7 @@ namespace PayglWeb.Controllers.Api
                 DateTime dtFrom = DateTime.Parse(from);
                 DateTime dtTo = DateTime.Parse(to);
                 var result = JsonConvert.SerializeObject(_repository.GetOperationsGroups(dtFrom, dtTo), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
-
+                result = JsonHelper.JsonArrayWithoutTags(result, "IsDirty", "IsMarkForDeletion");
                 return Ok(result);
             }
             catch (Exception)
@@ -56,7 +58,7 @@ namespace PayglWeb.Controllers.Api
             try
             {
                 var result = JsonConvert.SerializeObject(_repository.GetOperationsGroup(id), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
-
+                result = JsonHelper.JsonWithoutTags(result, "IsDirty", "IsMarkForDeletion");
                 return Ok(result);
             }
             catch (Exception)

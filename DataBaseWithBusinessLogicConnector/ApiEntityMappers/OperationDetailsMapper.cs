@@ -25,6 +25,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         {
             var result = new OperationDetails(dataEntity.Id, dataEntity.Name,dataEntity.Quantity,dataEntity.Amount);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
 
@@ -43,6 +44,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         {
             var result = new ApiOperationDetails(dataEntity.Id, dataEntity.Name,dataEntity.Quantity, dataEntity.Amount);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
     }

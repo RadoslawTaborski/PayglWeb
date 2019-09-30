@@ -11,6 +11,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
     {
         public int? Id { get;  set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public string LastName { get;  set; }
         public string FirstName { get;  set; }
 

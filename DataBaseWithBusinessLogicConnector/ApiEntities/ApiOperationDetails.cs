@@ -9,6 +9,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
     {
         public int? Id { get;  set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public string Name { get;  set; }
         public double Quantity { get;  set; }
         public decimal Amount { get;  set; }

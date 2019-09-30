@@ -50,6 +50,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             DateTime.TryParse(dataEntity.Date, out DateTime date);
             var result = new OperationsGroup(dataEntity.Id, user, dataEntity.Description, frequency, importance, date,tags,operations);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
 
@@ -73,6 +74,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var operations = _operationMapper.ConvertToApiEntitiesCollection(dataEntity.Operations).ToArray();
             var result = new ApiOperationsGroup(dataEntity.Id, user, dataEntity.Description, frequency, importance, dataEntity.Date.ToString("yyyy-MM-dd"),tags,operations);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
     }

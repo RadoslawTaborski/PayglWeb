@@ -11,6 +11,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
     {
         public int? Id { get;  set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public int? GroupId { get;  set; }
         public ApiUser User { get;  set; }
         public decimal Amount { get;  set; }

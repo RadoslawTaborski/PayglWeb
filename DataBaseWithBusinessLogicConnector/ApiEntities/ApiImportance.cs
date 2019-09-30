@@ -12,6 +12,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
     {
         public int? Id { get; set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public string Text { get; set; }
 
         public ApiImportance(int? id, string text)

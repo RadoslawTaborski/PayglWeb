@@ -10,6 +10,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
     {
         public int? Id { get; private set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public User User { get; private set; }
         public decimal Amount { get; private set; }
         public string Description { get; private set; }

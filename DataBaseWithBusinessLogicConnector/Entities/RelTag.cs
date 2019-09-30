@@ -9,6 +9,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
     {
         public int? Id { get; private set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public Tag Tag { get; private set; }
 
         public RelTag(int? id, Tag tag)
