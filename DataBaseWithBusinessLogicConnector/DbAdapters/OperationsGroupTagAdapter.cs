@@ -1,10 +1,11 @@
 ﻿using DataBaseWithBusinessLogicConnector.DalEntities;
+using DataBaseWithBusinessLogicConnector.Interfaces.Dal;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DataBaseWithBusinessLogicConnector.DbAdapters
 {
-    public class OperationsGroupTagAdapter
+    public class OperationsGroupTagAdapter : IAdapter<DalOperationsGroupTags>
     {
         private const string Table = "operations_group_tags";
 

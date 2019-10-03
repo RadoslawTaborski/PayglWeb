@@ -36,6 +36,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public void SetOperations(IEnumerable<Operation> operations)
         {
             Operations = operations.ToList();
+            IsDirty = true;
         }
 
         public void AddOperation(Operation operation)
@@ -56,34 +57,45 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public void SetTags(IEnumerable<RelTag> tags)
         {
             Tags = tags.ToList();
+            IsDirty = true;
         }
 
         public void AddTag(RelTag tag)
         {
             if (!Tags.Any(t => t.Tag.Text == tag.Tag.Text))
             {
+                tag.IsDirty = true;
                 Tags.Add(tag);
             }
         }
 
         public void RemoveTag(RelTag tag)
         {
-            Tags.Remove(tag);
+            var existTag = Tags.Where(t => t.Tag.Text == tag.Tag.Text).FirstOrDefault();
+            existTag.IsDirty = true;
+            existTag.IsMarkForDeletion = true;
         }
 
         public void RemoveAllTags()
         {
-            Tags.Clear();
+            for (int i = 0; i < Tags.Count; i++)
+            {
+                RelTag tag = Tags[i];
+                tag.IsDirty = true;
+                tag.IsMarkForDeletion = true;
+            }
         }
 
         public void SetFrequence(Frequency frequency)
         {
             Frequency = frequency;
+            IsDirty = true;
         }
 
         public void SetImportance(Importance importance)
         {
             Importance = importance;
+            IsDirty = true;
         }
 
         public void UpdateId(int? id)
@@ -99,11 +111,13 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public void SetDescription(string text)
         {
             Description = text;
+            IsDirty = true;
         }
 
         public void SetDate(DateTime date)
         {
             Date = date;
+            IsDirty = true;
         }
 
         public void UpdateAmount(List<TransactionType> types)
@@ -127,14 +141,6 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             else
             {
                 TransactionType = types.First(t => t.Text == strings.income);
-            }
-        }
-
-        public void UpdateOperationsParent()
-        {
-            foreach(var operation in Operations)
-            {
-                operation.SetParent(this);
             }
         }
     }

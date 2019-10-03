@@ -25,6 +25,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         {
             var result = new ApiTransferType(dataEntity.Id, dataEntity.Text);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
     }

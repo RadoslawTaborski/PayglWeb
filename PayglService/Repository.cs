@@ -102,6 +102,11 @@ namespace PayglService
 
             LoadUserAndLanguage();
             LoadAttributes();
+            ReloadData();
+        }
+
+        private void ReloadData()
+        {
             LoadOperations();
             LoadOperationsGroups();
         }
@@ -289,246 +294,67 @@ namespace PayglService
             OperationsGroups = OperationsGroupMapper.ConvertToApiEntitiesCollection(OperationsGroupAdapter.GetAll($"user_id={User.Id}")).ToList();
         }
 
-        public void UpdateOperationsGroupComplex(ApiOperationsGroup group)
+        public async void UpdateOperationsGroupComplex(ApiOperationsGroup group)
         {
             var dalObjects = OperationsGroupMapper.ConvertToDALEntity(group);
             var dalOperationsGroup = dalObjects.Item1;
+            var dalOperationsGroupTags = dalObjects.Item2;
+            var dalOperations = dalObjects.Item3;
+            var dalOperationsTags = dalObjects.Item4;
+            var dalOperationsDetails = dalObjects.Item5;
 
-            var operationGroup = OperationsGroups.Where(o => o.Id == dalOperationsGroup.Id).FirstOrDefault();
-
-            UpdateOperationsGroup(dalOperationsGroup);
-            UpdateOperationsGroupTags(operationGroup.Id, group.Tags, operationGroup.Tags);
-            RemoveOperationsFromGroup(operationGroup, group);
-            foreach (var operation in group.Operations)
+            Update(dalOperationsGroup, OperationsGroupAdapter);
+            foreach (var dalOperationsGroupTag in dalOperationsGroupTags)
             {
-                UpdateOperationComplex(operation);
+                Update(dalOperationsGroupTag, OperationsGroupRelationAdapter);
+            }
+            foreach (var dalOperation in dalOperations)
+            {
+                Update(dalOperation, OperationAdapter);
+            }
+            foreach (var dalOperationTag in dalOperationsTags)
+            {
+                Update(dalOperationTag, OperationTagRelationAdapter);
+            }
+            foreach (var dalOperationDetail in dalOperationsDetails)
+            {
+                Update(dalOperationDetail, OperationDetailsAdapter);
             }
 
-            operationGroup = group;
+            await Task.Run(() => ReloadData());
         }
 
-        private void RemoveOperationsFromGroup(ApiOperationsGroup newGroup, ApiOperationsGroup oldGroup)
-        {
-            var operationsToRemove = oldGroup.Operations.Except(newGroup.Operations, new ApiOperationComparer());
-            operationsToRemove = operationsToRemove.Where(o => !newGroup.Operations.Contains(o));
-
-            foreach(var operation in operationsToRemove)
-            {
-                operation.GroupId = null;
-                oldGroup.Operations.Where(o => operation.Id.Value == o.Id.Value).First();
-                OperationAdapter.Update(OperationMapper.ConvertToDALEntity(operation).Item1);
-            }
-        }
-
-        public void UpdateOperationComplex(ApiOperation newOperation){
+        public async void UpdateOperationComplex(ApiOperation newOperation){
             var dalObjects = OperationMapper.ConvertToDALEntity(newOperation);
             var dalOperation = dalObjects.Item1;
-            var dalOperationsDetails = dalObjects.Item3;
+            var dalOperationTags = dalObjects.Item2;
+            var dalOperationDetails = dalObjects.Item3;
 
-            var operation = Operations.Where(o => o.Id.Value == newOperation.Id.Value).FirstOrDefault();
-
-            UpdateOperation(dalOperation);
-            UpdateOperationsTags(operation.Id, newOperation.Tags, operation.Tags);
-            UpdateOperationsDetails(dalOperationsDetails);
-
-            operation = newOperation;
-        }
-
-        private void UpdateOperationsGroup(DalOperationsGroup dalOperationsGroup)
-        {
-            OperationsGroupAdapter.Update(dalOperationsGroup);
-        }
-
-        private void UpdateOperationsGroupTags(int? groupId, ApiRelTag[] newTags, ApiRelTag[] tags)
-        {
-            var tagsToInsert = newTags.Except(tags, new ApiRelTagComparer());
-            tagsToInsert = tagsToInsert.Where(t => !tags.Contains(t));
-            var tagsToRemove = tags.Except(newTags, new ApiRelTagComparer());
-            tagsToRemove = tagsToRemove.Where(t => !newTags.Contains(t));
-
-            foreach (var tag in tagsToInsert) {
-                OperationsGroupRelationAdapter.Insert(TagRelationMapper.ConvertToDALOperationsGroupEntity(tag, groupId.Value));
-            }
-
-            foreach (var tag in tagsToRemove)
+            Update(dalOperation, OperationAdapter);
+            foreach (var dalOperationTag in dalOperationTags)
             {
-                OperationsGroupRelationAdapter.Delete(TagRelationMapper.ConvertToDALOperationsGroupEntity(tag, groupId.Value));
+                Update(dalOperationTag, OperationTagRelationAdapter);
             }
-        }
-
-        private void UpdateOperations(IEnumerable<DalOperation> dalOperations, ApiOperation[] operations)
-        {
-            foreach (var operation in dalOperations)
+            foreach (var dalOperationDetail in dalOperationDetails)
             {
-                UpdateOperation(operation);
+                Update(dalOperationDetail, OperationDetailsAdapter);
             }
+
+            await Task.Run(() => ReloadData());
         }
 
-        private void UpdateOperation(DalOperation operation)
+        private void Update<T>(T entity, IAdapter<T> adapter) where T : IDalEntity
         {
-            OperationAdapter.Update(operation);
-        }
-
-        private void UpdateOperationsTags(int? operationId, ApiRelTag[] newTags, ApiRelTag[] tags)
-        {
-            var tagsToInsert = newTags.Except(tags, new ApiRelTagComparer());
-            tagsToInsert = tagsToInsert.Where(t => !tags.Contains(t));
-            var tagsToRemove = tags.Except(newTags, new ApiRelTagComparer());
-            tagsToRemove = tagsToRemove.Where(t => !newTags.Contains(t));
-
-            foreach (var tag in tagsToInsert)
+            if (entity.IsMarkForDeletion)
             {
-                OperationTagRelationAdapter.Insert(TagRelationMapper.ConvertToDALOperationEntity(tag, operationId.Value));
-            }
-
-            foreach (var tag in tagsToRemove)
+                adapter.Delete(entity);
+            } else if(entity.IsDirty && entity.Id == null)
             {
-                OperationsGroupRelationAdapter.Delete(TagRelationMapper.ConvertToDALOperationsGroupEntity(tag, operationId.Value));
-            }
-        }
-
-        private void UpdateOperationsDetails(IEnumerable<DalOperationDetails> dalOperationsDetails)
-        {
-            foreach (var details in dalOperationsDetails)
+                adapter.Insert(entity);
+            } else if(entity.IsDirty)
             {
-                UpdateOperationDetails(details);
+                adapter.Update(entity);
             }
         }
-
-        private void UpdateOperationDetails(DalOperationDetails details)
-        {
-            OperationDetailsAdapter.Update(details);
-        }
-
-        //private void UpdateOperationTags(Operation operation, List<RelTag> parentTag)
-        //{
-        //    operation.Tags.ForEach(t => t.IsMarkForDeletion = true);
-        //    foreach (var relTag in parentTag)
-        //    {
-        //        operation.AddTag(relTag.Tag);
-        //    }
-        //}
-
-        //private int InsertRelation(RelTag tag, OperationsGroup group)
-        //{
-        //    if (tag.IsDirty)
-        //    {
-        //        var newId = OperationsGroupRelationAdapter.Insert(OperationsGroupRelationMapper.ConvertToDALEntity(tag, group));
-        //        tag.UpdateId(newId);
-        //        tag.IsDirty = false;
-        //    }
-
-        //    return tag.Id.Value;
-        //}
-
-        //private void DeleteRelation(RelTag tag, OperationsGroup group)
-        //{
-        //    group.RemoveTag(tag);
-        //    OperationsGroupRelationAdapter.Delete(OperationsGroupRelationMapper.ConvertToDALEntity(tag, group));
-        //}
-
-        //public void UpdateOperationComplex(Operation operation)
-        //{
-        //    if (operation.DetailsList != null)
-        //    {
-        //        foreach (var item in operation.DetailsList)
-        //        {
-        //            UpdateOperationDetails(item, operation.Id.Value);
-        //        }
-        //    }
-
-        //    UpdateOperation(operation);
-
-        //    for (var i = operation.Tags.Count - 1; i > -1; i--)
-        //    {
-        //        var tag = operation.Tags[i];
-        //        if (tag.IsMarkForDeletion && !tag.IsDirty)
-        //        {
-        //            DeleteRelation(tag, operation);
-        //            continue;
-        //        }
-        //        if (tag.IsDirty)
-        //        {
-        //            InsertRelation(tag, operation);
-        //        }
-        //    }
-        //}
-
-        //#region private
-        //#region Updates
-
-        ////private int UpdateOperationDetails(ApiOperationDetails details, int operationId)
-        ////{
-        ////    return UpdateBusinessEntity(details, operationId, OperationDetailsAdapter, OperationDetailsMapper.);
-        ////}
-
-        //private int UpdateOperation(Operation operation)
-        //{
-        //    return UpdateBusinessEntity(operation, OperationAdapter, OperationMapper.ConvertToDALEntity);
-        //}
-
-        //private int UpdateOperationGroup(OperationsGroup group)
-        //{
-        //    return UpdateBusinessEntity(group, OperationsGroupAdapter, OperationsGroupMapper.ConvertToDALEntity);
-        //}
-
-        //private int UpdateUser(User user)
-        //{
-        //    return UpdateBusinessEntity(user, UserAdapter, UserMapper.ConvertToDALEntity);
-        //}
-
-        //private int UpdateUserDetails(UserDetails userDetails)
-        //{
-        //    return UpdateBusinessEntity(userDetails, UserDetailsAdapter, UserDetailsMapper.ConvertToDALEntity);
-        //}
-
-        //private int InsertRelation(Tag tag, Operation operation)
-        //{
-        //    var newId = OperationTagRelationAdapter.Insert(RelationMapper.ConvertToDALEntity(tag, operation));
-        //    tag.UpdateId(newId);
-
-        //    return tag.Id.Value;
-        //}
-
-        //private void DeleteRelation(Tag tag, Operation operation)
-        //{
-        //    operation.RemoveTag(tag);
-        //    OperationTagRelationAdapter.Delete(RelationMapper.ConvertToDALEntity(tag, operation));
-        //}
-
-        //#endregion
-
-        //#region UpdateBusinessEntity
-        //private int UpdateBusinessEntity<Type, DalType>(Type entity, int id, IAdapter<DalType> adapter, Func<Type, int, DalType> convertToDALEntity)
-        //where Type : IEntity where DalType : IDalEntity
-        //{
-        //    if (entity.Id == null)
-        //    {
-        //        var newId = adapter.Insert(convertToDALEntity(entity, id));
-        //        entity.UpdateId(newId);
-        //    }
-        //    else
-        //    {
-        //        adapter.Update(convertToDALEntity(entity, id));
-        //    }
-        //    return entity.Id.Value;
-        //}
-
-        //private int UpdateBusinessEntity<Type, DalType>(Type entity, IAdapter<DalType> adapter, Func<Type, DalType> convertToDALEntity)
-        //where Type : IEntity where DalType : IDalEntity
-        //{
-        //    if (entity.Id == null)
-        //    {
-        //        var newId = adapter.Insert(convertToDALEntity(entity));
-        //        entity.UpdateId(newId);
-        //    }
-        //    else
-        //    {
-        //        adapter.Update(convertToDALEntity(entity));
-        //    }
-        //    return entity.Id.Value;
-        //}
-        //#endregion
-        //#endregion
     }
 }

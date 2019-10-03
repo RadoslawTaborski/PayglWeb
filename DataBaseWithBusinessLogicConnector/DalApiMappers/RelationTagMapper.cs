@@ -31,7 +31,10 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiRelTag ConvertToApiEntity(DalOperationTags dataEntity)
         {
             var tag = _tags.Where(t=>t.Id == dataEntity.TagId).FirstOrDefault();
-            return new ApiRelTag(dataEntity.Id, tag);
+            var result = new ApiRelTag(dataEntity.Id, tag);
+            result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
+            return result;
         }
 
         public IEnumerable<DalOperationTags> ConvertToDALOperationEntitiesCollection(IEnumerable<ApiRelTag> dataEntities, int operationId)
@@ -53,6 +56,8 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
                 throw new ArgumentException(Properties.strings.ExWrongParameters);
             }
             var result = new DalOperationTags(businessEntity.Id, operationId, businessEntity.Tag.Id);
+            result.IsDirty = businessEntity.IsDirty;
+            result.IsMarkForDeletion = businessEntity.IsMarkForDeletion;
 
             return result;
         }
@@ -72,7 +77,10 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
         public ApiRelTag ConvertToApiEntity(DalOperationsGroupTags dataEntity)
         {
             var tag = _tags.Where(t => t.Id == dataEntity.TagId).FirstOrDefault();
-            return new ApiRelTag(dataEntity.Id, tag);
+            var result = new ApiRelTag(dataEntity.Id, tag); 
+            result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
+            return result;
         }
 
         public IEnumerable<DalOperationsGroupTags> ConvertToDALOperationsGroupEntitiesCollection(IEnumerable<ApiRelTag> dataEntities, int operationId)
@@ -94,6 +102,8 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
                 throw new ArgumentException(Properties.strings.ExWrongParameters);
             }
             var result = new DalOperationsGroupTags(businessEntity.Id, operationId, businessEntity.Tag.Id);
+            result.IsDirty = businessEntity.IsDirty;
+            result.IsMarkForDeletion = businessEntity.IsMarkForDeletion;
 
             return result;
         }

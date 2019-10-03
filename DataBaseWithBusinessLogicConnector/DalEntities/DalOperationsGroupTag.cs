@@ -1,9 +1,12 @@
-﻿namespace DataBaseWithBusinessLogicConnector.DalEntities
+﻿using DataBaseWithBusinessLogicConnector.Interfaces.Dal;
+
+namespace DataBaseWithBusinessLogicConnector.DalEntities
 {
-    public class DalOperationsGroupTags
+    public class DalOperationsGroupTags : IDalEntity
     {
         public int? Id { get; private set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public int? OperationsGroupId { get; private set; }
         public int? TagId { get; private set; }
 

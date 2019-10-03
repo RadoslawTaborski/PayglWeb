@@ -53,6 +53,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
 
             var result = new ApiOperationsGroup(dataEntity.Id, _user, dataEntity.Description, frequency, importance, dataEntity.Date, tags, operations);
             result.IsDirty = dataEntity.IsDirty;
+            result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
         }
 
@@ -86,6 +87,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             }
             var result1 = new DalOperationsGroup(businessEntity.Id, businessEntity.User.Id, businessEntity.Description, businessEntity.Frequency.Id, businessEntity.Importance.Id, businessEntity.Date);
             result1.IsDirty = businessEntity.IsDirty;
+            result1.IsMarkForDeletion = businessEntity.IsMarkForDeletion;
 
             var result2 = new List<DalOperationsGroupTags>();
             foreach (var tag in businessEntity.Tags)

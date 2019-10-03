@@ -4,5 +4,6 @@
     {
         int? Id { get; }
         bool IsDirty { get; set; }
+        bool IsMarkForDeletion { get; set; }
     }
 }

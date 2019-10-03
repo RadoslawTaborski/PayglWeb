@@ -6,6 +6,7 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
     {
         public int? Id { get; private set; }
         public bool IsDirty { get; set; }
+        public bool IsMarkForDeletion { get; set; }
         public int? OperationId { get; private set; }
         public string Name { get; private set; }
         public double Quantity { get; private set; }
