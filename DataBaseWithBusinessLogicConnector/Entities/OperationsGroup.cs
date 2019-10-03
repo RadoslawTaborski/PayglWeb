@@ -62,21 +62,27 @@ namespace DataBaseWithBusinessLogicConnector.Entities
 
         public void AddTag(RelTag tag)
         {
-            if (!Tags.Any(t => t.Tag.Text == tag.Tag.Text))
+            if (Tags.All(t => t.Tag.Text != tag.Tag.Text))
             {
                 tag.IsDirty = true;
                 Tags.Add(tag);
             }
+            else
+            {
+                var oldTag = Tags.Where(t => t.Tag.Text == tag.Tag.Text).First();
+                oldTag.IsDirty = false;
+                oldTag.IsMarkForDeletion = false;
+            }
         }
 
-        public void RemoveTag(RelTag tag)
+        public void MarkTagForDeletion(RelTag tag)
         {
             var existTag = Tags.Where(t => t.Tag.Text == tag.Tag.Text).FirstOrDefault();
             existTag.IsDirty = true;
             existTag.IsMarkForDeletion = true;
         }
 
-        public void RemoveAllTags()
+        public void MarkAllTagsForDeletion()
         {
             for (int i = 0; i < Tags.Count; i++)
             {

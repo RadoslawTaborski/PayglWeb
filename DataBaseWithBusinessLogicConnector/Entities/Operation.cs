@@ -44,6 +44,11 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             parent?.AddOperation(this);
         }
 
+        public void SetParentAfterCreating(OperationsGroup parent)
+        {
+            Parent = parent;
+        }
+
         public void SetDetailsList(IEnumerable<OperationDetails> detailsCollection)
         {
             DetailsList = detailsCollection.ToList();
@@ -75,9 +80,15 @@ namespace DataBaseWithBusinessLogicConnector.Entities
                 tag.IsDirty = true;
                 Tags.Add(tag);
             }
+            else
+            {
+                var oldTag = Tags.Where(t => t.Tag.Text == tag.Tag.Text).First();
+                oldTag.IsDirty = false;
+                oldTag.IsMarkForDeletion = false;
+            }
         }
 
-        public void RemoveTag(RelTag tag)
+        public void MarkTagForDeletion(RelTag tag)
         {
             var existTag = Tags.Where(t => t.Tag.Text == tag.Tag.Text).FirstOrDefault();
             existTag.IsDirty = true;
@@ -137,7 +148,7 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             IsDirty = true;
         }
 
-        public void RemoveAllTags()
+        public void MarkAllTagsForDeletion()
         {
             for (int i = 0; i < Tags.Count; i++)
             {

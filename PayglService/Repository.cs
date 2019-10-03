@@ -343,18 +343,20 @@ namespace PayglService
             await Task.Run(() => ReloadData());
         }
 
-        private void Update<T>(T entity, IAdapter<T> adapter) where T : IDalEntity
+        private int? Update<T>(T entity, IAdapter<T> adapter) where T : IDalEntity
         {
             if (entity.IsMarkForDeletion)
             {
                 adapter.Delete(entity);
             } else if(entity.IsDirty && entity.Id == null)
             {
-                adapter.Insert(entity);
+                var id = adapter.Insert(entity);
+                return id;
             } else if(entity.IsDirty)
             {
                 adapter.Update(entity);
             }
+            return entity.Id;
         }
     }
 }

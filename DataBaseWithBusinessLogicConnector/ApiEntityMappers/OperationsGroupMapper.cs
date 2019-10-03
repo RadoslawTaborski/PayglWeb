@@ -49,6 +49,11 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var user = _userMapper.ConvertToEntity(dataEntity.User);
             DateTime.TryParse(dataEntity.Date, out DateTime date);
             var result = new OperationsGroup(dataEntity.Id, user, dataEntity.Description, frequency, importance, date,tags,operations);
+            for (int i = 0; i < result.Operations.Count; i++)
+            {
+                Operation operation = result.Operations[i];
+                operation.SetParentAfterCreating(result);
+            }
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
