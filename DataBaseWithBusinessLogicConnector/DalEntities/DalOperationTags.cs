@@ -18,9 +18,9 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
             TagId = tagId;
         }
 
-        public void UpdateId(int id)
+        public void UpdateOperationId(int id)
         {
-            Id = id;
+            OperationId = id;
         }
     }
 }

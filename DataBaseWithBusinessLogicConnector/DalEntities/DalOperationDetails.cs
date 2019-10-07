@@ -22,9 +22,9 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
             OperationId = operationId;
         }
 
-        public void UpdateId(int id)
+        public void UpdateOperationId(int id)
         {
-            Id = id;
+            OperationId = id;
         }
     }
 }

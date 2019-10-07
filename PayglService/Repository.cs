@@ -304,7 +304,7 @@ namespace PayglService
             var id = Update(dalOperationsGroup, OperationsGroupAdapter);
             foreach (var dalOperationsGroupTag in dalOperationsGroupTags)
             {
-                dalOperationsGroupTag.UpdateId(id.Value);
+                dalOperationsGroupTag.UpdateOperationsGroupId(id.Value);
                 Update(dalOperationsGroupTag, OperationsGroupRelationAdapter);
             }
             foreach (var dalOperation in dalOperations)
@@ -332,12 +332,12 @@ namespace PayglService
             var id = Update(dalOperation, OperationAdapter);
             foreach (var dalOperationTag in dalOperationTags)
             {
-                dalOperationTag.UpdateId(id.Value);
+                dalOperationTag.UpdateOperationId(id.Value);
                 Update(dalOperationTag, OperationTagRelationAdapter);
             }
             foreach (var dalOperationDetail in dalOperationDetails)
             {
-                dalOperationDetail.UpdateId(id.Value);
+                dalOperationDetail.UpdateOperationId(id.Value);
                 Update(dalOperationDetail, OperationDetailsAdapter);
             }
         }
