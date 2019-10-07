@@ -1,4 +1,5 @@
-﻿using DataBaseWithBusinessLogicConnector.Interfaces.Dal;
+﻿using System;
+using DataBaseWithBusinessLogicConnector.Interfaces.Dal;
 
 namespace DataBaseWithBusinessLogicConnector.DalEntities
 {
@@ -15,6 +16,11 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
             Id = id;
             OperationId = operationId;
             TagId = tagId;
+        }
+
+        public void UpdateId(int id)
+        {
+            Id = id;
         }
     }
 }

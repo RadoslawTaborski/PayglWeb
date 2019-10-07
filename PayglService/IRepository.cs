@@ -29,14 +29,14 @@ namespace PayglService
         IEnumerable<ApiOperation> GetOperations(bool withoutParent = false);
         ApiOperation GetOperation(int id);
         IEnumerable<ApiOperation> GetOperations(DateTime from, DateTime to, bool withoutParent = false);
-        (IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperations(IEnumerable<ApiOperation> apiObjects);
-        (DalOperation, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperation(ApiOperation apiObjects);
+        IEnumerable<OperationComplex> GetDalOperations(IEnumerable<ApiOperation> apiObjects);
+        OperationComplex GetDalOperation(ApiOperation apiObjects);
 
         IEnumerable<ApiOperationsGroup> GetOperationsGroups();
         ApiOperationsGroup GetOperationsGroup(int id);
         IEnumerable<ApiOperationsGroup> GetOperationsGroups(DateTime from, DateTime to);
-        (IEnumerable<DalOperationsGroup>, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroups(IEnumerable<ApiOperationsGroup> apiObjects);
-        (DalOperationsGroup, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroup(ApiOperationsGroup apiObjects);
+        IEnumerable<OperationsGroupComplex> GetDalOperationsGroups(IEnumerable<ApiOperationsGroup> apiObjects);
+        OperationsGroupComplex GetDalOperationsGroup(ApiOperationsGroup apiObjects);
 
         void UpdateOperationsGroupComplex(ApiOperationsGroup group);
         void UpdateOperationComplex(ApiOperation newOperation);

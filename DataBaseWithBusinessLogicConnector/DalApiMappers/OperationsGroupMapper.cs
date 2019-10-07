@@ -57,29 +57,19 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             return result;
         }
 
-        public (IEnumerable<DalOperationsGroup>, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) ConvertToDALEntitiesCollection(IEnumerable<ApiOperationsGroup> dataEntities)
+        public IEnumerable<OperationsGroupComplex> ConvertToDALEntitiesCollection(IEnumerable<ApiOperationsGroup> dataEntities)
         {
-            var result1 = new List<DalOperationsGroup>();
-            var result2 = new List<DalOperationsGroupTags>();
-            var result3 = new List<DalOperation>();
-            var result4 = new List<DalOperationTags>();
-            var result5 = new List<DalOperationDetails>();
-
+            var result = new List<OperationsGroupComplex>();
 
             foreach (var item in dataEntities)
             {
-                var res = ConvertToDALEntity(item);
-                result1.Add(res.Item1);
-                result2.AddRange(res.Item2);
-                result3.AddRange(res.Item3);
-                result4.AddRange(res.Item4);
-                result5.AddRange(res.Item5);
+                result.Add(ConvertToDALEntity(item));
             }
 
-            return (result1, result2, result3, result4, result5);
+            return result;
         }
 
-        public (DalOperationsGroup, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) ConvertToDALEntity(ApiOperationsGroup businessEntity)
+        public OperationsGroupComplex ConvertToDALEntity(ApiOperationsGroup businessEntity)
         {
             if (businessEntity?.User == null || businessEntity.Frequency == null || businessEntity.Importance == null)
             {
@@ -92,12 +82,15 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             var result2 = new List<DalOperationsGroupTags>();
             foreach (var tag in businessEntity.Tags)
             {
-                result2.Add(new DalOperationsGroupTags(null, businessEntity.Id, tag.Id));
+                var newTag = new DalOperationsGroupTags(tag.Id, businessEntity.Id, tag.Tag.Id);
+                newTag.IsDirty = tag.IsDirty;
+                newTag.IsMarkForDeletion = tag.IsMarkForDeletion;
+                result2.Add(newTag);
             }
 
             var tmp = _operationMapper.ConvertToDALEntitiesCollection(businessEntity.Operations);
 
-            return (result1, result2, tmp.Item1, tmp.Item2, tmp.Item3);
+            return new OperationsGroupComplex(result1, result2, tmp);
         }
     }
 }

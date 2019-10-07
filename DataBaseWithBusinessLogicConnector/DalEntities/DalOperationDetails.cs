@@ -21,5 +21,10 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
             Amount = amount;
             OperationId = operationId;
         }
+
+        public void UpdateId(int id)
+        {
+            Id = id;
+        }
     }
 }

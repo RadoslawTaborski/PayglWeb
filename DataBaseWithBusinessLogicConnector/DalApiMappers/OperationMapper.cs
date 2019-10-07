@@ -64,24 +64,19 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             return result;
         }
 
-        public (IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>)  ConvertToDALEntitiesCollection(IEnumerable<ApiOperation> dataEntities)
+        public IEnumerable<OperationComplex> ConvertToDALEntitiesCollection(IEnumerable<ApiOperation> dataEntities)
         {
-            var result1 = new List<DalOperation>();
-            var result2 = new List<DalOperationTags>();
-            var result3 = new List<DalOperationDetails>();
+            var result = new List<OperationComplex>();
 
             foreach (var item in dataEntities)
             {
-                var res = ConvertToDALEntity(item);
-                result1.Add(res.Item1);
-                result2.AddRange(res.Item2);
-                result3.AddRange(res.Item3);
+                result.Add(ConvertToDALEntity(item));
             }
 
-            return (result1, result2, result3);
+            return result;
         }
 
-        public (DalOperation,IEnumerable<DalOperationTags>,IEnumerable<DalOperationDetails>) ConvertToDALEntity(ApiOperation businessEntity)
+        public OperationComplex ConvertToDALEntity(ApiOperation businessEntity)
         {
             if (businessEntity?.User == null || businessEntity.TransactionType == null || businessEntity.TransferType == null || businessEntity.Frequency == null || businessEntity.Importance == null)
             {
@@ -94,12 +89,14 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             var result2 = new List<DalOperationTags>();
             foreach(var tag in businessEntity.Tags)
             {
-                var operationTag = new DalOperationTags(null, businessEntity.Id, tag.Id);
+                var operationTag = new DalOperationTags(tag.Id, businessEntity.Id, tag.Tag.Id);
+                operationTag.IsDirty = tag.IsDirty;
+                operationTag.IsMarkForDeletion = tag.IsMarkForDeletion;
                 result2.Add(operationTag);
             }
             var result3 = new List<DalOperationDetails>();
 
-            return (result1, result2, result3);
+            return new OperationComplex(result1, result2, result3);
         }
     }
 }

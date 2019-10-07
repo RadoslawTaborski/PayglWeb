@@ -190,12 +190,12 @@ namespace PayglService
             }
         }
 
-        public (IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperations(IEnumerable<ApiOperation> apiObjects)
+        public IEnumerable<OperationComplex> GetDalOperations(IEnumerable<ApiOperation> apiObjects)
         {
             return OperationMapper.ConvertToDALEntitiesCollection(apiObjects);
         }
 
-        public (DalOperation, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperation(ApiOperation apiObjects)
+        public OperationComplex GetDalOperation(ApiOperation apiObjects)
         {
             return OperationMapper.ConvertToDALEntity(apiObjects);
         }
@@ -215,12 +215,12 @@ namespace PayglService
             return OperationsGroups.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public (IEnumerable<DalOperationsGroup>, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroups(IEnumerable<ApiOperationsGroup> apiObjects)
+        public IEnumerable<OperationsGroupComplex> GetDalOperationsGroups(IEnumerable<ApiOperationsGroup> apiObjects)
         {
             return OperationsGroupMapper.ConvertToDALEntitiesCollection(apiObjects);
         }
 
-        public (DalOperationsGroup, IEnumerable<DalOperationsGroupTags>, IEnumerable<DalOperation>, IEnumerable<DalOperationTags>, IEnumerable<DalOperationDetails>) GetDalOperationsGroup(ApiOperationsGroup apiObjects)
+        public OperationsGroupComplex GetDalOperationsGroup(ApiOperationsGroup apiObjects)
         {
             return OperationsGroupMapper.ConvertToDALEntity(apiObjects);
         }
@@ -297,50 +297,49 @@ namespace PayglService
         public async void UpdateOperationsGroupComplex(ApiOperationsGroup group)
         {
             var dalObjects = OperationsGroupMapper.ConvertToDALEntity(group);
-            var dalOperationsGroup = dalObjects.Item1;
-            var dalOperationsGroupTags = dalObjects.Item2;
-            var dalOperations = dalObjects.Item3;
-            var dalOperationsTags = dalObjects.Item4;
-            var dalOperationsDetails = dalObjects.Item5;
+            var dalOperationsGroup = dalObjects.Group;
+            var dalOperationsGroupTags = dalObjects.Tags;
+            var dalOperations = dalObjects.Operations;
 
-            Update(dalOperationsGroup, OperationsGroupAdapter);
+            var id = Update(dalOperationsGroup, OperationsGroupAdapter);
             foreach (var dalOperationsGroupTag in dalOperationsGroupTags)
             {
+                dalOperationsGroupTag.UpdateId(id.Value);
                 Update(dalOperationsGroupTag, OperationsGroupRelationAdapter);
             }
             foreach (var dalOperation in dalOperations)
             {
-                Update(dalOperation, OperationAdapter);
-            }
-            foreach (var dalOperationTag in dalOperationsTags)
-            {
-                Update(dalOperationTag, OperationTagRelationAdapter);
-            }
-            foreach (var dalOperationDetail in dalOperationsDetails)
-            {
-                Update(dalOperationDetail, OperationDetailsAdapter);
+                UpdateOperationComplex(dalOperation);
             }
 
             await Task.Run(() => ReloadData());
         }
 
-        public async void UpdateOperationComplex(ApiOperation newOperation){
+        public async void UpdateOperationComplex(ApiOperation newOperation)
+        {
             var dalObjects = OperationMapper.ConvertToDALEntity(newOperation);
-            var dalOperation = dalObjects.Item1;
-            var dalOperationTags = dalObjects.Item2;
-            var dalOperationDetails = dalObjects.Item3;
+            UpdateOperationComplex(dalObjects);
 
-            Update(dalOperation, OperationAdapter);
+            await Task.Run(() => ReloadData());
+        }
+
+        private void UpdateOperationComplex(OperationComplex dalObjects)
+        {
+            var dalOperation = dalObjects.Operation;
+            var dalOperationTags = dalObjects.Tags;
+            var dalOperationDetails = dalObjects.Details;
+
+            var id = Update(dalOperation, OperationAdapter);
             foreach (var dalOperationTag in dalOperationTags)
             {
+                dalOperationTag.UpdateId(id.Value);
                 Update(dalOperationTag, OperationTagRelationAdapter);
             }
             foreach (var dalOperationDetail in dalOperationDetails)
             {
+                dalOperationDetail.UpdateId(id.Value);
                 Update(dalOperationDetail, OperationDetailsAdapter);
             }
-
-            await Task.Run(() => ReloadData());
         }
 
         private int? Update<T>(T entity, IAdapter<T> adapter) where T : IDalEntity
