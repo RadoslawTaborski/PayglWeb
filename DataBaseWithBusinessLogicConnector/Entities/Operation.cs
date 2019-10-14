@@ -56,7 +56,10 @@ namespace DataBaseWithBusinessLogicConnector.Entities
 
         public void SetTags(IEnumerable<RelTag> tags)
         {
-            Tags = tags.ToList();
+            foreach (var tag in tags)
+            {
+                AddTag(tag);
+            }
         }
 
         public void SetParent(OperationsGroup parent)
@@ -83,7 +86,14 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             else
             {
                 var oldTag = Tags.Where(t => t.Tag.Text == tag.Tag.Text).First();
-                oldTag.IsDirty = false;
+                if (oldTag.Id.HasValue)
+                {
+                    oldTag.IsDirty = false;
+                }
+                else
+                {
+                    oldTag.IsDirty = true;
+                }
                 oldTag.IsMarkForDeletion = false;
             }
         }

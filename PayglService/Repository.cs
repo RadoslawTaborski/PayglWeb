@@ -269,7 +269,10 @@ namespace PayglService
             {
                 filter += $"operation_id={operation.Id} OR ";
             }
-            filter = filter.Substring(0, filter.Length - 4);
+            if (filter.Length > 4)
+            {
+                filter = filter.Substring(0, filter.Length - 4);
+            }
 
             var relations = OperationTagRelationAdapter.GetAll(filter).ToList();
             var details = OperationDetailsAdapter.GetAll(filter).ToList();
@@ -286,7 +289,10 @@ namespace PayglService
             {
                 filter += $"operation_group_id={group.Id} OR ";
             }
-            filter = filter.Substring(0, filter.Length - 4);
+            if (filter.Length > 4)
+            {
+                filter = filter.Substring(0, filter.Length - 4);
+            }
 
             var relations = OperationsGroupRelationAdapter.GetAll(filter).ToList();
 

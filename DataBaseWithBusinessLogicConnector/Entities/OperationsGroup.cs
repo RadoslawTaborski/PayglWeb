@@ -56,8 +56,10 @@ namespace DataBaseWithBusinessLogicConnector.Entities
 
         public void SetTags(IEnumerable<RelTag> tags)
         {
-            Tags = tags.ToList();
-            IsDirty = true;
+            foreach (var tag in tags)
+            {
+                AddTag(tag);
+            }
         }
 
         public void AddTag(RelTag tag)
@@ -70,7 +72,14 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             else
             {
                 var oldTag = Tags.Where(t => t.Tag.Text == tag.Tag.Text).First();
-                oldTag.IsDirty = false;
+                if (oldTag.Id.HasValue)
+                {
+                    oldTag.IsDirty = false;
+                }
+                else
+                {
+                    oldTag.IsDirty = true;
+                }
                 oldTag.IsMarkForDeletion = false;
             }
         }
@@ -129,12 +138,13 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public void UpdateAmount(List<TransactionType> types)
         {
             Amount = decimal.Zero;
-            foreach(var item in Operations)
+            foreach (var item in Operations)
             {
                 if (item.TransactionType.Text == Properties.strings.income)
                 {
                     Amount += item.Amount;
-                } else
+                }
+                else
                 {
                     Amount -= item.Amount;
                 }

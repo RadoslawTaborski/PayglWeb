@@ -71,7 +71,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             var id = _adapterHelper.ToStr(entity.Id, _columns["id"]);
             var operationId = _adapterHelper.ToStr(entity.OperationId, _columns["operation_id"]);
             var tagId = _adapterHelper.ToStr(entity.TagId, _columns["tag_id"]);
-            _adapterHelper.Update(id, operationId, tagId);
+            _adapterHelper.Update(id, id, operationId, tagId);
         }
     }
 }
