@@ -12,14 +12,21 @@ namespace PayglWeb.Controllers
     {
         public IActionResult Index()
         {
-            ViewBag.Title = "Main";
+            ViewBag.Title = "Index";
             return View();
         }
 
-        [HttpGet("contact")]
-        public IActionResult Contact()
+        [HttpGet("operation")]
+        public IActionResult Operation()
         {
-            ViewBag.Title = "Contact";
+            ViewBag.Title = "Operation";
+            return View();
+        }
+
+        [HttpGet("group")]
+        public IActionResult Group()
+        {
+            ViewBag.Title = "Group";
             return View();
         }
     }

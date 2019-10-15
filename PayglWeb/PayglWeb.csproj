@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\" />
+    <TypeScriptCompile Remove="ClientApp\app\app-routing.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="wwwroot\ClientApp\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
