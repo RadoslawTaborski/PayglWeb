@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AddingModule } from './adding/adding.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 let AppModule = class AppModule {
 };
 AppModule = tslib_1.__decorate([
@@ -15,7 +16,8 @@ AppModule = tslib_1.__decorate([
         imports: [
             BrowserModule,
             AddingModule,
-            AppRoutingModule
+            AppRoutingModule,
+            HttpClientModule
         ],
         providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
         bootstrap: [AppComponent]

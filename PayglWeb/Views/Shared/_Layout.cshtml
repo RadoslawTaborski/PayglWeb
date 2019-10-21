@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Paygl</title>
+    <meta name="viewport" content="width=device-width" charset="utf-8"/>
     <environment names="Development">
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
         <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
@@ -13,15 +14,16 @@
         <link href="~/css/site.css" rel="stylesheet" />
     </environment>
 </head>
-<body>
-    <header class="container">
-        <nav class="navbar navbar-dark bg-dark navbar-expand-md">
-            <h1 class="navbar-brand"><i class="fa fa-paint-brush"></i> Paygl</h1>
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#theMenu">
+<body style="padding-top: 80px; padding-bottom: 80px;">
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="./">Paygl</a>
+            <button class="navbar-toggler" aria-expanded="false" aria-controls="navbarColor03" aria-label="Toggle navigation" type="button" data-target="#navbarColor03" data-toggle="collapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="theMenu" class="navbar-collapse collapse">
-                <ul class="navbar-nav">
+
+            <div class="collapse navbar-collapse" id="navbarColor03">
+                <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="App" asp-action="Operation">Operation</a>
                     </li>
@@ -30,18 +32,24 @@
                     </li>
                 </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </div>
 
-    <section class="container">
-        <h2>@ViewBag.Title</h2>
+    <div class="container">
         @RenderBody()
-    </section>
+    </div>
 
-    <footer class="container">
-        <div class="text-center">Copyright 2019 Paygl</div>
+    <footer class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+        <div class="container d-inline-block">
+            <a href="https://github.com/RadoslawTaborski/PayglWeb">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+            Copyright &copy; 2019 - Paygl - Radosław Taborski
+        </div>
     </footer>
-
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -50,10 +58,10 @@
     </environment>
     <environment names="Staging, Production">
         <script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js" 
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"></script>
         <script src="//ajax.aspnetcdn.com/ajax/bootstrap/4.3.1/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js" 
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
         <script src="~/dist/payglweb.min.js" asp-append-version="true"></script>
     </environment>
