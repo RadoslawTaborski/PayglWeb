@@ -1,6 +1,12 @@
-﻿import { HttpClient } from '@angular/common/http';
+﻿import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators"
+import { Operation } from '../entities/Operation';
+import { OperationsGroup } from '../entities/OperationsGroup';
+
+const httpOptions = {
+    headers: new HttpHeaders().append('Content-Type', 'application/json')
+};
 
 @Injectable()
 export class DataService {
@@ -54,5 +60,17 @@ export class DataService {
         } else {
             return this.http.get<any[]>(`api/operations`).toPromise()
         }
+    }
+
+    sendOperation(operation: Operation): Promise<any[]> {
+        let json = JSON.stringify(operation)
+        console.log(json);
+        return this.http.post<any>(`api/operations`, json, httpOptions).toPromise();
+    }
+
+    sendOperationsGroup(operationsGroup: OperationsGroup): Promise<any[]> {
+        let json = JSON.stringify(operationsGroup)
+        console.log(json);
+        return this.http.post<any>(`api/operationsGroups`, json, httpOptions).toPromise();
     }
 }

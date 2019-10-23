@@ -49,6 +49,11 @@ let DataService = class DataService {
             return this.http.get(`api/operations`).toPromise();
         }
     }
+    addOperation(operation) {
+        let json = JSON.stringify(operation);
+        console.log(json);
+        return this.http.post(`api/operations`, json).toPromise();
+    }
 };
 DataService = tslib_1.__decorate([
     Injectable()

@@ -1,5 +1,8 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
+import { Frequency, Importance, Tag, TransactionType, TransferType } from '../entities/entities';
+import { OperationsGroup } from "../entities/OperationsGroup";
+import { Operation } from "../entities/Operation";
 let SharedService = class SharedService {
     constructor(data) {
         this.data = data;
@@ -15,35 +18,72 @@ let SharedService = class SharedService {
     loadAttributes() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
-                this.frequencies = yield this.data.loadFrequencies();
-                this.importances = yield this.data.loadImportances();
-                this.tags = yield this.data.loadTags();
-                this.transactionTypes = yield this.data.loadTransactionTypes();
-                this.transferType = yield this.data.loadTransferTypes();
+                let tmp;
+                this.frequencies = [];
+                tmp = yield this.data.loadFrequencies();
+                tmp.forEach(a => this.frequencies.push(Frequency.createFromJson(a)));
+                //console.log(this.frequencies);
+                this.importances = [];
+                tmp = yield this.data.loadImportances();
+                tmp.forEach(a => this.importances.push(Importance.createFromJson(a)));
+                //console.log(this.importances);
+                this.tags = [];
+                tmp = yield this.data.loadTags();
+                tmp.forEach(a => this.tags.push(Tag.createFromJson(a)));
+                //console.log(this.tags);
+                this.transactionTypes = [];
+                tmp = yield this.data.loadTransactionTypes();
+                tmp.forEach(a => this.transactionTypes.push(TransactionType.createFromJson(a)));
+                //console.log(this.transactionTypes);
+                this.transferType = [];
+                tmp = yield this.data.loadTransferTypes();
+                tmp.forEach(a => this.transferType.push(TransferType.createFromJson(a)));
+                //console.log(this.transferType);
             }
         });
     }
     loadOperationsGroups(from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                this.loadAttributes();
+            }
+            let tmp;
             if (from != null && to != null) {
-                this.operationsGroups = yield this.data.loadOperationsGroups(from, to);
+                tmp = yield this.data.loadOperationsGroups(from, to);
             }
             else {
-                this.operationsGroups = yield this.data.loadOperationsGroups();
+                tmp = yield this.data.loadOperationsGroups();
+            }
+            this.operationsGroups = [];
+            for (let group of tmp) {
+                this.operationsGroups.push(OperationsGroup.createFromJson(group, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType));
             }
         });
     }
     loadOperations(withoutParent, from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                this.loadAttributes();
+            }
+            let tmp;
             if (from != null && to != null && withoutParent != null) {
-                this.operations = yield this.data.loadOperations(withoutParent, from, to);
+                tmp = yield this.data.loadOperations(withoutParent, from, to);
             }
             else if (withoutParent != null) {
-                this.operations = yield this.data.loadOperations(withoutParent);
+                tmp = yield this.data.loadOperations(withoutParent);
             }
             else {
-                this.operations = yield this.data.loadOperations();
+                tmp = yield this.data.loadOperations();
             }
+            this.operations = [];
+            for (let operation of tmp) {
+                this.operations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType));
+            }
+        });
+    }
+    sendOperation(operation) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.data.addOperation(operation);
         });
     }
 };

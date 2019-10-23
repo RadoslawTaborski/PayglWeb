@@ -7,6 +7,8 @@
   <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\app\app-routing.module.ts" />
     <TypeScriptCompile Remove="ClientApp\app\entities\entities.ts" />
+    <TypeScriptCompile Remove="ClientApp\app\entities\Operation.ts" />
+    <TypeScriptCompile Remove="ClientApp\app\entities\OperationsGroup.ts" />
     <TypeScriptCompile Remove="ClientApp\app\shared.service.ts" />
     <TypeScriptCompile Remove="ClientApp\app\shared\data.service.ts" />
   </ItemGroup>
