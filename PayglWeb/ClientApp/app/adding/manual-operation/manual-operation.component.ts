@@ -3,6 +3,7 @@ import { SharedService } from '../../shared/shared.service';
 import { Frequency, Importance, Tag, TransactionType, TransferType, TagRelation, User, Language, Details } from '../../entities/entities';
 import { OperationsGroup } from "../../entities/OperationsGroup";
 import { Operation } from "../../entities/Operation";
+import { ApplicationStateService } from '../../shared/application-state.service';
 
 @Component({
     selector: 'app-manual-operation',
@@ -11,19 +12,20 @@ import { Operation } from "../../entities/Operation";
 })
 export class ManualOperationComponent implements OnInit {
     public isLoaded: boolean = false
+    public editable: boolean = true
 
     public description: string = ""
     public amount: number = null
     public date: Date = null
-    public selectedFrequency: Frequency = null
-    public selectedImportance: Importance = null
-    public selectedTag: Tag = null
+    public selectedFrequency: any = ""
+    public selectedImportance: any = ""
+    public selectedTag: any = ""
     public selectedTags: Tag[] = []
-    public selectedTransactionType: TransactionType = null
-    public selectedTransferType: TransferType = null
+    public selectedTransactionType: any = ""
+    public selectedTransferType: any = ""
     public selectedOperationGroup: OperationsGroup = null
 
-    constructor(private shared: SharedService) { }
+    constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     async ngOnInit() {
         await this.shared.loadAttributes()
@@ -73,10 +75,26 @@ export class ManualOperationComponent implements OnInit {
         this.selectedTags = this.selectedTags.filter(obj => obj !== toRemove)
     }
 
-    onAdd() {
+    onGroupChange(selectedOperationGroup: OperationsGroup) {
+        console.log(selectedOperationGroup)
+        if (selectedOperationGroup != null) {
+            this.editable = false;
+            this.selectedFrequency = selectedOperationGroup.Frequency
+            this.selectedImportance = selectedOperationGroup.Importance
+            this.selectedTags = selectedOperationGroup.Tags.map(x => x.Tag)
+            this.selectedTag = this.selectedTags[this.selectedTags.length-1]
+        } else {
+            this.editable=true
+        }
+    }
+
+    async onAdd() {
         let operation = new Operation(null, this.selectedOperationGroup == null ? null : this.selectedOperationGroup.Id, this.tmpCreatingUser(), this.amount, this.selectedTransactionType, this.selectedTransferType, this.selectedFrequency, this.selectedImportance, this.date.toLocaleString(), "", this.tagsToNewTagRelations(this.selectedTags), [], this.description);
         operation.IsDirty = true;
-        this.shared.sendOperation(operation)
+        await this.shared.sendOperation(operation)
+        let tmp = (<HTMLFormElement>document.getElementById("form"))
+        this.clear()
+        tmp.reset()
     }
 
     tagToNewTagRelation(tag: Tag): TagRelation {
@@ -101,5 +119,20 @@ export class ManualOperationComponent implements OnInit {
         let user = new User(1, "rado", language, userDetails)
 
         return user
+    }
+
+    clear() {
+        this.description = ""
+        this.amount = null
+        this.date = null
+        this.selectedFrequency = ""
+        this.selectedImportance = ""
+        this.selectedTag = ""
+        this.selectedTags = []
+        this.selectedTransactionType = ""
+        this.selectedTransferType = ""
+        this.selectedOperationGroup = null
+
+        this.editable = true
     }
 }

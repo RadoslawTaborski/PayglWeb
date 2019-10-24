@@ -19,6 +19,7 @@ export class SharedService {
 
     async loadAttributes() {
         if (!this.isInitialize) {
+            this.isInitialize = true
             let tmp: any[]
             this.frequencies=[]
             tmp = await this.data.loadFrequencies()

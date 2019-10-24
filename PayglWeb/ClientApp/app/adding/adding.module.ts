@@ -5,6 +5,7 @@ import { GroupComponent } from './group/group.component';
 import { DataService } from '../shared/data.service';
 import { FormsModule } from '@angular/forms';
 import { SharedService } from '../shared/shared.service';
+import { ApplicationStateService } from '../shared/application-state.service';
 
 @NgModule({
     declarations: [ManualOperationComponent, GroupComponent],
@@ -15,7 +16,8 @@ import { SharedService } from '../shared/shared.service';
     exports: [ManualOperationComponent, GroupComponent],
     providers: [
         SharedService,
-        DataService
+        DataService,
+        ApplicationStateService
     ],
 })
 export class AddingModule { }

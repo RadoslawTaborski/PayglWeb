@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { Frequency, Importance, Tag, TagRelation, User, Language, Details, TransferType, TransactionType } from '../../entities/entities';
 import { OperationsGroup } from '../../entities/OperationsGroup';
+import { ApplicationStateService } from '../../shared/application-state.service';
 
 @Component({
   selector: 'app-group',
@@ -12,21 +13,16 @@ export class GroupComponent {
     public isLoaded: boolean = false
 
     public description: string = ""
-    public amount: number = null
     public date: Date = null
-    public selectedFrequency: Frequency = null
-    public selectedImportance: Importance = null
-    public selectedTag: Tag = null
+    public selectedFrequency: any = ""
+    public selectedImportance: any = ""
+    public selectedTag: any = ""
     public selectedTags: Tag[] = []
-    public selectedTransactionType: TransactionType = null
-    public selectedTransferType: TransferType = null
-    public selectedOperationGroup: OperationsGroup = null
 
-    constructor(private shared: SharedService) { }
+    constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     async ngOnInit() {
         await this.shared.loadAttributes()
-        await this.shared.loadOperationsGroups()
         this.isLoaded = true;
         //console.log(this.isLoaded)
     }
@@ -46,21 +42,6 @@ export class GroupComponent {
         return this.shared.tags
     }
 
-    getTransactionTypes(): TransactionType[] {
-        //console.log(this.shared.transactionTypes)
-        return this.shared.transactionTypes
-    }
-
-    getTransferTypes(): TransferType[] {
-        //console.log(this.shared.transferType)
-        return this.shared.transferType
-    }
-
-    getOperationsGroups(): OperationsGroup[] {
-        //console.log(this.shared.operationsGroups)
-        return this.shared.operationsGroups.reverse()
-    }
-
     onTagChange(newValue) {
         //console.log(newValue);
         if (!this.selectedTags.includes(newValue))
@@ -70,12 +51,6 @@ export class GroupComponent {
     onTagClick(toRemove) {
         //console.log(toRemove);
         this.selectedTags = this.selectedTags.filter(obj => obj !== toRemove)
-    }
-
-    onAdd() {
-        let operationsGroup = new OperationsGroup(null, this.tmpCreatingUser(), this.description, this.selectedFrequency, this.selectedImportance, this.date.toLocaleString(), this.tagsToNewTagRelations(this.selectedTags), []);
-        operationsGroup.IsDirty = true;
-        this.shared.sendOperationsGroup(operationsGroup)
     }
 
     tagToNewTagRelation(tag: Tag): TagRelation {
@@ -100,5 +75,23 @@ export class GroupComponent {
         let user = new User(1, "rado", language, userDetails)
 
         return user
+    }
+
+    clear() {
+        this.description = ""
+        this.date = null
+        this.selectedFrequency = ""
+        this.selectedImportance = ""
+        this.selectedTag = ""
+        this.selectedTags = []
+    }
+
+    async onAdd() {
+        let operationsGroup = new OperationsGroup(null, this.tmpCreatingUser(), this.description, this.selectedFrequency, this.selectedImportance, this.date.toLocaleString(), this.tagsToNewTagRelations(this.selectedTags), []);
+        operationsGroup.IsDirty = true;
+        await this.shared.sendOperationsGroup(operationsGroup)
+        let tmp = (<HTMLFormElement>document.getElementById("form"))
+        this.clear()
+        tmp.reset()
     }
 }

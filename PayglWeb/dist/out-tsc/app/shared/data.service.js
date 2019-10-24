@@ -1,5 +1,9 @@
 import * as tslib_1 from "tslib";
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+const httpOptions = {
+    headers: new HttpHeaders().append('Content-Type', 'application/json')
+};
 let DataService = class DataService {
     constructor(http) {
         this.http = http;
@@ -49,10 +53,15 @@ let DataService = class DataService {
             return this.http.get(`api/operations`).toPromise();
         }
     }
-    addOperation(operation) {
+    sendOperation(operation) {
         let json = JSON.stringify(operation);
         console.log(json);
-        return this.http.post(`api/operations`, json).toPromise();
+        return this.http.post(`api/operations`, json, httpOptions).toPromise();
+    }
+    sendOperationsGroup(operationsGroup) {
+        let json = JSON.stringify(operationsGroup);
+        console.log(json);
+        return this.http.post(`api/operationsGroups`, json, httpOptions).toPromise();
     }
 };
 DataService = tslib_1.__decorate([

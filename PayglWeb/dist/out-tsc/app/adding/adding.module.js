@@ -6,6 +6,7 @@ import { GroupComponent } from './group/group.component';
 import { DataService } from '../shared/data.service';
 import { FormsModule } from '@angular/forms';
 import { SharedService } from '../shared/shared.service';
+import { ApplicationStateService } from '../shared/application-state.service';
 let AddingModule = class AddingModule {
 };
 AddingModule = tslib_1.__decorate([
@@ -18,7 +19,8 @@ AddingModule = tslib_1.__decorate([
         exports: [ManualOperationComponent, GroupComponent],
         providers: [
             SharedService,
-            DataService
+            DataService,
+            ApplicationStateService
         ],
     })
 ], AddingModule);

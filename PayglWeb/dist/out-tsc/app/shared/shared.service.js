@@ -18,6 +18,7 @@ let SharedService = class SharedService {
     loadAttributes() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
+                this.isInitialize = true;
                 let tmp;
                 this.frequencies = [];
                 tmp = yield this.data.loadFrequencies();
@@ -83,7 +84,12 @@ let SharedService = class SharedService {
     }
     sendOperation(operation) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.data.addOperation(operation);
+            this.data.sendOperation(operation);
+        });
+    }
+    sendOperationsGroup(operationsGroup) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.data.sendOperationsGroup(operationsGroup);
         });
     }
 };

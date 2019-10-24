@@ -4,7 +4,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="h-auto">
-                    <h1 id="forms">Dodaj operacje</h1>
+                    <h1 *ngIf="!state.isMobileResolution()" id="forms">Dodaj operację</h1>
+                    <h2 *ngIf="state.isMobileResolution()" id="forms">Dodaj operację</h2>
                 </div>
             </div>
         </div>
@@ -12,7 +13,7 @@
         <div class="row" *ngIf="isLoaded" >
             <div class="col-lg-12">
                 <div class="bs-component">
-                    <form ngNativeValidate (submit)="onAdd()" id="form">
+                    <form ngNativeValidate (submit)="onAdd()" id="form" name="form">
                         <fieldset style="display: grid;">
                             <div class="form-group">
                                 <input [(ngModel)]="description" required class="form-control" name="inpDescription" type="text" placeholder="Opis">
@@ -24,41 +25,41 @@
                                 <input [(ngModel)]="date" required onfocus="(this.type='date')" name="inpDate" class="js-form-control form-control" placeholder="Data">
                             </div>
                             <div class="form-group">
-                                <select [(ngModel)]="selectedFrequency" name="selFrequencies" required class="custom-select">
-                                    <option value="null" disabled selected>Częstotliwość</option>
+                                <select [(ngModel)]="selectedFrequency" [disabled]="!editable" name="selFrequencies" [required]="editable" class="custom-select">
+                                    <option value="" disabled selected>Częstotliwość</option>
                                     <option *ngFor="let f of getFrequencies()" [ngValue]="f">{{f.Text}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select [(ngModel)]="selectedImportance" name="selImportances" required class="custom-select">
-                                    <option value="null" disabled selected>Ważność</option>
+                                <select [(ngModel)]="selectedImportance" [disabled]="!editable" name="selImportances" [required]="editable" class="custom-select">
+                                    <option value="" disabled selected>Ważność</option>
                                     <option *ngFor="let f of getImportances()" [ngValue]="f">{{f.Text}}</option>
                                 </select>
                             </div>
                             <div>
-                                <button *ngFor="let f of selectedTags" (click)="onTagClick(f)" class="btn btn-primary btn-sm" type="button" style="margin-right: 2px; margin-bottom: 2px;">{{f.Text}}</button>
+                                <button *ngFor="let f of selectedTags" [disabled]="!editable" (click)="onTagClick(f)" class="btn btn-primary btn-sm" type="button" style="margin-right: 2px; margin-bottom: 2px;">{{f.Text}}</button>
                             </div>
                             <div class="form-group">
-                                <select [(ngModel)]="selectedTag" name="selTags" (change)="onTagChange(selectedTag)" required class="custom-select">
-                                    <option value="null" disabled selected>Tag</option>
+                                <select [(ngModel)]="selectedTag" [disabled]="!editable" name="selTags" [required]="editable" (change)="onTagChange(selectedTag)" required class="custom-select">
+                                    <option value="" disabled selected>Tag</option>
                                     <option *ngFor="let f of getTags()" [ngValue]="f">{{f.Text}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <select [(ngModel)]="selectedTransactionType" name="selTransactionTypes" required class="custom-select">
-                                    <option value="null" disabled selected>Typ transakcji</option>
+                                    <option value="" disabled selected>Typ transakcji</option>
                                     <option *ngFor="let f of getTransactionTypes()" [ngValue]="f">{{f.Text}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <select [(ngModel)]="selectedTransferType" name="selTransferTypes" required class="custom-select">
-                                    <option value="null" disabled selected>Typ transferu</option>
+                                    <option value="" disabled selected>Typ transferu</option>
                                     <option *ngFor="let f of getTransferTypes()" [ngValue]="f">{{f.Text}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select [(ngModel)]="selectedOperationGroup" name="selOperationsGroups" class="custom-select">
-                                    <option [ngValue]="null" selected>Brak grupy</option>
+                                <select [(ngModel)]="selectedOperationGroup" name="selOperationsGroups" (change)="onGroupChange(selectedOperationGroup)" class="custom-select">
+                                    <option value="null" selected>Brak grupy</option>
                                     <option *ngFor="let f of getOperationsGroups()" [ngValue]="f">{{f.Date.substring(0,10)}} {{f.Description}}</option>
                                 </select>
                             </div>
