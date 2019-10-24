@@ -16,13 +16,13 @@
                     <form ngNativeValidate (submit)="onAdd()" id="form" name="form">
                         <fieldset style="display: grid;">
                             <div class="form-group">
-                                <input [(ngModel)]="description" required class="form-control" name="inpDescription" type="text" placeholder="Opis">
+                                <input [(ngModel)]="description" required class="form-control" name="inpDescription" type="text" autocomplete="off" placeholder="Opis">
                             </div>
                             <div class="form-group">
-                                <input [(ngModel)]="amount" required class="form-control" name="inpAmount" type="number" step="0.01" min="0" placeholder="Kwota">
+                                <input [(ngModel)]="amount" required class="form-control" name="inpAmount" type="number" step="0.01" min="0" autocomplete="off" placeholder="Kwota">
                             </div>
                             <div class="form-group">
-                                <input [(ngModel)]="date" required onfocus="(this.type='date')" name="inpDate" class="js-form-control form-control" placeholder="Data">
+                                <input [(ngModel)]="date" required onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDate" autocomplete="off" class="js-form-control form-control" placeholder="Data">
                             </div>
                             <div class="form-group">
                                 <select [(ngModel)]="selectedFrequency" [disabled]="!editable" name="selFrequencies" [required]="editable" class="custom-select">
