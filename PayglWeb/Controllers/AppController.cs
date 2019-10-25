@@ -29,5 +29,12 @@ namespace PayglWeb.Controllers
             ViewBag.Title = "Group";
             return View();
         }
+
+        [HttpGet("search")]
+        public IActionResult Search()
+        {
+            ViewBag.Title = "Search";
+            return View();
+        }
     }
 }

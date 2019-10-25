@@ -1,0 +1,13 @@
+<div class="container">
+
+    <div class="bs-docs-section">
+        <div class="row" *ngIf="isLoaded">
+            <div class="card text-white bg-secondary mb-3 col-lg-12 col-md-12 col-sm-12 col-12" *ngFor="let o of getOperations()">
+                <div class="card-header" [ngClass]="{'card-header-good': !isExpense(o), 'card-header-bad': isExpense(o)}" (click)="onOperationClick(o)">{{o.Date.substring(0,10)}} | {{o.Description}} kwota: {{o.Amount}} typ: {{o.TransactionType.Text}}</div>
+                <div class="card-body" *ngIf="isClicked(o)">
+                    <p class="card-text">{{o.Frequency.Text}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

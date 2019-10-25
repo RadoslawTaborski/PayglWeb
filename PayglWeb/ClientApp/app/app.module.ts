@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AddingModule } from './adding/adding.module';
+import { AnalysisModule } from './analysis/analysis.module';
 
 import { APP_BASE_HREF } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
     imports: [
         BrowserModule,
         AddingModule,
+        AnalysisModule,
         AppRoutingModule,
         HttpClientModule
     ],
