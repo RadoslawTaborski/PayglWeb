@@ -1,6 +1,7 @@
 ﻿import { User, TransactionType, TransferType, Frequency, Importance, TagRelation, OperationDetails, Tag } from './entities';
+import { OperationLike } from './OperationLike';
 
-export class Operation {
+export class Operation implements OperationLike {
     Id: number;
     IsDirty: boolean;
     IsMarkForDeletion: boolean;

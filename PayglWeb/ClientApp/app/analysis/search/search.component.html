@@ -1,11 +1,57 @@
-<div class="container">
+﻿<div class="container">
 
     <div class="bs-docs-section">
         <div class="row" *ngIf="isLoaded">
-            <div class="card text-white bg-secondary mb-3 col-lg-12 col-md-12 col-sm-12 col-12" *ngFor="let o of getOperations()">
-                <div class="card-header" [ngClass]="{'card-header-good': !isExpense(o), 'card-header-bad': isExpense(o)}" (click)="onOperationClick(o)">{{o.Date.substring(0,10)}} | {{o.Description}} kwota: {{o.Amount}} typ: {{o.TransactionType.Text}}</div>
-                <div class="card-body" *ngIf="isClicked(o)">
-                    <p class="card-text">{{o.Frequency.Text}}</p>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let o of getOperationsLike()">
+                <div [ngClass]="{'bg-good1': !isExpense(o) && isOperation(o), 'bg-bad1': isExpense(o) && isOperation(o), 'bg-good2': !isExpense(o) && !isOperation(o), 'bg-bad2': isExpense(o) && !isOperation(o),'card text-white': true}">
+                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(o)">
+                        <div class="card-text inline-block col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">{{o.Date.substring(0,10)}} </div>
+                        <div class="card-text inline-block col-sm-3 col-md-3 col-lg-3 col-xl-3">kwota: {{o.Amount.toFixed(2)}} zł </div>
+                        <div class="card-text inline-block col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">{{o.Description}} </div>
+                    </div>
+                    <div class="card-body" *ngIf="isClicked(o)">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Częstotliwość:</div>
+                            <p class="card-text inline-p">{{o.Frequency.Text}}</p>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Ważność:</div>
+                            <p class="card-text inline-p">{{o.Importance.Text}}</p>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Tagi:</div>
+                            <p class="card-text inline-p" *ngFor="let t of o.Tags; let isLast=last">{{t.Tag.Text}}{{isLast?'' : ', '}} </p>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Typ transakcji:</div>
+                            <p class="card-text inline-p">{{o.TransactionType.Text}}</p>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isOperation(o)">
+                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Typ transferu:</div>
+                            <p class="card-text inline-p">{{o.TransferType.Text}}</p>
+                        </div>
+                        <div *ngIf="!isOperation(q)">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let q of o.Operations">
+                                <div [ngClass]="{'bg-good1': !isExpense(q) && isOperation(q), 'bg-bad1': isExpense(q) && isOperation(q), 'bg-good2': !isExpense(q) && !isOperation(q), 'bg-bad2': isExpense(q) && !isOperation(q),'card text-white': true}">
+                                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(q, true)">
+                                        <div class="card-text inline-block col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">{{q.Date.substring(0,10)}} </div>
+                                        <div class="card-text inline-block col-sm-3 col-md-3 col-lg-3 col-xl-3">kwota: {{q.Amount.toFixed(2)}} zł </div>
+                                        <div class="card-text inline-block col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">{{q.Description}} </div>
+                                    </div>
+                                    <div class="card-body" *ngIf="isClicked(q)">
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Typ transakcji:</div>
+                                            <p class="card-text inline-p">{{q.TransactionType.Text}}</p>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Typ transferu:</div>
+                                            <p class="card-text inline-p">{{q.TransferType.Text}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

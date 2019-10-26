@@ -1,11 +1,11 @@
 {
   "Settings": {
     "DataBase": {
-      "Address": "localhost",
+      "Address": "webapp.zapto.org",
       "Port": "3306",
-      "Login": "root",
-      "Password": "",
-      "Table": "paygl_2"
+      "Login": "rado",
+      "Password": "Ameba123",
+      "Table": "paygl"
     }
   }
 }

@@ -3,6 +3,7 @@ import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { OperationsGroup } from '../../entities/OperationsGroup';
 import { Operation } from '../../entities/Operation';
+import { OperationLike } from '../../entities/OperationLike';
 
 @Component({
     selector: 'app-search',
@@ -11,13 +12,13 @@ import { Operation } from '../../entities/Operation';
 })
 export class SearchComponent implements OnInit {
     public isLoaded: boolean = false
-    public clicked: Operation[] = []
+    public clicked: OperationLike[] = []
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     async ngOnInit() {
         await this.shared.loadAttributes()
-        await this.shared.loadOperations()
+        await this.shared.loadOperations(true)
         await this.shared.loadOperationsGroups()       
         this.isLoaded = true;
         //console.log(this.isLoaded)
@@ -33,20 +34,54 @@ export class SearchComponent implements OnInit {
         return this.shared.operations.reverse()
     }
 
-    onOperationClick(o: Operation) {   
-        if (!this.clicked.includes(o)) {
-            this.clicked = []
-            this.clicked.push(o);
+    getOperationsLike(): OperationLike[] {
+        let result: OperationLike[] = [];
+        result = result.concat(this.getOperationsGroups());
+        result = result.concat(this.getOperations());
+
+        result = result.sort((n1, n2) => {
+            var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
+
+            let date1: number = new Date(n1.Date.replace(pattern, '$3-$2-$1')).getTime()
+            let date2: number = new Date(n2.Date.replace(pattern, '$3-$2-$1')).getTime()
+            let tmp: number = date2 - date1;
+            return tmp
+        })
+
+        return result;
+    }
+
+    onOperationClick(o: OperationLike, isNested: boolean) {
+        console.log(isNested)
+        if (isNested) {
+            console.log(!this.clicked.includes(o))
+            if (!this.clicked.includes(o)) {
+                this.clicked.push(o);
+            } else {
+                const index: number = this.clicked.indexOf(o);
+                if (index !== -1) {
+                    this.clicked.splice(index, 1);
+                }  
+            }
         } else {
-            this.clicked = []
+            if (!this.clicked.includes(o)) {
+                this.clicked = []
+                this.clicked.push(o);
+            } else {
+                this.clicked = []
+            }
         }
     }
 
-    isClicked(o: Operation) {
+    isOperation(o: OperationLike): boolean {
+        return (o instanceof Operation)
+    }   
+
+    isClicked(o: OperationLike): boolean {
         return this.clicked.includes(o);
     }
 
-    isExpense(o: Operation) {
+    isExpense(o: OperationLike): boolean {
         return o.TransactionType.Text=='wydatek'
     }
 }

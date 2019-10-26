@@ -1,7 +1,8 @@
 ﻿import { Operation } from './Operation';
 import { User, Frequency, Importance, TagRelation, Tag, TransactionType, TransferType } from './entities';
+import { OperationLike } from './OperationLike';
 
-export class OperationsGroup {
+export class OperationsGroup implements OperationLike{
     Id: number;
     IsDirty: boolean;
     IsMarkForDeletion: boolean;
@@ -13,6 +14,9 @@ export class OperationsGroup {
     Tags: TagRelation[];
     Operations: Operation[];
 
+    Amount: number = 0;
+    TransactionType: TransactionType;
+
     constructor(id?: number, user?: User, description?: string, frequency?: Frequency, importance?: Importance, date?: string, tags?: TagRelation[], operations?: Operation[]) {
         this.Id = id
         this.User = user
@@ -22,6 +26,23 @@ export class OperationsGroup {
         this.Date = date
         this.Tags = tags
         this.Operations = operations
+    }
+
+    recalculate(transactionTypes: TransactionType[]) {
+        this.Amount = 0;
+        for (let operation of this.Operations) {
+            if (operation.TransactionType.Text == "wydatek") {
+                this.Amount -= operation.Amount;
+            } else {
+                this.Amount += operation.Amount;
+            }        
+        }
+        if (this.Amount > 0) {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "przychód")[0];
+        } else {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "wydatek")[0];
+        }
+        this.Amount = Math.abs(this.Amount);
     }
 
     static createFromJson(data: any, frequencies: Frequency[], importances: Importance[], tags: Tag[], transactionTypes: TransactionType[], transferTypes: TransferType[]): OperationsGroup {
@@ -40,6 +61,8 @@ export class OperationsGroup {
             operationsGroup.Operations.push(Operation.createFromJson(operation, frequencies, importances, tags, transactionTypes, transferTypes));
         }
         operationsGroup.Description = data.Description;
+
+        operationsGroup.recalculate(transactionTypes);
 
         return operationsGroup
     }

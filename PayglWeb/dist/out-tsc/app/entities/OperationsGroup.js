@@ -2,6 +2,7 @@ import { Operation } from './Operation';
 import { User, TagRelation } from './entities';
 export class OperationsGroup {
     constructor(id, user, description, frequency, importance, date, tags, operations) {
+        this.Amount = 0;
         this.Id = id;
         this.User = user;
         this.Description = description;
@@ -10,6 +11,24 @@ export class OperationsGroup {
         this.Date = date;
         this.Tags = tags;
         this.Operations = operations;
+    }
+    recalculate(transactionTypes) {
+        this.Amount = 0;
+        for (let operation of this.Operations) {
+            if (operation.TransactionType.Text == "wydatek") {
+                this.Amount -= operation.Amount;
+            }
+            else {
+                this.Amount += operation.Amount;
+            }
+        }
+        if (this.Amount > 0) {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "przychód")[0];
+        }
+        else {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "wydatek")[0];
+        }
+        this.Amount = Math.abs(this.Amount);
     }
     static createFromJson(data, frequencies, importances, tags, transactionTypes, transferTypes) {
         let operationsGroup = new OperationsGroup();
@@ -27,6 +46,7 @@ export class OperationsGroup {
             operationsGroup.Operations.push(Operation.createFromJson(operation, frequencies, importances, tags, transactionTypes, transferTypes));
         }
         operationsGroup.Description = data.Description;
+        operationsGroup.recalculate(transactionTypes);
         return operationsGroup;
     }
 }

@@ -1,7 +1,32 @@
-.card-header-good {
-    background-color: deepskyblue;
+.inline-block {
+    display: inline-block;
 }
 
-.card-header-bad {
-    background-color: crimson;
+.inline-p {
+    display: inline;
+}
+
+.bg-good1 {
+    background-color: #003399;
+}
+
+.bg-good2 {
+    background-color: #002266;
+}
+
+.bg-bad1 {
+    background-color: #800000;
+}
+
+.bg-bad2 {
+    background-color: #600000;
+}
+
+#col-3 {
+    column-count: 3;
+    grid-template-columns: 25% 60% 15%;
+}
+
+p {
+    margin: 0
 }
