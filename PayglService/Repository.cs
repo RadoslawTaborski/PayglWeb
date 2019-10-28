@@ -14,6 +14,7 @@ using DataBaseWithBusinessLogicConnector.ApiEntities;
 using DataBaseWithBusinessLogicConnector.Interfaces.Dal;
 using DataBaseWithBusinessLogicConnector.Interfaces;
 using DataBaseWithBusinessLogicConnector.Helpers;
+using PayglService.Models;
 
 namespace PayglService
 {
@@ -21,6 +22,7 @@ namespace PayglService
     {
         private IDataAccess DbManager { get; set; }
         private DbConnector DbConnector { get; set; }
+        private EntityRepository EntityRepository { get; set; }
 
         #region Entities
         public ApiUser User { get; private set; }
@@ -99,6 +101,8 @@ namespace PayglService
             TagRelationMapper = new RelationTagMapper();
             OperationMapper = new OperationMapper();
             OperationsGroupMapper = new OperationsGroupMapper();
+
+            EntityRepository = new EntityRepository();
 
             LoadUserAndLanguage();
             LoadAttributes();
@@ -223,6 +227,83 @@ namespace PayglService
         public OperationsGroupComplex GetDalOperationsGroup(ApiOperationsGroup apiObjects)
         {
             return OperationsGroupMapper.ConvertToDALEntity(apiObjects);
+        }
+
+        public IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query)
+        {
+            var operations = EntityRepository.GetOperations(Operations);
+            var filteredOperations = operations.Where(o => o.Parent == null && o.Date.Date <= to.Date &&o.Date.Date >= from.Date).ToList();
+
+            var ioperations = new List<IOperation>();
+            ioperations.AddRange(filteredOperations);
+
+            var queryWithName = new KeyValuePair<string, string>("", query);
+
+            var filter = new Filter(queryWithName.Key, queryWithName.Value);
+            var group = new Group(filter, ioperations);
+            group.FilterOperations();
+
+            var tmp =  EntityRepository.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
+            return tmp;
+        }
+
+        public IEnumerable<ApiOperation> GetFilteredOperations(string query)
+        {
+            var operations = EntityRepository.GetOperations(Operations);
+            var filteredOperations = operations.Where(o => o.Parent == null).ToList();
+
+            var ioperations = new List<IOperation>();
+            ioperations.AddRange(filteredOperations);
+
+            var queryWithName = new KeyValuePair<string, string>("", query);
+
+            var filter = new Filter(queryWithName.Key, queryWithName.Value);
+            var group = new Group(filter, ioperations);
+            group.FilterOperations();
+
+            var tmp = EntityRepository.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
+            return tmp;
+        }
+
+        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query)
+        {
+            var operationsGroups = EntityRepository.GetOperationsGroups(OperationsGroups);
+            var filteredGroups = operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList();
+
+            var ioperations = new List<IOperation>();
+            ioperations.AddRange(filteredGroups);
+
+            var queryWithName = new KeyValuePair<string, string>("", query);
+
+            foreach (var elem in filteredGroups)
+            {
+                elem.UpdateAmount(EntityRepository.GetTransactionTypes(TransactionTypes).ToList());
+            }
+            var filter = new Filter(queryWithName.Key, queryWithName.Value);
+            var group = new Group(filter, ioperations);
+            group.FilterOperations();
+
+            return EntityRepository.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
+        }
+
+        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query)
+        {
+            var operationsGroups = EntityRepository.GetOperationsGroups(OperationsGroups);
+
+            var ioperations = new List<IOperation>();
+            ioperations.AddRange(operationsGroups);
+
+            var queryWithName = new KeyValuePair<string, string>("", query);
+
+            foreach (var elem in operationsGroups)
+            {
+                elem.UpdateAmount(EntityRepository.GetTransactionTypes(TransactionTypes).ToList());
+            }
+            var filter = new Filter(queryWithName.Key, queryWithName.Value);
+            var group = new Group(filter, ioperations);
+            group.FilterOperations();
+
+            return EntityRepository.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
         }
 
         private void LoadUserAndLanguage()

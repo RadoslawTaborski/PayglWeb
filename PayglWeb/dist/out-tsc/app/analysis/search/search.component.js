@@ -7,12 +7,13 @@ let SearchComponent = class SearchComponent {
         this.state = state;
         this.isLoaded = false;
         this.clicked = [];
+        this.query = "";
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadAttributes();
-            yield this.shared.loadOperations(true);
-            yield this.shared.loadOperationsGroups();
+            yield this.shared.loadOperations(true, this.query, null, null);
+            yield this.shared.loadOperationsGroups(this.query, null, null);
             this.isLoaded = true;
             //console.log(this.isLoaded)
         });
@@ -70,6 +71,12 @@ let SearchComponent = class SearchComponent {
     }
     isExpense(o) {
         return o.TransactionType.Text == 'wydatek';
+    }
+    search() {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            yield this.shared.loadOperations(true, this.query, null, null);
+            yield this.shared.loadOperationsGroups(this.query, null, null);
+        });
     }
 };
 SearchComponent = tslib_1.__decorate([

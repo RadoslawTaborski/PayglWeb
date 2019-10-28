@@ -13,13 +13,14 @@ import { OperationLike } from '../../entities/OperationLike';
 export class SearchComponent implements OnInit {
     public isLoaded: boolean = false
     public clicked: OperationLike[] = []
+    public query: string = ""
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     async ngOnInit() {
         await this.shared.loadAttributes()
-        await this.shared.loadOperations(true)
-        await this.shared.loadOperationsGroups()       
+        await this.shared.loadOperations(true, this.query, null, null)
+        await this.shared.loadOperationsGroups(this.query, null, null)       
         this.isLoaded = true;
         //console.log(this.isLoaded)
     }
@@ -83,5 +84,10 @@ export class SearchComponent implements OnInit {
 
     isExpense(o: OperationLike): boolean {
         return o.TransactionType.Text=='wydatek'
+    }
+
+    async search() {
+        await this.shared.loadOperations(true, this.query, null, null)
+        await this.shared.loadOperationsGroups(this.query, null, null)
     }
 }

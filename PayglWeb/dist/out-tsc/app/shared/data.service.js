@@ -30,21 +30,32 @@ let DataService = class DataService {
     loadTransferTypes() {
         return this.http.get("api/transferTypes").toPromise();
     }
-    loadOperationsGroups(from, to) {
-        if (from != null && to != null) {
+    loadOperationsGroups(query, from, to) {
+        if (query != null && from != null && to != null) {
             var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            return this.http.get(`api/operationsGroups/${fromFormated}/${toFormated}`).toPromise();
+            return this.http.get(`api/operationsGroups/${fromFormated}/${toFormated}/${query}`).toPromise();
+        }
+        else if (query != null) {
+            return this.http.get(`api/operationsGroups/${query}`).toPromise();
         }
         else {
             return this.http.get("api/operationsGroups").toPromise();
         }
     }
-    loadOperations(withoutParent, from, to) {
-        if (from != null && to != null && withoutParent != null) {
+    loadOperations(withoutParent, query, from, to) {
+        if (from != null && to != null && query != null) {
+            var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            return this.http.get(`api/operations/${fromFormated}/${toFormated}/${query}`).toPromise();
+        }
+        else if (from != null && to != null && withoutParent != null) {
             var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get(`api/operations/${fromFormated}/${toFormated}/${withoutParent}`).toPromise();
+        }
+        else if (query != null) {
+            return this.http.get(`api/operations/${query}`).toPromise();
         }
         else if (withoutParent != null) {
             return this.http.get(`api/operations/${withoutParent}`).toPromise();

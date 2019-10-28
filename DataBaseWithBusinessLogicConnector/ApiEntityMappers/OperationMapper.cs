@@ -77,7 +77,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             var transactionType = _transactionTypeMapper.ConvertToApiEntity(dataEntity.TransactionType);
             var tags = _tagMapper.ConvertToApiEntitiesCollection(dataEntity.Tags).ToArray();
             var details = _detailsMapper.ConvertToApiEntitiesCollection(dataEntity.DetailsList).ToArray();
-            var result = new ApiOperation(dataEntity.Id, dataEntity.Parent.Id, user, dataEntity.Amount, transactionType, transferType,frequency, importance, dataEntity.Date.ToString("yyyy-MM-dd"),dataEntity.ReceiptPath, tags, details, dataEntity.Description);
+            var result = new ApiOperation(dataEntity.Id, dataEntity.Parent?.Id, user, dataEntity.Amount, transactionType, transferType,frequency, importance, dataEntity.Date.ToString("yyyy-MM-dd"),dataEntity.ReceiptPath, tags, details, dataEntity.Description);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;

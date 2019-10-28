@@ -40,5 +40,10 @@ namespace PayglService
 
         void UpdateOperationsGroupComplex(ApiOperationsGroup group);
         void UpdateOperationComplex(ApiOperation newOperation);
+
+        public IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query);
+        public IEnumerable<ApiOperation> GetFilteredOperations(string query);
+        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query);
+        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query);
     }
 }

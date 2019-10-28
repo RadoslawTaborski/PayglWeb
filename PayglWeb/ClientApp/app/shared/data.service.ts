@@ -40,21 +40,29 @@ export class DataService {
         return this.http.get<any[]>("api/transferTypes").toPromise()
     }
 
-    loadOperationsGroups(from?: Date, to?: Date): Promise<any[]> {
-        if (from != null && to != null) {
+    loadOperationsGroups(query?: string, from?: Date, to?: Date): Promise<any[]> {
+        if (query != null && from != null && to != null) {
             var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            return this.http.get<any[]>(`api/operationsGroups/${fromFormated}/${toFormated}`).toPromise()
+            return this.http.get<any[]>(`api/operationsGroups/${fromFormated}/${toFormated}/${query}`).toPromise()
+        } else if (query != null) {
+            return this.http.get<any[]>(`api/operationsGroups/${query}`).toPromise()
         } else {
             return this.http.get<any[]>("api/operationsGroups").toPromise()
         }
     }
 
-    loadOperations(withoutParent?: boolean, from?: Date, to?: Date): Promise<any[]> {
-        if (from != null && to != null && withoutParent != null) {
+    loadOperations(withoutParent?: boolean, query?: string, from?: Date, to?: Date): Promise<any[]> {
+        if (from != null && to != null && query != null) {
+            var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            return this.http.get<any[]>(`api/operations/${fromFormated}/${toFormated}/${query}`).toPromise()
+        } else if (from != null && to != null && withoutParent != null) {
             var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get<any[]>(`api/operations/${fromFormated}/${toFormated}/${withoutParent}`).toPromise()
+        } else if (query != null) {
+            return this.http.get<any[]>(`api/operations/${query}`).toPromise()
         } else if (withoutParent != null) {
             return this.http.get<any[]>(`api/operations/${withoutParent}`).toPromise()
         } else {

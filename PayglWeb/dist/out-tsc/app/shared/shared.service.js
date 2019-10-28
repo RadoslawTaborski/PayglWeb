@@ -43,14 +43,17 @@ let SharedService = class SharedService {
             }
         });
     }
-    loadOperationsGroups(from, to) {
+    loadOperationsGroups(query, from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
                 this.loadAttributes();
             }
             let tmp;
-            if (from != null && to != null) {
-                tmp = yield this.data.loadOperationsGroups(from, to);
+            if (from != null && to != null && query != null) {
+                tmp = yield this.data.loadOperationsGroups(query, from, to);
+            }
+            else if (query != null) {
+                tmp = yield this.data.loadOperationsGroups(query);
             }
             else {
                 tmp = yield this.data.loadOperationsGroups();
@@ -61,14 +64,20 @@ let SharedService = class SharedService {
             }
         });
     }
-    loadOperations(withoutParent, from, to) {
+    loadOperations(withoutParent, query, from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
                 this.loadAttributes();
             }
             let tmp;
-            if (from != null && to != null && withoutParent != null) {
-                tmp = yield this.data.loadOperations(withoutParent, from, to);
+            if (from != null && to != null && query != null) {
+                tmp = yield this.data.loadOperations(withoutParent, query, from, to);
+            }
+            else if (from != null && to != null && withoutParent != null) {
+                tmp = yield this.data.loadOperations(withoutParent, null, from, to);
+            }
+            else if (query != null) {
+                tmp = yield this.data.loadOperations(true, query);
             }
             else if (withoutParent != null) {
                 tmp = yield this.data.loadOperations(withoutParent);

@@ -4,8 +4,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="h-auto">
-                    <h1 *ngIf="!state.isMobileResolution()" id="forms">Dodaj operację</h1>
-                    <h2 *ngIf="state.isMobileResolution()" id="forms">Dodaj operację</h2>
+                    <h1 *ngIf="state.isScreenNormal()" id="forms">Dodaj operację</h1>
+                    <h2 *ngIf="state.isScreenMobile()" id="forms">Dodaj operację</h2>
                 </div>
             </div>
         </div>

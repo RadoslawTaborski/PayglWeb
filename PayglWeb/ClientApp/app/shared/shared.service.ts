@@ -48,13 +48,15 @@ export class SharedService {
         }
     }
 
-    async loadOperationsGroups(from?: Date, to?: Date) {
+    async loadOperationsGroups(query?: string, from?: Date, to?: Date) {
         if (!this.isInitialize) {
             this.loadAttributes()
         }
         let tmp: any[]
-        if (from != null && to != null) {
-            tmp = await this.data.loadOperationsGroups(from, to)
+        if (from != null && to != null && query != null) {
+            tmp = await this.data.loadOperationsGroups(query, from, to)
+        } else if (query != null) {
+            tmp = await this.data.loadOperationsGroups(query)
         } else {
             tmp = await this.data.loadOperationsGroups()
         }
@@ -64,13 +66,17 @@ export class SharedService {
         }
     }
 
-    async loadOperations(withoutParent?: boolean, from?: Date, to?: Date) {
+    async loadOperations(withoutParent?: boolean, query?:string, from?: Date, to?: Date) {
         if (!this.isInitialize) {
             this.loadAttributes()
         }
         let tmp: any[]
-        if (from != null && to != null && withoutParent != null) {
-            tmp = await this.data.loadOperations(withoutParent, from, to)
+        if (from != null && to != null && query != null) {
+            tmp = await this.data.loadOperations(withoutParent, query, from, to)
+        } else if (from != null && to != null && withoutParent != null) {
+            tmp = await this.data.loadOperations(withoutParent, null, from, to)
+        } else if (query != null) {
+            tmp = await this.data.loadOperations(true, query)
         } else if (withoutParent != null) {
             tmp = await this.data.loadOperations(withoutParent)
         } else {
@@ -79,7 +85,7 @@ export class SharedService {
         this.operations = []
         for (let operation of tmp) {
             this.operations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType))
-        }
+        } 
     }
 
     async sendOperation(operation: Operation) {
