@@ -11,11 +11,9 @@ let ApplicationStateService = class ApplicationStateService {
         }
     }
     isScreenMobile() {
-        console.log(this._type);
         return ScreenSize.Mobile == this._type;
     }
     isScreenNormal() {
-        console.log(this._type);
         return ScreenSize.Normal == this._type;
     }
 };

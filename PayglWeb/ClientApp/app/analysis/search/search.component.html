@@ -1,20 +1,21 @@
-﻿<div class="container">
-    <div class="row" *ngIf="isLoaded">
+﻿<div class="div-row">
+    <div class="div-row" *ngIf="isLoaded">
         <!----------------------NORMAL------------------>
         <div *ngIf="state.isScreenNormal()">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="responsive-form" style="padding-bottom:10px">
-                <div class="form-row">
+            <div style="padding-bottom:10px">
+                <div class="row">
                     <input [(ngModel)]="query" name="inpQuery" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control" type="text" autocomplete="off" placeholder="filtr" />
                 </div>
-                <div class="form-row">
-                    <input [(ngModel)]="date" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDate" autocomplete="off" class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 js-form-control form-control" placeholder="Data">
-                    <input [(ngModel)]="date" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDate" autocomplete="off" class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 js-form-control form-control" placeholder="Data">
+                <div class="row">
+                    <input [(ngModel)]="dateFrom" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateFrom" autocomplete="off" class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 js-form-control form-control" placeholder="Data">
+                    <input [(ngModel)]="dateTo" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateTo" autocomplete="off" class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 js-form-control form-control" placeholder="Data">
                     <button class="btn btn-primary col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" (click)="search()">Szukaj</button>
                 </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let o of getOperationsLike()">
-                <div [ngClass]="{'bg-good1': !isExpense(o) && isOperation(o), 'bg-bad1': isExpense(o) && isOperation(o), 'bg-good2': !isExpense(o) && !isOperation(o), 'bg-bad2': isExpense(o) && !isOperation(o),'card text-white': true}">
-                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(o)">
+            <div class="row">Razem: {{sum.toFixed(2)}} zł</div>
+            <div class="row" *ngFor="let o of getOperationsLike()">
+                <div [ngClass]="{'bg-good1': !isExpense(o) && isOperation(o), 'bg-bad1': isExpense(o) && isOperation(o), 'bg-good2': !isExpense(o) && !isOperation(o), 'bg-bad2': isExpense(o) && !isOperation(o),'div-row text-white': true}">
+                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(o, false)">
                         <div class="card-text inline-block col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">{{o.Date.substring(0,10)}} </div>
                         <div class="card-text inline-block col-sm-3 col-md-3 col-lg-3 col-xl-3">kwota: {{o.Amount.toFixed(2)}} zł </div>
                         <div class="card-text inline-block col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">{{o.Description}} </div>
@@ -41,8 +42,8 @@
                             <p class="card-text inline-p">{{o.TransferType.Text}}</p>
                         </div>
                         <div *ngIf="!isOperation(q)">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let q of o.Operations">
-                                <div [ngClass]="{'bg-good1': !isExpense(q) && isOperation(q), 'bg-bad1': isExpense(q) && isOperation(q), 'bg-good2': !isExpense(q) && !isOperation(q), 'bg-bad2': isExpense(q) && !isOperation(q),'card text-white': true}">
+                            <div class="div-row inner" *ngFor="let q of o.Operations">
+                                <div [ngClass]="{'bg-good1': !isExpense(q) && isOperation(q), 'bg-bad1': isExpense(q) && isOperation(q), 'bg-good2': !isExpense(q) && !isOperation(q), 'bg-bad2': isExpense(q) && !isOperation(q),'div-row text-white': true}">
                                     <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(q, true)">
                                         <div class="card-text inline-block col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">{{q.Date.substring(0,10)}} </div>
                                         <div class="card-text inline-block col-sm-3 col-md-3 col-lg-3 col-xl-3">kwota: {{q.Amount.toFixed(2)}} zł </div>
@@ -68,21 +69,22 @@
 
         <!----------------------MOBILE------------------>
         <div *ngIf="state.isScreenMobile()">
-            <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding-bottom:10px;">
-                <div class="form-row">
+            <div style="padding-bottom:10px">
+                <div class="row">
                     <input [(ngModel)]="query" name="inpQuery" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control" type="text" autocomplete="off" placeholder="filtr" />
                 </div>
-                <div class="form-row">
-                    <input [(ngModel)]="date" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDate" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
-                    <input [(ngModel)]="date" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDate" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
+                <div class="row">
+                    <input [(ngModel)]="dateFrom" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateFrom" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
+                    <input [(ngModel)]="dateTo" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateTo" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
                     <button class="btn btn-primary col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="search()">Szukaj</button>
                 </div>
-            </form>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let o of getOperationsLike()">
-                <div [ngClass]="{'bg-good1': !isExpense(o) && isOperation(o), 'bg-bad1': isExpense(o) && isOperation(o), 'bg-good2': !isExpense(o) && !isOperation(o), 'bg-bad2': isExpense(o) && !isOperation(o),'card text-white': true}">
-                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(o)">
+            </div>
+            <div class="row">Razem: {{sum.toFixed(2)}} zł</div>
+            <div class="row" *ngFor="let o of getOperationsLike()">
+                <div [ngClass]="{'bg-good1': !isExpense(o) && isOperation(o), 'bg-bad1': isExpense(o) && isOperation(o), 'bg-good2': !isExpense(o) && !isOperation(o), 'bg-bad2': isExpense(o) && !isOperation(o),'div-row text-white': true}">
+                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(o, false)">
                         <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{o.Date.substring(0,10)}} </div>
-                        <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-63">kwota: {{o.Amount.toFixed(2)}} zł </div>
+                        <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{o.Amount.toFixed(2)}} zł </div>
                         <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{o.Description}} </div>
                     </div>
                     <div *ngIf="isClicked(o)">
@@ -107,11 +109,11 @@
                             <p class="card-text inline-p">{{o.TransferType.Text}}</p>
                         </div>
                         <div *ngIf="!isOperation(q)">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngFor="let q of o.Operations">
+                            <div class="div-row inner" *ngFor="let q of o.Operations">
                                 <div [ngClass]="{'bg-good1': !isExpense(q) && isOperation(q), 'bg-bad1': isExpense(q) && isOperation(q), 'bg-good2': !isExpense(q) && !isOperation(q), 'bg-bad2': isExpense(q) && !isOperation(q),'card text-white': true}">
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onOperationClick(q, true)">
                                         <div class="card-text inline-block col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">{{q.Date.substring(0,10)}}</div>
-                                        <div class="card-text inline-block col-5 col-sm-7 col-md-7 col-lg-7 col-xl-7">kwota: {{q.Amount.toFixed(2)}} zł </div>
+                                        <div class="card-text inline-block col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">kwota: {{q.Amount.toFixed(2)}} zł </div>
                                         <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{q.Description}} </div>
                                     </div>
                                     <div class="card-body" *ngIf="isClicked(q)">

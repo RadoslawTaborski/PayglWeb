@@ -20,11 +20,11 @@ let SearchComponent = class SearchComponent {
     }
     getOperationsGroups() {
         //console.log(this.shared.operationsGroups)
-        return this.shared.operationsGroups.reverse();
+        return this.shared.operationsGroups;
     }
     getOperations() {
         //console.log(this.shared.operationsGroups)
-        return this.shared.operations.reverse();
+        return this.shared.operations;
     }
     getOperationsLike() {
         let result = [];
@@ -74,8 +74,11 @@ let SearchComponent = class SearchComponent {
     }
     search() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            console.log("test");
+            this.isLoaded = false;
             yield this.shared.loadOperations(true, this.query, null, null);
-            yield this.shared.loadOperationsGroups(this.query, null, null);
+            this.isLoaded = true;
+            //await this.shared.loadOperationsGroups(this.query, null, null)
         });
     }
 };

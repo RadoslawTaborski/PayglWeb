@@ -14,12 +14,16 @@ export class SearchComponent implements OnInit {
     public isLoaded: boolean = false
     public clicked: OperationLike[] = []
     public query: string = ""
+    public dateFrom: Date
+    public dateTo: Date
+    public sum: number = 0
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     async ngOnInit() {
         await this.shared.loadAttributes()
-        await this.shared.loadOperations(true, this.query, null, null)
+        this.sum = 0
+        await this.shared.loadOperations(true, "", null, null)
         await this.shared.loadOperationsGroups(this.query, null, null)       
         this.isLoaded = true;
         //console.log(this.isLoaded)
@@ -27,12 +31,12 @@ export class SearchComponent implements OnInit {
 
     getOperationsGroups(): OperationsGroup[] {
         //console.log(this.shared.operationsGroups)
-        return this.shared.operationsGroups.reverse()
+        return this.shared.operationsGroups
     }
 
     getOperations(): Operation[] {
         //console.log(this.shared.operationsGroups)
-        return this.shared.operations.reverse()
+        return this.shared.operations
     }
 
     getOperationsLike(): OperationLike[] {
@@ -48,6 +52,15 @@ export class SearchComponent implements OnInit {
             let tmp: number = date2 - date1;
             return tmp
         })
+
+        this.sum=0
+        for (let op of result) {
+            if (op.TransactionType.Text == "wydatek") {
+                this.sum -= op.Amount
+            } else {
+                this.sum += op.Amount
+            }
+        }
 
         return result;
     }
@@ -87,7 +100,10 @@ export class SearchComponent implements OnInit {
     }
 
     async search() {
-        await this.shared.loadOperations(true, this.query, null, null)
-        await this.shared.loadOperationsGroups(this.query, null, null)
+        this.sum=0
+        this.isLoaded = false;
+        await this.shared.loadOperations(true, this.query, this.dateFrom, this.dateTo)
+        await this.shared.loadOperationsGroups(this.query, this.dateFrom, this.dateTo)
+        this.isLoaded=true
     }
 }

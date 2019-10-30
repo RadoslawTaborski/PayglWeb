@@ -59,7 +59,7 @@ let SharedService = class SharedService {
                 tmp = yield this.data.loadOperationsGroups();
             }
             this.operationsGroups = [];
-            for (let group of tmp) {
+            for (let group of tmp.reverse()) {
                 this.operationsGroups.push(OperationsGroup.createFromJson(group, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType));
             }
         });
@@ -86,7 +86,7 @@ let SharedService = class SharedService {
                 tmp = yield this.data.loadOperations();
             }
             this.operations = [];
-            for (let operation of tmp) {
+            for (let operation of tmp.reverse()) {
                 this.operations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType));
             }
         });

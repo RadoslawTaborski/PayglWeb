@@ -15,12 +15,10 @@ export class ApplicationStateService {
     }
 
     public isScreenMobile(): boolean {
-        console.log(this._type)
         return ScreenSize.Mobile == this._type
     }
 
     public isScreenNormal(): boolean {
-        console.log(this._type)
         return ScreenSize.Normal == this._type
     }
 }

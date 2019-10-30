@@ -61,7 +61,7 @@ export class SharedService {
             tmp = await this.data.loadOperationsGroups()
         }
         this.operationsGroups = []
-        for (let group of tmp) {
+        for (let group of tmp.reverse()) {
             this.operationsGroups.push(OperationsGroup.createFromJson(group, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType))
         }
     }
@@ -83,7 +83,7 @@ export class SharedService {
             tmp = await this.data.loadOperations()
         }
         this.operations = []
-        for (let operation of tmp) {
+        for (let operation of tmp.reverse()) {
             this.operations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType))
         } 
     }
