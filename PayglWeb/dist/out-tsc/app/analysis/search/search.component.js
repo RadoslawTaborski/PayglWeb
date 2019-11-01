@@ -8,11 +8,13 @@ let SearchComponent = class SearchComponent {
         this.isLoaded = false;
         this.clicked = [];
         this.query = "";
+        this.sum = 0;
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadAttributes();
-            yield this.shared.loadOperations(true, this.query, null, null);
+            this.sum = 0;
+            yield this.shared.loadOperations(true, "", null, null);
             yield this.shared.loadOperationsGroups(this.query, null, null);
             this.isLoaded = true;
             //console.log(this.isLoaded)
@@ -37,6 +39,15 @@ let SearchComponent = class SearchComponent {
             let tmp = date2 - date1;
             return tmp;
         });
+        this.sum = 0;
+        for (let op of result) {
+            if (op.TransactionType.Text == "wydatek") {
+                this.sum -= op.Amount;
+            }
+            else {
+                this.sum += op.Amount;
+            }
+        }
         return result;
     }
     onOperationClick(o, isNested) {
@@ -74,11 +85,11 @@ let SearchComponent = class SearchComponent {
     }
     search() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log("test");
+            this.sum = 0;
             this.isLoaded = false;
-            yield this.shared.loadOperations(true, this.query, null, null);
+            yield this.shared.loadOperations(true, this.query, this.dateFrom, this.dateTo);
+            yield this.shared.loadOperationsGroups(this.query, this.dateFrom, this.dateTo);
             this.isLoaded = true;
-            //await this.shared.loadOperationsGroups(this.query, null, null)
         });
     }
 };

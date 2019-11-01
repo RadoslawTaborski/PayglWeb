@@ -32,9 +32,9 @@ let DataService = class DataService {
     }
     loadOperationsGroups(query, from, to) {
         if (query != null && from != null && to != null) {
-            var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            return this.http.get(`api/operationsGroups/${fromFormated}/${toFormated}/${query}`).toPromise();
+            //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            //var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            return this.http.get(`api/operationsGroups/${from}/${to}/${query}`).toPromise();
         }
         else if (query != null) {
             return this.http.get(`api/operationsGroups/${query}`).toPromise();
@@ -44,17 +44,17 @@ let DataService = class DataService {
         }
     }
     loadOperations(withoutParent, query, from, to) {
-        if (from != null && to != null && query != null) {
-            var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            return this.http.get(`api/operations/${fromFormated}/${toFormated}/${query}`).toPromise();
+        if (from != null && to != null && query != null && query != "") {
+            //var fromFormated = from.toDateString()//from.toISOString().slice(0, 10).replace(/-/g, "");
+            //var toFormated = to.toDateString()//toISOString().slice(0, 10).replace(/-/g, "");
+            return this.http.get(`api/operations/${from}/${to}/${query}`).toPromise();
         }
         else if (from != null && to != null && withoutParent != null) {
-            var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            return this.http.get(`api/operations/${fromFormated}/${toFormated}/${withoutParent}`).toPromise();
+            // var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            //var toFormated = to.toISOString().slice(0, 10).replace(/-/g, "");
+            return this.http.get(`api/operations/${from}/${to}/${withoutParent}`).toPromise();
         }
-        else if (query != null) {
+        else if (query != null && query != "") {
             return this.http.get(`api/operations/${query}`).toPromise();
         }
         else if (withoutParent != null) {
