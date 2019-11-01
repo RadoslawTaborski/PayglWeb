@@ -9,7 +9,7 @@ AppComponent = tslib_1.__decorate([
     Component({
         selector: 'main-page',
         templateUrl: './app.component.html',
-        styles: []
+        styles: ['./app.component.css']
     })
 ], AppComponent);
 export { AppComponent };

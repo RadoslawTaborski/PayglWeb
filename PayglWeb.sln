@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBaseWithBusinessLogicCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzer", "Analyzer\Analyzer.csproj", "{35DF9273-AE1B-404D-A2B1-75E00E6B1DFE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{45D5CFD6-670F-459B-A0D8-AFDAF66FF390}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\db.txt = Scripts\db.txt
+		Scripts\Diagram.png = Scripts\Diagram.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

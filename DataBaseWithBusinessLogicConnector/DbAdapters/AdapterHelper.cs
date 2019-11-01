@@ -96,6 +96,9 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
                     return $"'{obj}'".Replace(",", ".");
                 case DataType.String:
                     return $"'{obj}'";
+                case DataType.Boolean:
+                    var boolean = (bool) obj;
+                    return boolean? "1" : "0";
                 default:
                     throw new NotImplementedException();
             }

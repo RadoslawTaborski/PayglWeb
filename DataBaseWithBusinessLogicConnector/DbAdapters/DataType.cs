@@ -6,6 +6,7 @@
         IntegerNullable,
         Double,
         Decimal,
-        String
+        String,
+        Boolean
     }
 }
