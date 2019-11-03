@@ -21,7 +21,7 @@ namespace PayglService
     public class Repository : IRepository
     {
         private ApiAdapter _apiAdapter;
-        private EntityRepository EntityRepository;
+        private EntityAdapter _entityAdapter;
 
         #region Entities
         public ApiUser User { get; private set; }
@@ -44,8 +44,7 @@ namespace PayglService
             ConfigurationManager.ReadConfig();
             var dataBaseData = ConfigurationManager.DataBaseData();
             _apiAdapter = new ApiAdapter(dbEngine, dataBaseData.Address, dataBaseData.Port, dataBaseData.Table, dataBaseData.Login, dataBaseData.Password);
-
-            EntityRepository = new EntityRepository();
+            _entityAdapter = new EntityAdapter();
 
             LoadUserAndLanguage();
             LoadSettings();
@@ -197,7 +196,7 @@ namespace PayglService
 
         public IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query)
         {
-            var operations = EntityRepository.GetOperations(Operations);
+            var operations = _entityAdapter.GetOperations(Operations);
             var filteredOperations = operations.Where(o => o.Parent == null && o.Date.Date <= to.Date &&o.Date.Date >= from.Date).ToList();
 
             var ioperations = new List<IOperation>();
@@ -209,13 +208,13 @@ namespace PayglService
             var group = new Group(filter, ioperations);
             group.FilterOperations();
 
-            var tmp =  EntityRepository.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
+            var tmp = _entityAdapter.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
             return tmp;
         }
 
         public IEnumerable<ApiOperation> GetFilteredOperations(string query)
         {
-            var operations = EntityRepository.GetOperations(Operations);
+            var operations = _entityAdapter.GetOperations(Operations);
             var filteredOperations = operations.Where(o => o.Parent == null).ToList();
 
             var ioperations = new List<IOperation>();
@@ -227,13 +226,13 @@ namespace PayglService
             var group = new Group(filter, ioperations);
             group.FilterOperations();
 
-            var tmp = EntityRepository.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
+            var tmp = _entityAdapter.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
             return tmp;
         }
 
         public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query)
         {
-            var operationsGroups = EntityRepository.GetOperationsGroups(OperationsGroups);
+            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
             var filteredGroups = operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList();
 
             var ioperations = new List<IOperation>();
@@ -243,18 +242,18 @@ namespace PayglService
 
             foreach (var elem in filteredGroups)
             {
-                elem.UpdateAmount(EntityRepository.GetTransactionTypes(TransactionTypes).ToList());
+                elem.UpdateAmount(_entityAdapter.GetTransactionTypes(TransactionTypes).ToList());
             }
             var filter = new Filter(queryWithName.Key, queryWithName.Value);
             var group = new Group(filter, ioperations);
             group.FilterOperations();
 
-            return EntityRepository.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
+            return _entityAdapter.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
         }
 
         public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query)
         {
-            var operationsGroups = EntityRepository.GetOperationsGroups(OperationsGroups);
+            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
 
             var ioperations = new List<IOperation>();
             ioperations.AddRange(operationsGroups);
@@ -263,13 +262,13 @@ namespace PayglService
 
             foreach (var elem in operationsGroups)
             {
-                elem.UpdateAmount(EntityRepository.GetTransactionTypes(TransactionTypes).ToList());
+                elem.UpdateAmount(_entityAdapter.GetTransactionTypes(TransactionTypes).ToList());
             }
             var filter = new Filter(queryWithName.Key, queryWithName.Value);
             var group = new Group(filter, ioperations);
             group.FilterOperations();
 
-            return EntityRepository.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
+            return _entityAdapter.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
         }
 
         private void LoadOperations(ApiUser user)
