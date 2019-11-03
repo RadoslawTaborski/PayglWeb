@@ -23,6 +23,12 @@ namespace PayglService
         IEnumerable<ApiImportance> GetImportances();
         ApiImportance GetImportance(int id);
 
+        IEnumerable<ApiFilter> GetFilters();
+        ApiFilter GetFilter(int id);
+
+        IEnumerable<ApiDashboard> GetDashboards();
+        ApiDashboard GetDashboard(int id);
+
         IEnumerable<ApiTag> GetTags();
         ApiTag GetTag(int id);
 

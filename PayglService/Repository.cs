@@ -15,6 +15,7 @@ using DataBaseWithBusinessLogicConnector.Interfaces.Dal;
 using DataBaseWithBusinessLogicConnector.Interfaces;
 using DataBaseWithBusinessLogicConnector.Helpers;
 using PayglService.Models;
+using Filter = PayglService.Models.Filter;
 
 namespace PayglService
 {
@@ -36,6 +37,8 @@ namespace PayglService
         public List<ApiTag> Tags { get; private set; }
         public List<ApiOperation> Operations { get; private set; }
         public List<ApiOperationsGroup> OperationsGroups { get; private set; }
+        public List<ApiFilter> Filters { get; private set; }
+        public List<ApiDashboard> Dashboards { get; private set; }
         #endregion
 
         #region DbAdapters
@@ -52,6 +55,10 @@ namespace PayglService
         private OperationTagAdapter OperationTagRelationAdapter { get; }
         private OperationsGroupAdapter OperationsGroupAdapter { get; }
         private OperationsGroupTagAdapter OperationsGroupRelationAdapter { get; }
+        private FilterAdapter FilterAdapter { get; }
+        private DashboardAdapter DashboardAdapter { get; }
+        private DashboardFilterRelationAdapter DashboardFilterRelationAdapter { get; }
+
         #endregion
 
         #region Mappers
@@ -67,6 +74,9 @@ namespace PayglService
         private RelationTagMapper TagRelationMapper { get; set; }
         private OperationMapper OperationMapper { get; set; }
         private OperationsGroupMapper OperationsGroupMapper { get; set; }
+        private FilterMapper FilterMapper { get; set; }
+        private DashboardMapper DashboardMapper { get; set; }
+        private DashboardFilterMapper DashboardFilterMapper { get; set; }
         #endregion
 
         public Repository(IDataBaseManagerFactory dbEngine)
@@ -89,6 +99,9 @@ namespace PayglService
             OperationTagRelationAdapter = new OperationTagAdapter(DbConnector);
             OperationsGroupAdapter = new OperationsGroupAdapter(DbConnector);
             OperationsGroupRelationAdapter = new OperationsGroupTagAdapter(DbConnector);
+            FilterAdapter = new FilterAdapter(DbConnector);
+            DashboardAdapter = new DashboardAdapter(DbConnector);
+            DashboardFilterRelationAdapter = new DashboardFilterRelationAdapter(DbConnector);
 
             LanguageMapper = new LanguageMapper();
             UserMapper = new UserMapper();
@@ -101,12 +114,22 @@ namespace PayglService
             TagRelationMapper = new RelationTagMapper();
             OperationMapper = new OperationMapper();
             OperationsGroupMapper = new OperationsGroupMapper();
+            FilterMapper = new FilterMapper();
+            DashboardMapper = new DashboardMapper();
+            DashboardFilterMapper = new DashboardFilterMapper();
 
             EntityRepository = new EntityRepository();
 
             LoadUserAndLanguage();
+            LoadSettings();
             LoadAttributes();
             ReloadData();
+        }
+
+        private void LoadSettings()
+        {
+            LoadFilters();
+            LoadDashboards();
         }
 
         private void ReloadData()
@@ -163,6 +186,26 @@ namespace PayglService
         public ApiTag GetTag(int id)
         {
             return Tags.Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<ApiFilter> GetFilters()
+        {
+            return Filters;
+        }
+
+        public ApiFilter GetFilter(int id)
+        {
+            return Filters.Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<ApiDashboard> GetDashboards()
+        {
+            return Dashboards;
+        }
+
+        public ApiDashboard GetDashboard(int id)
+        {
+            return Dashboards.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<ApiOperation> GetOperations(bool withoutParent = false)
@@ -357,7 +400,6 @@ namespace PayglService
 
             var relations = OperationTagRelationAdapter.GetAll(filter).ToList();
             var details = OperationDetailsAdapter.GetAll(filter).ToList();
-            TagRelationMapper.Update(Tags);
             OperationMapper.Update(Importances, Frequencies, TransactionTypes, TransferTypes, Tags, User, relations, details);
             Operations = OperationMapper.ConvertToApiEntitiesCollection(operations).ToList();
         }
@@ -379,6 +421,35 @@ namespace PayglService
 
             OperationsGroupMapper.Update(OperationMapper, Importances, Tags, Frequencies, Operations, User, relations);
             OperationsGroups = OperationsGroupMapper.ConvertToApiEntitiesCollection(OperationsGroupAdapter.GetAll($"user_id={User.Id}")).ToList();
+        }
+
+        private void LoadDashboards()
+        {
+            DashboardMapper.Update(User);
+            Dashboards = DashboardMapper.ConvertToApiEntitiesCollection(DashboardAdapter.GetAll($"user_id={User.Id}")).ToList();
+            var filter = "";
+            foreach (var dashboard in Dashboards)
+            {
+                filter += $"dashboard_id={dashboard.Id} OR ";
+            }
+            if (filter.Length > 4)
+            {
+                filter = filter.Substring(0, filter.Length - 4);
+            }
+
+            DashboardFilterMapper.Update(Filters, Dashboards);
+            var tmp = DashboardFilterRelationAdapter.GetAll(filter).GroupBy(t => t.DashboardId);
+
+            foreach (var group in tmp)
+            {
+                Dashboards.Where(t => t.Id == group.Key).FirstOrDefault().UpdateRelations(DashboardFilterMapper.ConvertToApiEntitiesCollection(group));
+            }
+        }
+
+        private void LoadFilters()
+        {
+            FilterMapper.Update(User);
+            Filters = FilterMapper.ConvertToApiEntitiesCollection(FilterAdapter.GetAll($"user_id={User.Id}")).ToList();
         }
 
         public async void UpdateOperationsGroupComplex(ApiOperationsGroup group)

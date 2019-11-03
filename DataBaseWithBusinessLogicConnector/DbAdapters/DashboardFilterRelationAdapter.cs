@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.DbAdapters
 {
-    public class DashboardFilterRelation : IAdapter<DalDashboardFilterRelation>
+    public class DashboardFilterRelationAdapter : IAdapter<DalDashboardFilterRelation>
     {
-        private const string Table = "dashboards";
+        private const string Table = "filters_dashboards_relations";
 
         private readonly Dictionary<string, DataType> _columns = new Dictionary<string, DataType>
         {
@@ -24,7 +24,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
 
         private readonly AdapterHelper _adapterHelper;
 
-        public DashboardFilterRelation(DbConnector connector)
+        public DashboardFilterRelationAdapter(DbConnector connector)
         {
             _adapterHelper = new AdapterHelper(connector, Table, _columns.Keys.ToList());
         }
@@ -43,7 +43,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             for (var i = 0; i < data.Tables[0].Rows.Count; ++i)
             {
                 var dataRow = data.Tables[0].Rows[i].ItemArray;
-                result.Add(new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), int.Parse(dataRow[2].ToString()), int.Parse(dataRow[3].ToString()), int.Parse(dataRow[4].ToString()) == 1 ? true : false, int.Parse(dataRow[5].ToString())));
+                result.Add(new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2] != DBNull.Value ? int.Parse(dataRow[2].ToString()) : (int?)null, dataRow[3] != DBNull.Value ? int.Parse(dataRow[3].ToString()) : (int?)null, (bool)dataRow[4], dataRow[5] != DBNull.Value ? int.Parse(dataRow[5].ToString()) : (int?)null));
             }
 
             return result;
@@ -58,7 +58,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             if (data.Tables.Count > 0)
             {
                 var dataRow = data.Tables[0].Rows[0].ItemArray;
-                result = new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), int.Parse(dataRow[2].ToString()), int.Parse(dataRow[3].ToString()), int.Parse(dataRow[4].ToString()) == 1 ? true : false, int.Parse(dataRow[5].ToString()));
+                result = new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2] != DBNull.Value ? int.Parse(dataRow[2].ToString()) : (int?)null, dataRow[3] != DBNull.Value ? int.Parse(dataRow[3].ToString()) : (int?)null, (bool)dataRow[4], dataRow[5] != DBNull.Value ? int.Parse(dataRow[5].ToString()) : (int?)null);
             }
 
             return result;

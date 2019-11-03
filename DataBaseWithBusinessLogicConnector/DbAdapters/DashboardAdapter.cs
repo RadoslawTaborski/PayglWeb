@@ -41,7 +41,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             for (var i = 0; i < data.Tables[0].Rows.Count; ++i)
             {
                 var dataRow = data.Tables[0].Rows[i].ItemArray;
-                result.Add(new DalDashboard(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2].ToString(), int.Parse(dataRow[3].ToString())==1?true:false));
+                result.Add(new DalDashboard(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2].ToString(), (bool)dataRow[3]));
             }
 
             return result;
@@ -56,7 +56,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             if (data.Tables.Count > 0)
             {
                 var dataRow = data.Tables[0].Rows[0].ItemArray;
-                result = new DalDashboard(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2].ToString(), int.Parse(dataRow[3].ToString()) == 1 ? true : false);
+                result = new DalDashboard(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2].ToString(), (bool)dataRow[3]);
             }
 
             return result;

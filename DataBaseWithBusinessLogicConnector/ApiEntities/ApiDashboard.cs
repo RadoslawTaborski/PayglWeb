@@ -18,13 +18,34 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
         public bool IsVisible { get; private set; }
         public List<ApiDashboardFilterRelation> Relations { get; private set; }
 
-        public ApiDashboard(int? id, ApiUser user, string name, bool isVisible, List<ApiDashboardFilterRelation> relations)
+        public ApiDashboard(int? id, ApiUser user, string name, bool isVisible)
         {
             Id = id;
             User = user;
             Name = name;
             IsVisible = isVisible;
-            Relations = relations;
+        }
+
+        public void UpdateRelations(IEnumerable<ApiDashboardFilterRelation> relations)
+        {
+            Relations = new List<ApiDashboardFilterRelation>();
+
+            ApiDashboardFilterRelation previous = null;
+            while (true)
+            {
+                var element = relations.Where(r => r.IndexOfNext == previous?.Id).FirstOrDefault();
+                if (element != null)
+                {
+                    Relations.Add(element);
+                    previous = element;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            Relations.Reverse();
         }
 
         public void UpdateId(int? id)
