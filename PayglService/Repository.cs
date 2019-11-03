@@ -46,38 +46,15 @@ namespace PayglService
             _apiAdapter = new ApiAdapter(dbEngine, dataBaseData.Address, dataBaseData.Port, dataBaseData.Table, dataBaseData.Login, dataBaseData.Password);
             _entityAdapter = new EntityAdapter();
 
-            LoadUserAndLanguage();
+            Login("rado", "1234");
+        }
+
+        public void Login(string login, string password)
+        {
+            LoadUserAndLanguage(login, password);
             LoadSettings();
             LoadAttributes();
             ReloadData();
-        }
-
-        private void LoadUserAndLanguage()
-        {
-            var mainData = _apiAdapter.GetUserAndLanguage("rado", "1234");
-            User = mainData.User;
-            Language = mainData.Language;
-        }
-
-        private void LoadAttributes()
-        {
-            TransactionTypes = _apiAdapter.GetTransactionTypes(Language);
-            TransferTypes = _apiAdapter.GetTransferTypes(Language);
-            Frequencies = _apiAdapter.GetFrequencies(Language);
-            Importances = _apiAdapter.GetImportances(Language);
-            Tags = _apiAdapter.GetTags(Language);
-        }
-
-        private void LoadSettings()
-        {
-            LoadFilters(User);
-            LoadDashboards(User);
-        }
-
-        private void ReloadData()
-        {
-            LoadOperations(User);
-            LoadOperationsGroups(User);
         }
 
         public IEnumerable<ApiTransactionType> GetTransactionTypes()
@@ -197,78 +174,72 @@ namespace PayglService
         public IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query)
         {
             var operations = _entityAdapter.GetOperations(Operations);
-            var filteredOperations = operations.Where(o => o.Parent == null && o.Date.Date <= to.Date &&o.Date.Date >= from.Date).ToList();
+            operations = operations.Where(o => o.Parent == null && o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList();
 
-            var ioperations = new List<IOperation>();
-            ioperations.AddRange(filteredOperations);
-
-            var queryWithName = new KeyValuePair<string, string>("", query);
-
-            var filter = new Filter(queryWithName.Key, queryWithName.Value);
-            var group = new Group(filter, ioperations);
-            group.FilterOperations();
-
-            var tmp = _entityAdapter.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
-            return tmp;
+            return Analyze(query, operations);
         }
 
         public IEnumerable<ApiOperation> GetFilteredOperations(string query)
         {
             var operations = _entityAdapter.GetOperations(Operations);
-            var filteredOperations = operations.Where(o => o.Parent == null).ToList();
+            operations = operations.Where(o => o.Parent == null).ToList();
 
-            var ioperations = new List<IOperation>();
-            ioperations.AddRange(filteredOperations);
-
-            var queryWithName = new KeyValuePair<string, string>("", query);
-
-            var filter = new Filter(queryWithName.Key, queryWithName.Value);
-            var group = new Group(filter, ioperations);
-            group.FilterOperations();
-
-            var tmp = _entityAdapter.GetApiOperations(group.Operations.ConvertAll(o => (Operation)o));
-            return tmp;
+            return Analyze(query, operations);
         }
 
         public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query)
         {
             var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-            var filteredGroups = operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList();
+            operationsGroups = operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList();
 
-            var ioperations = new List<IOperation>();
-            ioperations.AddRange(filteredGroups);
-
-            var queryWithName = new KeyValuePair<string, string>("", query);
-
-            foreach (var elem in filteredGroups)
-            {
-                elem.UpdateAmount(_entityAdapter.GetTransactionTypes(TransactionTypes).ToList());
-            }
-            var filter = new Filter(queryWithName.Key, queryWithName.Value);
-            var group = new Group(filter, ioperations);
-            group.FilterOperations();
-
-            return _entityAdapter.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
+            return Analyze(query, operationsGroups);
         }
 
         public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query)
         {
             var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
 
-            var ioperations = new List<IOperation>();
-            ioperations.AddRange(operationsGroups);
+            return Analyze(query, operationsGroups);
+        }
 
-            var queryWithName = new KeyValuePair<string, string>("", query);
+        public async void UpdateOperationsGroupComplex(ApiOperationsGroup group)
+        {
+            _apiAdapter.UpdateOperationsGroupComplex(group);
+            await Task.Run(() => ReloadData());
+        }
 
-            foreach (var elem in operationsGroups)
-            {
-                elem.UpdateAmount(_entityAdapter.GetTransactionTypes(TransactionTypes).ToList());
-            }
-            var filter = new Filter(queryWithName.Key, queryWithName.Value);
-            var group = new Group(filter, ioperations);
-            group.FilterOperations();
+        public async void UpdateOperationComplex(ApiOperation newOperation)
+        {
+            _apiAdapter.UpdateOperationComplex(newOperation);
+            await Task.Run(() => ReloadData());
+        }
 
-            return _entityAdapter.GetApiOperationsGroups(group.Operations.ConvertAll(o => (OperationsGroup)o));
+        private void LoadUserAndLanguage(string login, string password)
+        {
+            var mainData = _apiAdapter.GetUserAndLanguage(login, password);
+            User = mainData.User;
+            Language = mainData.Language;
+        }
+
+        private void LoadAttributes()
+        {
+            TransactionTypes = _apiAdapter.GetTransactionTypes(Language);
+            TransferTypes = _apiAdapter.GetTransferTypes(Language);
+            Frequencies = _apiAdapter.GetFrequencies(Language);
+            Importances = _apiAdapter.GetImportances(Language);
+            Tags = _apiAdapter.GetTags(Language);
+        }
+
+        private void LoadSettings()
+        {
+            LoadFilters(User);
+            LoadDashboards(User);
+        }
+
+        private void ReloadData()
+        {
+            LoadOperations(User);
+            LoadOperationsGroups(User);
         }
 
         private void LoadOperations(ApiUser user)
@@ -291,16 +262,34 @@ namespace PayglService
             Filters = _apiAdapter.GetFilters(user);
         }
 
-        public async void UpdateOperationsGroupComplex(ApiOperationsGroup group)
+        private IEnumerable<ApiOperation> Analyze(string query, IEnumerable<Operation> operations)
         {
-            _apiAdapter.UpdateOperationsGroupComplex(group);
-            await Task.Run(() => ReloadData());
+            var ioperations = new List<IOperation>();
+            ioperations.AddRange(operations);
+
+            var queryWithName = new KeyValuePair<string, string>("", query);
+
+            var filter = new Filter(queryWithName.Key, queryWithName.Value);
+            var analyzerRunner = new AnalyzerRunner(filter, ioperations);
+            var filteredOperations = analyzerRunner.Run();
+
+            var tmp = _entityAdapter.GetApiOperations(filteredOperations.ConvertAll(o => (Operation)o));
+            return tmp;
         }
 
-        public async void UpdateOperationComplex(ApiOperation newOperation)
+        private IEnumerable<ApiOperationsGroup> Analyze(string query, IEnumerable<OperationsGroup> operations)
         {
-            _apiAdapter.UpdateOperationComplex(newOperation);
-            await Task.Run(() => ReloadData());
+            var ioperations = new List<IOperation>();
+            ioperations.AddRange(operations);
+
+            var queryWithName = new KeyValuePair<string, string>("", query);
+
+            var filter = new Filter(queryWithName.Key, queryWithName.Value);
+            var analyzerRunner = new AnalyzerRunner(filter, ioperations);
+            var filteredOperations = analyzerRunner.Run();
+
+            var tmp = _entityAdapter.GetApiOperationsGroups(filteredOperations.ConvertAll(o => (OperationsGroup)o));
+            return tmp;
         }
     }
 }
