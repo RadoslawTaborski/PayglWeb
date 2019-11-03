@@ -24,6 +24,12 @@ namespace DataBaseWithBusinessLogicConnector.Entities
             Query = query;
         }
 
+        public Filter(string name, string query)
+        {
+            Name = name;
+            Query = query;
+        }
+
         public void UpdateId(int? id)
         {
             Id = id;

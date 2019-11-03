@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.Entities
 {
-    public class Dashboard : IEntity
+    public class Dashboard : IEntity, IFilter
     {
         public int? Id { get; private set; }
         public bool IsDirty { get; set; }
@@ -17,12 +17,16 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public bool IsVisible { get; private set; }
         public List<DashboardFilterRelation> Relations { get; private set; }
 
-        public Dashboard(int? id, User user, string name, bool isVisible, List<DashboardFilterRelation> relations)
+        public Dashboard(int? id, User user, string name, bool isVisible)
         {
             Id = id;
             User = user;
             Name = name;
             IsVisible = isVisible;
+        }
+
+        public void UpdateRelations(List<DashboardFilterRelation> relations)
+        {
             Relations = relations;
         }
 

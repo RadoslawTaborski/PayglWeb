@@ -1,4 +1,5 @@
-﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+﻿using DataBaseWithBusinessLogicConnector.Entities;
+using DataBaseWithBusinessLogicConnector.Interfaces;
 using System.Collections.Generic;
 
 namespace PayglService.Models
@@ -39,11 +40,6 @@ namespace PayglService.Models
                     Amount -= item.Amount;
                 }
             }
-        }
-
-        public void SetQuery(string query)
-        {
-            Filter.SetQuery(query);
         }
     }
 }

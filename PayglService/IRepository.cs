@@ -35,14 +35,10 @@ namespace PayglService
         IEnumerable<ApiOperation> GetOperations(bool withoutParent = false);
         ApiOperation GetOperation(int id);
         IEnumerable<ApiOperation> GetOperations(DateTime from, DateTime to, bool withoutParent = false);
-        IEnumerable<OperationComplex> GetDalOperations(IEnumerable<ApiOperation> apiObjects);
-        OperationComplex GetDalOperation(ApiOperation apiObjects);
 
         IEnumerable<ApiOperationsGroup> GetOperationsGroups();
         ApiOperationsGroup GetOperationsGroup(int id);
         IEnumerable<ApiOperationsGroup> GetOperationsGroups(DateTime from, DateTime to);
-        IEnumerable<OperationsGroupComplex> GetDalOperationsGroups(IEnumerable<ApiOperationsGroup> apiObjects);
-        OperationsGroupComplex GetDalOperationsGroup(ApiOperationsGroup apiObjects);
 
         void UpdateOperationsGroupComplex(ApiOperationsGroup group);
         void UpdateOperationComplex(ApiOperation newOperation);
