@@ -23,7 +23,7 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                var json = JsonHelper.JsonFromIEntity(_repository.GetDashboards(), "IsDirty", "IsMarkForDeletion", "User");
+                var json = JsonHelper.JsonFromIEntity(_repository.GetDashboards(), "IsDirty", "IsMarkForDeletion");
                 return Ok(json);
             }
             catch (Exception)
@@ -37,7 +37,7 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                var json = JsonHelper.JsonFromIEntity(_repository.GetDashboard(id), "IsDirty", "IsMarkForDeletion", "User");
+                var json = JsonHelper.JsonFromIEntity(_repository.GetDashboard(id), "IsDirty", "IsMarkForDeletion");
                 return Ok(json);
             }
             catch (Exception)

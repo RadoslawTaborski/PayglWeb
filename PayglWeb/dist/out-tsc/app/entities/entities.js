@@ -124,10 +124,68 @@ export class OperationDetails {
     static createFromJson(data) {
         let operationDetails = new OperationDetails();
         operationDetails.Id = data.Id;
-        operationDetails.Name = data.TNameext;
+        operationDetails.Name = data.Name;
         operationDetails.Quantity = data.Quantity;
         operationDetails.Amount = data.Amount;
         return operationDetails;
+    }
+}
+export class Filter {
+    constructor(id, user, name, query) {
+        this.Id = id;
+        this.User = user;
+        this.Name = name;
+        this.Query = query;
+    }
+    static createFromJson(data) {
+        let filter = new Filter();
+        filter.Id = data.Id;
+        filter.User = User.createFromJson(data.User);
+        filter.Name = data.Name;
+        filter.Query = data.Query;
+        return filter;
+    }
+}
+export class Dashboard {
+    constructor(id, user, name, isVisible, relations) {
+        this.Id = id;
+        this.User = user;
+        this.Name = name;
+        this.IsVisible = isVisible;
+        this.Relations = relations;
+    }
+    static createFromJson(data) {
+        let dashboard = new Dashboard();
+        dashboard.Id = data.Id;
+        dashboard.User = User.createFromJson(data.User);
+        dashboard.IsVisible = data.IsVisible;
+        dashboard.Name = data.Name;
+        dashboard.Relations = [];
+        for (let relation of data.Relations) {
+            dashboard.Relations.push(DashboardFilterRelation.createFromJson(relation));
+        }
+        return dashboard;
+    }
+}
+export class DashboardFilterRelation {
+    constructor(id, filter, isVisible, indexOfNext) {
+        this.Id = id;
+        this.Filter = filter;
+        this.IsVisible = isVisible;
+        this.IndexOfNext = indexOfNext;
+    }
+    static createFromJson(data) {
+        let relation = new DashboardFilterRelation();
+        relation.Id = data.Id;
+        relation.IsVisible = data.IsVisible;
+        relation.IndexOfNext = data.IndexOfNext;
+        if (data.Filter.Relations != undefined) {
+            relation.Filter = Dashboard.createFromJson(data.Filter);
+        }
+        else {
+            relation.Filter = Filter.createFromJson(data.Filter);
+        }
+        return relation;
     }
 }
 //# sourceMappingURL=entities.js.map

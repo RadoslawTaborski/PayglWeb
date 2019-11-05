@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { User, Frequency, Importance, Tag, TransactionType, TransferType } from '../entities/entities'
+import { User, Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dashboard } from '../entities/entities'
 import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 import { DataService } from './data.service';
@@ -12,6 +12,8 @@ export class SharedService {
     tags: Tag[] = [];
     transactionTypes: TransactionType[] = [];
     transferType: TransferType[] = [];
+    filters: Filter[] = [];
+    dashboards: Dashboard[] = [];
     operations: Operation[] = [];
     operationsGroups: OperationsGroup[] = [];
 
@@ -46,6 +48,17 @@ export class SharedService {
             tmp.forEach(a => this.transferType.push(TransferType.createFromJson(a)))
             //console.log(this.transferType);
         }
+    }
+
+    async loadFiltersAndDashboards() {
+        let tmp: any[]
+        this.filters = []
+        tmp = await this.data.loadFilters()
+        tmp.forEach(a => this.filters.push(Filter.createFromJson(a)))
+
+        this.dashboards = []
+        tmp = await this.data.loadDashboards()
+        tmp.forEach(a => this.dashboards.push(Dashboard.createFromJson(a)))
     }
 
     async loadOperationsGroups(query?: string, from?: Date, to?: Date) {

@@ -192,7 +192,7 @@ export class OperationDetails {
     static createFromJson(data: any): OperationDetails {
         let operationDetails = new OperationDetails()
         operationDetails.Id = data.Id
-        operationDetails.Name = data.TNameext
+        operationDetails.Name = data.Name
         operationDetails.Quantity = data.Quantity
         operationDetails.Amount = data.Amount
 
@@ -200,3 +200,89 @@ export class OperationDetails {
     }
 }
 
+export class Filter implements IFilter {
+    Id: number;
+    IsDirty: boolean;
+    IsMarkForDeletion: boolean;
+    User: User;
+    Name: string;
+    Query: string;
+
+    constructor(id?: number, user?: User, name?: string, query?: string) {
+        this.Id = id
+        this.User = user
+        this.Name = name
+        this.Query = query
+    }
+
+    static createFromJson(data: any): Filter {
+        let filter = new Filter();
+        filter.Id = data.Id;
+        filter.User = User.createFromJson(data.User);
+        filter.Name = data.Name
+        filter.Query = data.Query
+        return filter
+    }
+}
+
+export class Dashboard implements IFilter {
+    Id: number;
+    IsDirty: boolean;
+    IsMarkForDeletion: boolean;
+    User: User;
+    IsVisible: boolean;
+    Name: string;
+    Relations: DashboardFilterRelation[]
+
+    constructor(id?: number, user?: User, name?: string, isVisible?: boolean, relations?: DashboardFilterRelation[]) {
+        this.Id = id
+        this.User = user
+        this.Name = name
+        this.IsVisible = isVisible
+        this.Relations = relations
+    }
+
+    static createFromJson(data: any): Dashboard {
+        let dashboard = new Dashboard()
+        dashboard.Id = data.Id
+        dashboard.User = User.createFromJson(data.User)
+        dashboard.IsVisible = data.IsVisible
+        dashboard.Name = data.Name
+        dashboard.Relations=[]
+        for (let relation of data.Relations) {
+            dashboard.Relations.push(DashboardFilterRelation.createFromJson(relation))
+        }
+        return dashboard
+    }
+}
+
+export class DashboardFilterRelation {
+    Id: number;
+    IsDirty: boolean;
+    IsMarkForDeletion: boolean;
+    Filter: IFilter;
+    IsVisible: boolean;
+    IndexOfNext: number;
+
+    constructor(id?: number, filter?: IFilter, isVisible?: boolean, indexOfNext?: number) {
+        this.Id = id
+        this.Filter = filter
+        this.IsVisible = isVisible
+        this.IndexOfNext = indexOfNext
+    }
+
+    static createFromJson(data: any): DashboardFilterRelation {
+        let relation = new DashboardFilterRelation();
+        relation.Id = data.Id;
+        relation.IsVisible = data.IsVisible
+        relation.IndexOfNext = data.IndexOfNext
+        if (data.Filter.Relations != undefined) {
+            relation.Filter = Dashboard.createFromJson(data.Filter)
+        } else {
+            relation.Filter = Filter.createFromJson(data.Filter)
+        }
+        return relation
+    }
+}
+
+export interface IFilter {}

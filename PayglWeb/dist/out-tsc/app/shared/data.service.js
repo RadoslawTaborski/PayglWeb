@@ -30,6 +30,12 @@ let DataService = class DataService {
     loadTransferTypes() {
         return this.http.get("api/transferTypes").toPromise();
     }
+    loadFilters() {
+        return this.http.get("api/filters").toPromise();
+    }
+    loadDashboards() {
+        return this.http.get("api/dashboards").toPromise();
+    }
     loadOperationsGroups(query, from, to) {
         if (query != null && from != null && to != null) {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");

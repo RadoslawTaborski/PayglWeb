@@ -40,6 +40,14 @@ export class DataService {
         return this.http.get<any[]>("api/transferTypes").toPromise()
     }
 
+    loadFilters(): Promise<any[]> {
+        return this.http.get<any[]>("api/filters").toPromise()
+    }
+
+    loadDashboards(): Promise<any[]> {
+        return this.http.get<any[]>("api/dashboards").toPromise()
+    }
+
     loadOperationsGroups(query?: string, from?: Date, to?: Date): Promise<any[]> {
         if (query != null && from != null && to != null) {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");

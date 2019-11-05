@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
-import { Frequency, Importance, Tag, TransactionType, TransferType } from '../entities/entities';
+import { Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dashboard } from '../entities/entities';
 import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 let SharedService = class SharedService {
@@ -12,6 +12,8 @@ let SharedService = class SharedService {
         this.tags = [];
         this.transactionTypes = [];
         this.transferType = [];
+        this.filters = [];
+        this.dashboards = [];
         this.operations = [];
         this.operationsGroups = [];
     }
@@ -41,6 +43,17 @@ let SharedService = class SharedService {
                 tmp.forEach(a => this.transferType.push(TransferType.createFromJson(a)));
                 //console.log(this.transferType);
             }
+        });
+    }
+    loadFiltersAndDashboards() {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            let tmp;
+            this.filters = [];
+            tmp = yield this.data.loadFilters();
+            tmp.forEach(a => this.filters.push(Filter.createFromJson(a)));
+            this.dashboards = [];
+            tmp = yield this.data.loadDashboards();
+            tmp.forEach(a => this.dashboards.push(Dashboard.createFromJson(a)));
         });
     }
     loadOperationsGroups(query, from, to) {

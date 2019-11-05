@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
-import { Frequency, Importance, Tag, TagRelation, User, Language, Details, TransferType, TransactionType } from '../../entities/entities';
+import { Frequency, Importance, Tag, TagRelation, User, Language, Details, TransferType, TransactionType, Filter, Dashboard } from '../../entities/entities';
 import { OperationsGroup } from '../../entities/OperationsGroup';
 import { ApplicationStateService } from '../../shared/application-state.service';
 
