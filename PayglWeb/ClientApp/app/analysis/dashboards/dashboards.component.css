@@ -1,0 +1,28 @@
+.bg-main2 {
+    background-color: #800000;
+}
+
+.bg-main {
+    background-color: #600000;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.inline-p {
+    display: inline;
+}
+
+p {
+    margin: 0
+}
+
+.div-row {
+    width: 100%;
+}
+
+.inner {
+    padding-left: 5px;
+    padding-right: 5px;
+}

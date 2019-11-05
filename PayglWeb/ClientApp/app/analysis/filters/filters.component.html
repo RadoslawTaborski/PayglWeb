@@ -1,1 +1,20 @@
-<p>filters works!</p>
+﻿<div class="div-row">
+    <div class="div-row" *ngIf="isLoaded">
+        <!----------------------NORMAL------------------>
+        <div *ngIf="state.isScreenNormal()">
+            <div class="row" *ngFor="let o of getFilters()">
+                <div class="bg-main div-row text-white">
+                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onFilterClick(o)">
+                        <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{o.Name}} </div>
+                    </div>
+                    <div *ngIf="isClicked(o)">
+                        <div class="bg-main2 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{o.Query}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

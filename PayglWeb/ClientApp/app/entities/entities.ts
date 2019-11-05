@@ -285,4 +285,6 @@ export class DashboardFilterRelation {
     }
 }
 
-export interface IFilter {}
+export interface IFilter {
+    Name: string
+}

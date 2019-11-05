@@ -5,13 +5,30 @@ let FiltersComponent = class FiltersComponent {
         this.shared = shared;
         this.state = state;
         this.isLoaded = false;
+        this.clicked = [];
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            yield this.shared.loadAttributes();
+            yield this.shared.loadFiltersAndDashboards();
             this.isLoaded = true;
             //console.log(this.isLoaded)
         });
+    }
+    getFilters() {
+        //console.log(this.shared.filters)
+        return this.shared.filters;
+    }
+    onFilterClick(o) {
+        if (!this.clicked.includes(o)) {
+            this.clicked = [];
+            this.clicked.push(o);
+        }
+        else {
+            this.clicked = [];
+        }
+    }
+    isClicked(o) {
+        return this.clicked.includes(o);
     }
 };
 FiltersComponent = tslib_1.__decorate([

@@ -1,1 +1,15 @@
-<p>analysis works!</p>
+﻿<div class="div-row">
+    <div class="div-row" *ngIf="isLoaded">
+        <div *ngFor="let d of getDashboards()">
+            <div *ngIf="d.IsVisible">
+                <button class="tablink" (click)="onDashboardClick(d)">{{d.Name}}</button>
+            </div>
+        </div>
+        <div *ngFor="let d of getDashboards()">
+            <div *ngIf="isClicked(d)">
+                <div>{{d.Name}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
