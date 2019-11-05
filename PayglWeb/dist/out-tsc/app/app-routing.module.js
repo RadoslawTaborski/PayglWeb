@@ -4,11 +4,17 @@ import { RouterModule } from '@angular/router';
 import { ManualOperationComponent } from './adding/manual-operation/manual-operation.component';
 import { GroupComponent } from './adding/group/group.component';
 import { SearchComponent } from './analysis/search/search.component';
+import { FiltersComponent } from './analysis/filters/filters.component';
+import { DashboardsComponent } from './analysis/dashboards/dashboards.component';
+import { AnalysisComponent } from './analysis/analysis/analysis.component';
 export const routes = [
     { path: '', redirectTo: 'operation', pathMatch: 'full' },
     { path: 'operation', component: ManualOperationComponent },
     { path: 'group', component: GroupComponent },
     { path: 'search', component: SearchComponent },
+    { path: 'filters', component: FiltersComponent },
+    { path: 'dashboards', component: DashboardsComponent },
+    { path: 'analysis', component: AnalysisComponent },
     { path: '**', redirectTo: 'operation' }
 ];
 let AppRoutingModule = class AppRoutingModule {

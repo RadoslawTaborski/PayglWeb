@@ -17,20 +17,9 @@ let GroupComponent = class GroupComponent {
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadAttributes();
-            yield this.shared.loadFiltersAndDashboards();
-            this.getFilters();
-            this.getDashboards();
             this.isLoaded = true;
             //console.log(this.isLoaded)
         });
-    }
-    getFilters() {
-        //console.log(this.shared.filters)
-        return this.shared.filters;
-    }
-    getDashboards() {
-        //console.log(this.shared.dashboards)
-        return this.shared.dashboards;
     }
     getFrequencies() {
         //console.log(this.shared.frequencies)

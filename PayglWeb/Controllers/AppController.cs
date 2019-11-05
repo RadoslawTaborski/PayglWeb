@@ -36,5 +36,26 @@ namespace PayglWeb.Controllers
             ViewBag.Title = "Search";
             return View();
         }
+
+        [HttpGet("filters")]
+        public IActionResult Filters()
+        {
+            ViewBag.Title = "Filters";
+            return View();
+        }
+
+        [HttpGet("dashboards")]
+        public IActionResult Dashboards()
+        {
+            ViewBag.Title = "Dashboards";
+            return View();
+        }
+
+        [HttpGet("analysis")]
+        public IActionResult Analysis()
+        {
+            ViewBag.Title = "Analysis";
+            return View();
+        }
     }
 }

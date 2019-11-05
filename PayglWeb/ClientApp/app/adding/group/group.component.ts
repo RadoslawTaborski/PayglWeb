@@ -9,7 +9,7 @@ import { ApplicationStateService } from '../../shared/application-state.service'
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css']
 })
-export class GroupComponent {
+export class GroupComponent implements OnInit {
     public isLoaded: boolean = false
 
     public description: string = ""

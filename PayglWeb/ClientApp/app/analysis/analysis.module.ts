@@ -5,14 +5,17 @@ import { SharedService } from '../shared/shared.service';
 import { DataService } from '../shared/data.service';
 import { FormsModule } from '@angular/forms';
 import { ApplicationStateService } from '../shared/application-state.service';
+import { FiltersComponent } from './filters/filters.component';
+import { DashboardsComponent } from './dashboards/dashboards.component';
+import { AnalysisComponent } from './analysis/analysis.component';
 
 @NgModule({
-    declarations: [SearchComponent],
+    declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent],
     imports: [
         CommonModule,
         FormsModule
     ],
-    exports: [SearchComponent],
+    exports: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent],
     providers: [
         SharedService,
         DataService,
