@@ -1,5 +1,6 @@
 ﻿using DataBaseWithBusinessLogicConnector.Interfaces;
 using Newtonsoft.Json.Linq;
+using PayglService.DashboardOutputElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace PayglWeb.Controllers.Helpers
             return json;
         }
 
-        public static string JsonFromIEntity(IEntity entity, params string[] tagsToRemove)
+        public static string JsonFromObject(object entity, params string[] tagsToRemove)
         {
             var temp = JObject.FromObject(entity);
             temp.Descendants()

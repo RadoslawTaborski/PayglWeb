@@ -1,6 +1,7 @@
 ﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
 using DataBaseWithBusinessLogicConnector.DalEntities;
 using DataBaseWithBusinessLogicConnector.Entities;
+using PayglService.DashboardOutputElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +44,12 @@ namespace PayglService
         void UpdateOperationsGroupComplex(ApiOperationsGroup group);
         void UpdateOperationComplex(ApiOperation newOperation);
 
-        public IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query);
-        public IEnumerable<ApiOperation> GetFilteredOperations(string query);
-        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query);
-        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query);
+        IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query);
+        IEnumerable<ApiOperation> GetFilteredOperations(string query);
+        IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query);
+        IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query);
+
+        IDashboardOutput GetDashboardOutput(int dashboardId, DateTime from, DateTime to);
+        IDashboardOutput GetDashboardOutput(int dashboardId);
     }
 }

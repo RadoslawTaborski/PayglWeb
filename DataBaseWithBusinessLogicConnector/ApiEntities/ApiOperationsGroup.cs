@@ -1,4 +1,5 @@
 ﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiOperationsGroup : IEntity
+    public class ApiOperationsGroup : IEntity, IApiOperation
     {
         public int? Id { get;  set; }
         public bool IsDirty { get; set; }
@@ -35,6 +36,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
         public ApiOperationsGroup()
         {
         }
+
         public void UpdateId(int? id)
         {
             Id = id;

@@ -38,7 +38,7 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                var json = JsonHelper.JsonFromIEntity(_repository.GetFrequency(id), "IsDirty", "IsMarkForDeletion");
+                var json = JsonHelper.JsonFromObject(_repository.GetFrequency(id), "IsDirty", "IsMarkForDeletion");
                 return Ok(json);
             }
             catch (Exception)

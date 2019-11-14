@@ -1,6 +1,8 @@
 ﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
 using DataBaseWithBusinessLogicConnector.ApiEntityMappers;
 using DataBaseWithBusinessLogicConnector.Entities;
+using DataBaseWithBusinessLogicConnector.Interfaces;
+using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +13,6 @@ namespace DataBaseWithBusinessLogicConnector
 {
     public class EntityAdapter
     {
-        #region Entities
-        public static Language Language { get; private set; }
-        public static List<Language> Languages { get; private set; }
-        public static User User { get; private set; }
-        public static List<Tag> Tags { get; private set; }
-        public static List<Frequency> Frequencies { get; private set; }
-        public static List<Importance> Importances { get; private set; }
-        public static List<TransactionType> TransactionTypes { get; private set; }
-        public static List<TransferType> TransferTypes { get; private set; }
-        public static List<Operation> Operations { get; private set; }
-        public static List<OperationsGroup> OperationsGroups { get; private set; }
-        #endregion
-
         #region Mappers
         static OperationsGroupMapper _operationsGroupMapper;
         static OperationMapper _operationMapper;
@@ -37,6 +26,9 @@ namespace DataBaseWithBusinessLogicConnector
         static ImportanceMapper _importanceMapper;
         static TransactionTypeMapper _transactionTypeMapper;
         static TransferTypeMapper _transferTypeMapper;
+        static FilterMapper _filterMapper;
+        static DashboardMapper _dashboardMapper;
+        static DashboardFilterMapper _dashboardFilterMapper;
         #endregion
 
         public EntityAdapter()
@@ -53,6 +45,9 @@ namespace DataBaseWithBusinessLogicConnector
             _operationDetailsMapper = new OperationDetailsMapper();
             _operationMapper = new OperationMapper(_userMapper, _frequencyMapper, _importanceMapper, _relationTagMapper, _transactionTypeMapper, _transferTypeMapper, _operationDetailsMapper);
             _operationsGroupMapper = new OperationsGroupMapper(_userMapper, _frequencyMapper, _importanceMapper, _relationTagMapper, _transactionTypeMapper, _transferTypeMapper, _operationMapper);
+            _dashboardMapper = new DashboardMapper(_userMapper);
+            _filterMapper = new FilterMapper(_userMapper);
+            _dashboardFilterMapper = new DashboardFilterMapper(_filterMapper,_dashboardMapper);
         }
 
         public IEnumerable<Operation> GetOperations(List<ApiOperation> apiOperations)
@@ -78,6 +73,27 @@ namespace DataBaseWithBusinessLogicConnector
         public IEnumerable<TransactionType> GetTransactionTypes(List<ApiTransactionType> apiTransactionTypes)
         {
             return _transactionTypeMapper.ConvertToEntitiesCollection(apiTransactionTypes);
+        }
+
+        public Dashboard GetDashboard(ApiDashboard apiDashboard)
+        {
+            var dasboard = _dashboardMapper.ConvertToEntity(apiDashboard);
+            var relations = _dashboardFilterMapper.ConvertToEntitiesCollection(apiDashboard.Relations).ToList();
+
+            dasboard.UpdateRelations(relations);
+            return dasboard;
+        }
+
+        public IEnumerable<IApiOperation> GetIApiOperations(List<IOperation> iOperations)
+        {
+            var result = new List<IApiOperation>();
+            var operations = iOperations.Where(o => o is Operation).Select(o=>o as Operation).ToList();
+            var operationsGroups = iOperations.Where(o => o is OperationsGroup).Select(o => o as OperationsGroup).ToList();
+
+            result.AddRange(GetApiOperations(operations));
+            result.AddRange(GetApiOperationsGroups(operationsGroups));
+
+            return result;
         }
     }
 }

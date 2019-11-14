@@ -37,7 +37,7 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                var json = JsonHelper.JsonFromIEntity(_repository.GetTransactionType(id), "IsDirty", "IsMarkForDeletion");
+                var json = JsonHelper.JsonFromObject(_repository.GetTransactionType(id), "IsDirty", "IsMarkForDeletion");
                 return Ok(json);
             }
             catch (Exception)
