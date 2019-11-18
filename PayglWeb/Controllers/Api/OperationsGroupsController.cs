@@ -52,38 +52,6 @@ namespace PayglWeb.Controllers.Api
             }
         }
 
-        [HttpGet("{from}/{to}/{query}")]
-        public IActionResult Get(string from, string to, string query)
-        {
-            try
-            {
-                DateTime dtFrom = DateTime.Parse(from);
-                DateTime dtTo = DateTime.Parse(to);
-                var result = JsonConvert.SerializeObject(_repository.GetFilteredOperationsGroups(dtFrom, dtTo, query), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
-                result = JsonHelper.JsonArrayWithoutTags(result, "IsDirty", "IsMarkForDeletion");
-                return Ok(result);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Failed");
-            }
-        }
-
-        [HttpGet("{query}")]
-        public IActionResult Get(string query)
-        {
-            try
-            {
-                var result = JsonConvert.SerializeObject(_repository.GetFilteredOperationsGroups(query), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore });
-                result = JsonHelper.JsonArrayWithoutTags(result, "IsDirty", "IsMarkForDeletion");
-                return Ok(result);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Failed");
-            }
-        }
-
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {

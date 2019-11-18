@@ -10,7 +10,7 @@ namespace PayglWeb.Controllers.Helpers
 {
     public static class JsonHelper
     {
-        public static string JsonFromIEntity(IEnumerable<IEntity> collection, params string[] tagsToRemove)
+        public static string JsonFromArray(IEnumerable<object> collection, params string[] tagsToRemove)
         {
             var temp = JArray.FromObject(collection);
             temp.Descendants()

@@ -34,13 +34,17 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public DashboardFilterRelation ConvertToEntity(ApiDashboardFilterRelation dataEntity)
         {
             IFilter filter = null;
-            if(dataEntity.Filter is ApiFilter)
+            if (dataEntity.Filter is ApiFilter)
             {
                 filter = _filterMapper.ConvertToEntity(dataEntity.Filter as ApiFilter);
             } else if(dataEntity.Filter is ApiDashboard)
             {
-                filter = _dashboardMapper.ConvertToEntity(dataEntity.Filter as ApiDashboard);
+                var tmp = (_dashboardMapper.ConvertToEntity(dataEntity.Filter as ApiDashboard));
+                var relations = ConvertToEntitiesCollection((dataEntity.Filter as ApiDashboard).Relations).ToList();
+                tmp.UpdateRelations(relations);
+                filter = tmp;
             }
+
             var result = new DashboardFilterRelation(dataEntity.Id, filter, dataEntity.IsVisible, dataEntity.IndexOfNext);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;

@@ -44,11 +44,10 @@ namespace PayglService
         void UpdateOperationsGroupComplex(ApiOperationsGroup group);
         void UpdateOperationComplex(ApiOperation newOperation);
 
-        IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query);
-        IEnumerable<ApiOperation> GetFilteredOperations(string query);
-        IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query);
-        IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query);
-
+        List<IDashboardOutput> GetDashboardsOutputs();
+        List<IDashboardOutput> GetDashboardsOutputs(DateTime from, DateTime to);
+        IDashboardOutput GetDashboardOutput(string query, DateTime from, DateTime to);
+        IDashboardOutput GetDashboardOutput(string query);
         IDashboardOutput GetDashboardOutput(int dashboardId, DateTime from, DateTime to);
         IDashboardOutput GetDashboardOutput(int dashboardId);
     }

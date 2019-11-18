@@ -165,35 +165,64 @@ namespace PayglService
             return OperationsGroups.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<ApiOperation> GetFilteredOperations(DateTime from, DateTime to, string query)
+        public List<IDashboardOutput> GetDashboardsOutputs()
         {
+            var result = new List<IDashboardOutput>();
+             foreach (var dashboard in Dashboards.Where(d => d.IsVisible))
+            {
+                var iOperations = new List<IOperation>();
+                var operations = _entityAdapter.GetOperations(Operations);
+                iOperations.AddRange(operations.Where(o => o.Parent == null).ToList());
+
+                var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
+                iOperations.AddRange(operationsGroups);
+
+                result.Add(GenerateDashboardOutput(dashboard, iOperations));
+            }
+
+            return result;
+        }
+
+        public List<IDashboardOutput> GetDashboardsOutputs(DateTime from, DateTime to)
+        {
+            var result = new List<IDashboardOutput>();
+            foreach (var dashboard in Dashboards.Where(d => d.IsVisible))
+            {
+                var iOperations = new List<IOperation>();
+                var operations = _entityAdapter.GetOperations(Operations);
+                iOperations.AddRange(operations.Where(o => o.Parent == null && o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+
+                var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
+                iOperations.AddRange(operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+
+                result.Add(GenerateDashboardOutput(dashboard, iOperations));
+            }
+
+            return result;
+        }
+
+        public IDashboardOutput GetDashboardOutput(string query, DateTime from, DateTime to)
+        {
+            var iOperations = new List<IOperation>();
             var operations = _entityAdapter.GetOperations(Operations);
-            operations = operations.Where(o => o.Parent == null && o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList();
+            iOperations.AddRange(operations.Where(o => o.Parent == null && o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
 
-            return Analyze(query, operations);
+            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
+            iOperations.AddRange(operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+
+            return GenerateDashboardOutput(query, iOperations);
         }
 
-        public IEnumerable<ApiOperation> GetFilteredOperations(string query)
+        public IDashboardOutput GetDashboardOutput(string query)
         {
+            var iOperations = new List<IOperation>();
             var operations = _entityAdapter.GetOperations(Operations);
-            operations = operations.Where(o => o.Parent == null).ToList();
+            iOperations.AddRange(operations.Where(o => o.Parent == null).ToList());
 
-            return Analyze(query, operations);
-        }
-
-        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(DateTime from, DateTime to, string query)
-        {
             var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-            operationsGroups = operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList();
+            iOperations.AddRange(operationsGroups);
 
-            return Analyze(query, operationsGroups);
-        }
-
-        public IEnumerable<ApiOperationsGroup> GetFilteredOperationsGroups(string query)
-        {
-            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-
-            return Analyze(query, operationsGroups);
+            return GenerateDashboardOutput(query, iOperations);
         }
 
         public IDashboardOutput GetDashboardOutput(int dashboardId, DateTime from, DateTime to)
@@ -237,6 +266,16 @@ namespace PayglService
             root.Name = dashboard.Name;
             var generator = new DashboardOutputGenerator();
             generator.Generate(ref root, _entityAdapter.GetDashboard(dashboard), iOperations, _entityAdapter);
+
+            return root;
+        }
+
+        private IDashboardOutput GenerateDashboardOutput(string query, List<IOperation> iOperations)
+        {
+            var root = new DashboardOutputLeaf();
+            root.Name = "output";
+            var generator = new DashboardOutputGenerator();
+            generator.Generate(ref root, query, iOperations, _entityAdapter);
 
             return root;
         }
@@ -300,37 +339,5 @@ namespace PayglService
         {
             Filters = _apiAdapter.GetFilters(user);
         }
-
-        private IEnumerable<ApiOperation> Analyze(string query, IEnumerable<Operation> operations)
-        {
-            var ioperations = new List<IOperation>();
-            ioperations.AddRange(operations);
-
-            var queryWithName = new KeyValuePair<string, string>("", query);
-
-            var filter = new Filter(queryWithName.Key, queryWithName.Value);
-            var analyzerRunner = new AnalyzerRunner();
-            var filteredOperations = analyzerRunner.Run(filter, ioperations);
-
-            var tmp = _entityAdapter.GetApiOperations(filteredOperations.ConvertAll(o => (Operation)o));
-            return tmp;
-        }
-
-        private IEnumerable<ApiOperationsGroup> Analyze(string query, IEnumerable<OperationsGroup> operations)
-        {
-            var ioperations = new List<IOperation>();
-            ioperations.AddRange(operations);
-
-            var queryWithName = new KeyValuePair<string, string>("", query);
-
-            var filter = new Filter(queryWithName.Key, queryWithName.Value);
-            var analyzerRunner = new AnalyzerRunner();
-            var filteredOperations = analyzerRunner.Run(filter, ioperations);
-
-            var tmp = _entityAdapter.GetApiOperationsGroups(filteredOperations.ConvertAll(o => (OperationsGroup)o));
-            return tmp;
-        }
-
-
     }
 }

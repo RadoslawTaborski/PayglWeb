@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dashboard } from '../entities/entities';
 import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
+import { DashboardOutput } from '../entities/DashboardOutput';
 let SharedService = class SharedService {
     constructor(data) {
         this.data = data;
@@ -16,6 +17,7 @@ let SharedService = class SharedService {
         this.dashboards = [];
         this.operations = [];
         this.operationsGroups = [];
+        this.dashboardsOutputs = [];
     }
     loadAttributes() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -56,17 +58,14 @@ let SharedService = class SharedService {
             tmp.forEach(a => this.dashboards.push(Dashboard.createFromJson(a)));
         });
     }
-    loadOperationsGroups(query, from, to) {
+    loadOperationsGroups(from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
                 this.loadAttributes();
             }
             let tmp;
-            if (from != null && to != null && query != null) {
-                tmp = yield this.data.loadOperationsGroups(query, from, to);
-            }
-            else if (query != null) {
-                tmp = yield this.data.loadOperationsGroups(query);
+            if (from != null && to != null) {
+                tmp = yield this.data.loadOperationsGroups(from, to);
             }
             else {
                 tmp = yield this.data.loadOperationsGroups();
@@ -77,20 +76,14 @@ let SharedService = class SharedService {
             }
         });
     }
-    loadOperations(withoutParent, query, from, to) {
+    loadOperations(withoutParent, from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
                 this.loadAttributes();
             }
             let tmp;
-            if (from != null && to != null && query != null) {
-                tmp = yield this.data.loadOperations(withoutParent, query, from, to);
-            }
-            else if (from != null && to != null && withoutParent != null) {
-                tmp = yield this.data.loadOperations(withoutParent, null, from, to);
-            }
-            else if (query != null) {
-                tmp = yield this.data.loadOperations(true, query);
+            if (from != null && to != null) {
+                tmp = yield this.data.loadOperations(withoutParent, from, to);
             }
             else if (withoutParent != null) {
                 tmp = yield this.data.loadOperations(withoutParent);
@@ -102,6 +95,36 @@ let SharedService = class SharedService {
             for (let operation of tmp.reverse()) {
                 this.operations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType));
             }
+        });
+    }
+    loadDashboardOutput(query, from, to) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                this.loadAttributes();
+            }
+            let tmp;
+            if (from != null && to != null) {
+                tmp = yield this.data.loadDashboardOutput(query, from, to);
+            }
+            else {
+                tmp = yield this.data.loadDashboardOutput(query);
+            }
+            this.dashboardOutput = DashboardOutput.createFromJson(tmp, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType);
+        });
+    }
+    loadDashboardsOutputs(from, to) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                this.loadAttributes();
+            }
+            let tmp;
+            if (from != null && to != null) {
+                tmp = yield this.data.loadDashboardsOutputs(from, to);
+            }
+            else {
+                tmp = yield this.data.loadDashboardsOutputs();
+            }
+            tmp.forEach(a => this.dashboardsOutputs.push(DashboardOutput.createFromJson(a, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType)));
         });
     }
     sendOperation(operation) {

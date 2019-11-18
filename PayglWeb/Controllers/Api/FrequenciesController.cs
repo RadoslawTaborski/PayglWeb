@@ -24,7 +24,7 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                var json = JsonHelper.JsonFromIEntity(_repository.GetFrequencies(), "IsDirty", "IsMarkForDeletion");
+                var json = JsonHelper.JsonFromArray(_repository.GetFrequencies(), "IsDirty", "IsMarkForDeletion");
                 return Ok(json);
             }
             catch (Exception)

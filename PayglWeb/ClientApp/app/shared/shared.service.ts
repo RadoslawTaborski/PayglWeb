@@ -3,6 +3,9 @@ import { User, Frequency, Importance, Tag, TransactionType, TransferType, Filter
 import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 import { DataService } from './data.service';
+import { DashboardOutput } from '../entities/DashboardOutput';
+import { IDashboardOutput } from '../entities/IDashboardOutput';
+import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
 
 @Injectable()
 export class SharedService {
@@ -16,6 +19,8 @@ export class SharedService {
     dashboards: Dashboard[] = [];
     operations: Operation[] = [];
     operationsGroups: OperationsGroup[] = [];
+    dashboardsOutputs: IDashboardOutput[] = [];
+    dashboardOutput: IDashboardOutput;
 
     constructor(private data: DataService) { }
 
@@ -61,15 +66,13 @@ export class SharedService {
         tmp.forEach(a => this.dashboards.push(Dashboard.createFromJson(a)))
     }
 
-    async loadOperationsGroups(query?: string, from?: Date, to?: Date) {
+    async loadOperationsGroups(from?: Date, to?: Date) {
         if (!this.isInitialize) {
             this.loadAttributes()
         }
         let tmp: any[]
-        if (from != null && to != null && query != null) {
-            tmp = await this.data.loadOperationsGroups(query, from, to)
-        } else if (query != null) {
-            tmp = await this.data.loadOperationsGroups(query)
+        if (from != null && to != null) {
+            tmp = await this.data.loadOperationsGroups(from, to)
         } else {
             tmp = await this.data.loadOperationsGroups()
         }
@@ -79,17 +82,13 @@ export class SharedService {
         }
     }
 
-    async loadOperations(withoutParent?: boolean, query?:string, from?: Date, to?: Date) {
+    async loadOperations(withoutParent?: boolean, from?: Date, to?: Date) {
         if (!this.isInitialize) {
             this.loadAttributes()
         }
         let tmp: any[]
-        if (from != null && to != null && query != null) {
-            tmp = await this.data.loadOperations(withoutParent, query, from, to)
-        } else if (from != null && to != null && withoutParent != null) {
-            tmp = await this.data.loadOperations(withoutParent, null, from, to)
-        } else if (query != null) {
-            tmp = await this.data.loadOperations(true, query)
+        if (from != null && to != null) {
+            tmp = await this.data.loadOperations(withoutParent, from, to)
         } else if (withoutParent != null) {
             tmp = await this.data.loadOperations(withoutParent)
         } else {
@@ -99,6 +98,38 @@ export class SharedService {
         for (let operation of tmp.reverse()) {
             this.operations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType))
         } 
+    }
+
+    async loadDashboardOutput(query?: string | number, from?: Date, to?: Date) {
+        if (!this.isInitialize) {
+            this.loadAttributes()
+        }
+        let tmp: any
+        if (from != null && to != null) {
+            tmp = await this.data.loadDashboardOutput(query, from, to)
+        } else {
+            tmp = await this.data.loadDashboardOutput(query)
+        }
+
+        if (tmp.Children === undefined) {
+            this.dashboardOutput = DashboardOutputLeaf.createFromJson(tmp, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType)
+        } else {
+            this.dashboardOutput = DashboardOutput.createFromJson(tmp, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType)
+        }
+    }
+
+    async loadDashboardsOutputs(from?: Date, to?: Date) {
+        if (!this.isInitialize) {
+            this.loadAttributes()
+        }
+        let tmp: any[]
+        if (from != null && to != null) {
+            tmp = await this.data.loadDashboardsOutputs(from, to)
+        } else {
+            tmp = await this.data.loadDashboardsOutputs()
+        }
+
+        tmp.forEach(a => this.dashboardsOutputs.push(DashboardOutput.createFromJson(a, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType)))
     }
 
     async sendOperation(operation: Operation) {

@@ -4,6 +4,8 @@ import { ApplicationStateService } from '../../shared/application-state.service'
 import { OperationsGroup } from '../../entities/OperationsGroup';
 import { Operation } from '../../entities/Operation';
 import { OperationLike } from '../../entities/OperationLike';
+import { DashboardOutput } from '../../entities/DashboardOutput';
+import { DashboardOutputLeaf } from '../../entities/DashboardOutputLeaf';
 
 @Component({
     selector: 'app-search',
@@ -13,6 +15,7 @@ import { OperationLike } from '../../entities/OperationLike';
 export class SearchComponent implements OnInit {
     public isLoaded: boolean = false
     public clicked: OperationLike[] = []
+    public dashboard: DashboardOutput
     public query: string = ""
     public dateFrom: Date
     public dateTo: Date
@@ -23,26 +26,18 @@ export class SearchComponent implements OnInit {
     async ngOnInit() {
         await this.shared.loadAttributes()
         this.sum = 0
-        await this.shared.loadOperations(true, "", null, null)
-        await this.shared.loadOperationsGroups(this.query, null, null)       
+        await this.shared.loadDashboardOutput("", null, null)
+        console.log(this.shared.dashboardOutput);
         this.isLoaded = true;
         //console.log(this.isLoaded)
     }
 
-    getOperationsGroups(): OperationsGroup[] {
-        //console.log(this.shared.operationsGroups)
-        return this.shared.operationsGroups
-    }
-
-    getOperations(): Operation[] {
-        //console.log(this.shared.operationsGroups)
-        return this.shared.operations
-    }
-
     getOperationsLike(): OperationLike[] {
-        let result: OperationLike[] = [];
-        result = result.concat(this.getOperationsGroups());
-        result = result.concat(this.getOperations());
+        let result: OperationLike[] = []
+        if (! (this.shared.dashboardOutput instanceof DashboardOutputLeaf)) {
+            return result
+        }
+        result = (this.shared.dashboardOutput as DashboardOutputLeaf).Result
 
         result = result.sort((n1, n2) => {
             var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
@@ -102,8 +97,7 @@ export class SearchComponent implements OnInit {
     async search() {
         this.sum=0
         this.isLoaded = false;
-        await this.shared.loadOperations(true, this.query, this.dateFrom, this.dateTo)
-        await this.shared.loadOperationsGroups(this.query, this.dateFrom, this.dateTo)
+        await this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo) 
         this.isLoaded=true
     }
 }

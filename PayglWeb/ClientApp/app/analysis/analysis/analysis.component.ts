@@ -2,6 +2,8 @@
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { Dashboard } from '../../entities/entities';
+import { DashboardOutput } from '../../entities/DashboardOutput';
+import { IDashboardOutput } from '../../entities/IDashboardOutput';
 
 @Component({
     selector: 'app-analysis',
@@ -11,6 +13,7 @@ import { Dashboard } from '../../entities/entities';
 export class AnalysisComponent implements OnInit {
     public isLoaded: boolean = false
     public clicked: Dashboard[] = []
+    public output: IDashboardOutput = null;
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
@@ -24,10 +27,13 @@ export class AnalysisComponent implements OnInit {
         return this.shared.dashboards
     }
 
-    onDashboardClick(o: Dashboard) {
+    async onDashboardClick(o: Dashboard) {
         if (!this.clicked.includes(o)) {
             this.clicked = []
             this.clicked.push(o)
+            await this.shared.loadDashboardOutput(o.Id)
+            this.output = this.shared.dashboardOutput
+            console.log(this.output)
         } else {
             this.clicked=[]
         }

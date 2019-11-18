@@ -47,6 +47,10 @@ export class OperationsGroup implements OperationLike{
 
     static createFromJson(data: any, frequencies: Frequency[], importances: Importance[], tags: Tag[], transactionTypes: TransactionType[], transferTypes: TransferType[]): OperationsGroup {
         let operationsGroup = new OperationsGroup()
+        operationsGroup.Operations = [];
+        for (let operation of data.Operations) {
+            operationsGroup.Operations.push(Operation.createFromJson(operation, frequencies, importances, tags, transactionTypes, transferTypes));
+        }
         operationsGroup.Id = data.Id;
         operationsGroup.User = User.createFromJson(data.User);
         operationsGroup.Frequency = frequencies.filter(t => t.Id === data.Frequency.Id)[0];
@@ -55,10 +59,6 @@ export class OperationsGroup implements OperationLike{
         operationsGroup.Tags = [];
         for (let tag of data.Tags) {
             operationsGroup.Tags.push(TagRelation.createFromJson(tag, tags));
-        }
-        operationsGroup.Operations = [];
-        for (let operation of data.Operations) {
-            operationsGroup.Operations.push(Operation.createFromJson(operation, frequencies, importances, tags, transactionTypes, transferTypes));
         }
         operationsGroup.Description = data.Description;
 

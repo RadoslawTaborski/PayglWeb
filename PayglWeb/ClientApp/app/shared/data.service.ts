@@ -48,33 +48,43 @@ export class DataService {
         return this.http.get<any[]>("api/dashboards").toPromise()
     }
 
-    loadOperationsGroups(query?: string, from?: Date, to?: Date): Promise<any[]> {
-        if (query != null && from != null && to != null) {
+    loadOperationsGroups(from?: Date, to?: Date): Promise<any[]> {
+        if (from != null && to != null) {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
-            return this.http.get<any[]>(`api/operationsGroups/${from}/${to}/${query}`).toPromise()
-        } else if (query != null) {
-            return this.http.get<any[]>(`api/operationsGroups/${query}`).toPromise()
+            return this.http.get<any[]>(`api/operationsGroups/${from}/${to}`).toPromise()
         } else {
             return this.http.get<any[]>("api/operationsGroups").toPromise()
         }
     }
 
-    loadOperations(withoutParent?: boolean, query?: string, from?: Date, to?: Date): Promise<any[]> {
-        if (from != null && to != null && query != null && query!="") {
-            //var fromFormated = from.toDateString()//from.toISOString().slice(0, 10).replace(/-/g, "");
-            //var toFormated = to.toDateString()//toISOString().slice(0, 10).replace(/-/g, "");
-            return this.http.get<any[]>(`api/operations/${from}/${to}/${query}`).toPromise()
-        } else if (from != null && to != null && withoutParent != null) {
+    loadOperations(withoutParent?: boolean, from?: Date, to?: Date): Promise<any[]> {
+        if (from != null && to != null && withoutParent != null) {
            // var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = to.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get<any[]>(`api/operations/${from}/${to}/${withoutParent}`).toPromise()
-        } else if (query != null && query !="") {
-            return this.http.get<any[]>(`api/operations/${query}`).toPromise()
         } else if (withoutParent != null) {
             return this.http.get<any[]>(`api/operations/${withoutParent}`).toPromise()
         } else {
             return this.http.get<any[]>(`api/operations`).toPromise()
+        }
+    }
+
+    loadDashboardOutput(query?: string | number, from?: Date, to?: Date): Promise<any[]> {
+        if (from != null && to != null) {
+            return this.http.get<any[]>(`api/dashboardsoutputs/${query}/${from}/${to}`).toPromise()
+        } else if (typeof (query) == "string" && query == "") {
+            return this.http.get<any[]>(`api/dashboardsoutputs/null`).toPromise()
+        } else {
+            return this.http.get<any[]>(`api/dashboardsoutputs/${query}`).toPromise()
+        }
+    }
+
+    loadDashboardsOutputs(from?: Date, to?: Date): Promise<any[]> {
+        if (from != null && to != null) {
+            return this.http.get<any[]>(`api/dashboardsoutputs/${from}/${to}`).toPromise()
+        } else {
+            return this.http.get<any[]>(`api/dashboardsoutputs/`).toPromise()
         }
     }
 

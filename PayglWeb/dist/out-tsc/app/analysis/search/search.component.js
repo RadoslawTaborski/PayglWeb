@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
 import { Operation } from '../../entities/Operation';
+import { DashboardOutputLeaf } from '../../entities/DashboardOutputLeaf';
 let SearchComponent = class SearchComponent {
     constructor(shared, state) {
         this.shared = shared;
@@ -14,24 +15,18 @@ let SearchComponent = class SearchComponent {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadAttributes();
             this.sum = 0;
-            yield this.shared.loadOperations(true, "", null, null);
-            yield this.shared.loadOperationsGroups(this.query, null, null);
+            yield this.shared.loadDashboardOutput("", null, null);
+            console.log(this.shared.dashboardOutput);
             this.isLoaded = true;
             //console.log(this.isLoaded)
         });
     }
-    getOperationsGroups() {
-        //console.log(this.shared.operationsGroups)
-        return this.shared.operationsGroups;
-    }
-    getOperations() {
-        //console.log(this.shared.operationsGroups)
-        return this.shared.operations;
-    }
     getOperationsLike() {
         let result = [];
-        result = result.concat(this.getOperationsGroups());
-        result = result.concat(this.getOperations());
+        if (!(this.shared.dashboardOutput instanceof DashboardOutputLeaf)) {
+            return result;
+        }
+        result = this.shared.dashboardOutput.Result;
         result = result.sort((n1, n2) => {
             var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
             let date1 = new Date(n1.Date.replace(pattern, '$3-$2-$1')).getTime();
@@ -87,8 +82,7 @@ let SearchComponent = class SearchComponent {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.sum = 0;
             this.isLoaded = false;
-            yield this.shared.loadOperations(true, this.query, this.dateFrom, this.dateTo);
-            yield this.shared.loadOperationsGroups(this.query, this.dateFrom, this.dateTo);
+            yield this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo);
             this.isLoaded = true;
         });
     }
