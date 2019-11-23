@@ -46,7 +46,7 @@ let SearchComponent = class SearchComponent {
         return result;
     }
     onOperationClick(o, isNested) {
-        console.log(isNested);
+        console.log("click in search");
         if (isNested) {
             console.log(!this.clicked.includes(o));
             if (!this.clicked.includes(o)) {

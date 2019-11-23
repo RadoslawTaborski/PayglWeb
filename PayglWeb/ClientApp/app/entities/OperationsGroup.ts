@@ -1,8 +1,9 @@
 ﻿import { Operation } from './Operation';
 import { User, Frequency, Importance, TagRelation, Tag, TransactionType, TransferType } from './entities';
 import { OperationLike } from './OperationLike';
+import { Countable } from './Countable';
 
-export class OperationsGroup implements OperationLike{
+export class OperationsGroup implements OperationLike, Countable{
     Id: number;
     IsDirty: boolean;
     IsMarkForDeletion: boolean;

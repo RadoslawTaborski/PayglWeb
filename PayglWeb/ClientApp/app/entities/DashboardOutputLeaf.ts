@@ -4,13 +4,33 @@ import { OperationsGroup } from './OperationsGroup';
 import { Frequency, Importance, Tag, TransactionType, TransferType } from './entities';
 import { Operation } from './Operation';
 
-export class DashboardOutputLeaf implements IDashboardOutput{
+export class DashboardOutputLeaf implements IDashboardOutput {
     Name: string
     Result: OperationLike[]
+
+    Amount: number = 0;
+    TransactionType: TransactionType;
 
     constructor(name?: string, result?: OperationLike[]) {
         this.Name = name
         this.Result = result
+    }
+
+    recalculate(transactionTypes: TransactionType[]) {
+        this.Amount = 0;
+        for (let operationLike of this.Result) {
+            if (operationLike.TransactionType.Text == "wydatek") {
+                this.Amount -= operationLike.Amount;
+            } else {
+                this.Amount += operationLike.Amount;
+            }
+        }
+        if (this.Amount > 0) {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "przychód")[0];
+        } else {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "wydatek")[0];
+        }
+        this.Amount = Math.abs(this.Amount);
     }
 
     static createFromJson(data: any, frequencies: Frequency[], importances: Importance[], tags: Tag[], transactionTypes: TransactionType[], transferTypes: TransferType[]): DashboardOutputLeaf {
@@ -24,6 +44,8 @@ export class DashboardOutputLeaf implements IDashboardOutput{
                 dashboardOutput.Result.push(Operation.createFromJson(result, frequencies, importances, tags, transactionTypes, transferTypes))
             }
         }
+
+        dashboardOutput.recalculate(transactionTypes);
 
         return dashboardOutput
     }

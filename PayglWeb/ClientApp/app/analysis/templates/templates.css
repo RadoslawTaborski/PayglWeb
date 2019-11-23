@@ -1,0 +1,81 @@
+﻿.inline-block {
+    display: inline-block;
+}
+
+.inline-p {
+    display: inline;
+}
+
+.bg-income-dashboard {
+    background-color: #191970;
+}
+
+.bg-income-dashboard2 {
+    background-color: #00008B;
+}
+
+.bg-income-dashboard3 {
+    background-color: #0000CD;
+}
+
+.bg-income-group {
+    background-color: #4169E1;
+}
+
+.bg-income-group-detail {
+    background-color: #5F9EA0;
+}
+
+.bg-income-operation {
+    background-color: #7B68EE;
+}
+
+.bg-income-operation-detail {
+    background-color: #4682B4;
+}
+
+.bg-expense-dashboard {
+    background-color: #8B0000;
+}
+
+.bg-expense-dashboard2 {
+    background-color: #B22222;
+}
+
+.bg-expense-dashboard3 {
+    background-color: #FF0000;
+}
+
+.bg-expense-group {
+    background-color: #DC143C;
+}
+
+.bg-expense-group-detail {
+    background-color: #FF6347;
+}
+
+.bg-expense-operation {
+    background-color: #CD5C5C;
+}
+
+.bg-expense-operation-detail {
+    background-color: #FF7F50;
+}
+
+#col-3 {
+    column-count: 3;
+    grid-template-columns: 25% 60% 15%;
+}
+
+p {
+    margin: 0
+}
+
+.div-row {
+    width: 100%;
+}
+
+.inner {
+    padding-left: 5px;
+    padding-right: 5px;
+}

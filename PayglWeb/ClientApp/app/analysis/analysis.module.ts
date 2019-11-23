@@ -8,9 +8,11 @@ import { ApplicationStateService } from '../shared/application-state.service';
 import { FiltersComponent } from './filters/filters.component';
 import { DashboardsComponent } from './dashboards/dashboards.component';
 import { AnalysisComponent } from './analysis/analysis.component';
+import { OperationComponent } from './templates/operation/operation.component';
+import { DashboardOutputComponent } from './templates/dashboard-output/dashboard-output.component';
 
 @NgModule({
-    declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent],
+    declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent],
     imports: [
         CommonModule,
         FormsModule

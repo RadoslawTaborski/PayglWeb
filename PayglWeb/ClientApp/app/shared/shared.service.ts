@@ -56,6 +56,9 @@ export class SharedService {
     }
 
     async loadFiltersAndDashboards() {
+        if (!this.isInitialize) {
+            this.loadAttributes()
+        }
         let tmp: any[]
         this.filters = []
         tmp = await this.data.loadFilters()

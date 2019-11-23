@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\app\app-routing.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\app\entities\Countable.ts" />
     <TypeScriptCompile Remove="ClientApp\app\entities\DashboardOutput.ts" />
     <TypeScriptCompile Remove="ClientApp\app\entities\DashboardOutputLeaf.ts" />
     <TypeScriptCompile Remove="ClientApp\app\entities\entities.ts" />

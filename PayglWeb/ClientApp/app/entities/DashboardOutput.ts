@@ -6,9 +6,29 @@ export class DashboardOutput implements IDashboardOutput{
     Name: string
     Children: IDashboardOutput[]
 
+    Amount: number = 0;
+    TransactionType: TransactionType;
+
     constructor(name?: string, children?: IDashboardOutput[]) {
         this.Name = name
         this.Children = children
+    }
+
+    recalculate(transactionTypes: TransactionType[]) {
+        this.Amount = 0;
+        for (let dashboardOutput of this.Children) {
+            if (dashboardOutput.TransactionType.Text == "wydatek") {
+                this.Amount -= dashboardOutput.Amount;
+            } else {
+                this.Amount += dashboardOutput.Amount;
+            }
+        }
+        if (this.Amount > 0) {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "przychód")[0];
+        } else {
+            this.TransactionType = transactionTypes.filter(t => t.Text == "wydatek")[0];
+        }
+        this.Amount = Math.abs(this.Amount);
     }
 
     static createFromJson(data: any, frequencies: Frequency[], importances: Importance[], tags: Tag[], transactionTypes: TransactionType[], transferTypes: TransferType[]): DashboardOutput {
@@ -24,6 +44,8 @@ export class DashboardOutput implements IDashboardOutput{
                 dashboardOutput.Children.push(DashboardOutput.createFromJson(child, frequencies, importances, tags, transactionTypes, transferTypes))
             }
         }
+
+        dashboardOutput.recalculate(transactionTypes);
 
         return dashboardOutput
     }

@@ -4,6 +4,7 @@ import { Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dash
 import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 import { DashboardOutput } from '../entities/DashboardOutput';
+import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
 let SharedService = class SharedService {
     constructor(data) {
         this.data = data;
@@ -49,6 +50,9 @@ let SharedService = class SharedService {
     }
     loadFiltersAndDashboards() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                this.loadAttributes();
+            }
             let tmp;
             this.filters = [];
             tmp = yield this.data.loadFilters();
@@ -109,7 +113,12 @@ let SharedService = class SharedService {
             else {
                 tmp = yield this.data.loadDashboardOutput(query);
             }
-            this.dashboardOutput = DashboardOutput.createFromJson(tmp, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType);
+            if (tmp.Children === undefined) {
+                this.dashboardOutput = DashboardOutputLeaf.createFromJson(tmp, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType);
+            }
+            else {
+                this.dashboardOutput = DashboardOutput.createFromJson(tmp, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType);
+            }
         });
     }
     loadDashboardsOutputs(from, to) {

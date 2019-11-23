@@ -63,6 +63,9 @@ let DataService = class DataService {
         if (from != null && to != null) {
             return this.http.get(`api/dashboardsoutputs/${query}/${from}/${to}`).toPromise();
         }
+        else if (typeof (query) == "string" && query == "") {
+            return this.http.get(`api/dashboardsoutputs/null`).toPromise();
+        }
         else {
             return this.http.get(`api/dashboardsoutputs/${query}`).toPromise();
         }

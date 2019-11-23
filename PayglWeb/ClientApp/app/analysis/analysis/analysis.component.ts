@@ -4,6 +4,9 @@ import { ApplicationStateService } from '../../shared/application-state.service'
 import { Dashboard } from '../../entities/entities';
 import { DashboardOutput } from '../../entities/DashboardOutput';
 import { IDashboardOutput } from '../../entities/IDashboardOutput';
+import { Countable } from '../../entities/Countable';
+import { OperationLike } from '../../entities/OperationLike';
+import { Operation } from '../../entities/Operation';
 
 @Component({
     selector: 'app-analysis',
@@ -33,13 +36,8 @@ export class AnalysisComponent implements OnInit {
             this.clicked.push(o)
             await this.shared.loadDashboardOutput(o.Id)
             this.output = this.shared.dashboardOutput
-            console.log(this.output)
         } else {
             this.clicked=[]
         }
-    }
-
-    isClicked(d: Dashboard): boolean {
-        return this.clicked.includes(d);
     }
 }

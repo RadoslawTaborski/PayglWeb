@@ -61,7 +61,7 @@ export class SearchComponent implements OnInit {
     }
 
     onOperationClick(o: OperationLike, isNested: boolean) {
-        console.log(isNested)
+        console.log("click in search")
         if (isNested) {
             console.log(!this.clicked.includes(o))
             if (!this.clicked.includes(o)) {

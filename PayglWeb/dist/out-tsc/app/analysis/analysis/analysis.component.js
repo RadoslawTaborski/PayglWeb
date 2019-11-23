@@ -6,6 +6,7 @@ let AnalysisComponent = class AnalysisComponent {
         this.state = state;
         this.isLoaded = false;
         this.clicked = [];
+        this.output = null;
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -18,16 +19,17 @@ let AnalysisComponent = class AnalysisComponent {
         return this.shared.dashboards;
     }
     onDashboardClick(o) {
-        if (!this.clicked.includes(o)) {
-            this.clicked = [];
-            this.clicked.push(o);
-        }
-        else {
-            this.clicked = [];
-        }
-    }
-    isClicked(d) {
-        return this.clicked.includes(d);
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.clicked.includes(o)) {
+                this.clicked = [];
+                this.clicked.push(o);
+                yield this.shared.loadDashboardOutput(o.Id);
+                this.output = this.shared.dashboardOutput;
+            }
+            else {
+                this.clicked = [];
+            }
+        });
     }
 };
 AnalysisComponent = tslib_1.__decorate([
