@@ -15,12 +15,9 @@ let DashboardOutputComponent = class DashboardOutputComponent {
         return o.TransactionType.Text == 'wydatek';
     }
     onGroupClick(o, isNested) {
-        console.log("click in template", isNested);
         if (isNested) {
-            console.log("onGroupClick: " + o.Name + " " + this.clicked.includes(o));
             if (!this.clicked.includes(o)) {
                 this.clicked.push(o);
-                console.log("onGroupClick: " + o.Name + " " + this.clicked.includes(o));
             }
             else {
                 const index = this.clicked.indexOf(o);
@@ -40,7 +37,6 @@ let DashboardOutputComponent = class DashboardOutputComponent {
         }
     }
     isClicked(o) {
-        console.log("isClicked: " + o.Name + " " + this.clicked.includes(o));
         return this.clicked.includes(o);
     }
 };

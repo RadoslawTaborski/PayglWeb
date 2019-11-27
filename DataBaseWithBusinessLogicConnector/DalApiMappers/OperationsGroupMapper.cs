@@ -12,6 +12,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
     {
         private List<ApiImportance> _importances;
         private List<ApiFrequency> _frequencies;
+        private List<ApiTransactionType> _transactionTypes;
         private List<ApiOperation> _operations;
         private ApiUser _user;
         private OperationMapper _operationMapper;
@@ -19,10 +20,11 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
 
         private RelationTagMapper _tagMapper = new RelationTagMapper();
 
-        public void Update(OperationMapper operationMapper, List<ApiImportance> importances, List<ApiTag> tags, List<ApiFrequency> frequencies, List<ApiOperation> operations, ApiUser user, List<DalOperationsGroupTags> relations)
+        public void Update(OperationMapper operationMapper, List<ApiImportance> importances, List<ApiTag> tags, List<ApiFrequency> frequencies, List<ApiOperation> operations, ApiUser user, List<DalOperationsGroupTags> relations, List<ApiTransactionType> transactionTypes)
         {
             _importances = importances;
             _frequencies = frequencies;
+            _transactionTypes = transactionTypes;
             _tagMapper.Update(tags);
             _dalRelations = relations;
             _operations = operations;
@@ -52,6 +54,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
             var tags = _tagMapper.ConvertToApiEntitiesCollection(dalTags).ToArray();
 
             var result = new ApiOperationsGroup(dataEntity.Id, _user, dataEntity.Description, frequency, importance, dataEntity.Date, tags, operations);
+            result.UpdateAmount(_transactionTypes);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;

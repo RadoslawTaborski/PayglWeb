@@ -71,10 +71,12 @@ export class DataService {
     }
 
     loadDashboardOutput(query?: string | number, from?: Date, to?: Date): Promise<any[]> {
+        if (typeof (query) == "string" && query == "") {
+            query = "null"
+        }
+
         if (from != null && to != null) {
             return this.http.get<any[]>(`api/dashboardsoutputs/${query}/${from}/${to}`).toPromise()
-        } else if (typeof (query) == "string" && query == "") {
-            return this.http.get<any[]>(`api/dashboardsoutputs/null`).toPromise()
         } else {
             return this.http.get<any[]>(`api/dashboardsoutputs/${query}`).toPromise()
         }
@@ -90,13 +92,13 @@ export class DataService {
 
     sendOperation(operation: Operation): Promise<any[]> {
         let json = JSON.stringify(operation)
-        console.log(json);
+        //console.log(json);
         return this.http.post<any>(`api/operations`, json, httpOptions).toPromise();
     }
 
     sendOperationsGroup(operationsGroup: OperationsGroup): Promise<any[]> {
         let json = JSON.stringify(operationsGroup)
-        console.log(json);
+        //console.log(json);
         return this.http.post<any>(`api/operationsGroups`, json, httpOptions).toPromise();
     }
 }

@@ -4,7 +4,9 @@ export class DashboardOutputLeaf {
     constructor(name, result) {
         this.Amount = 0;
         this.Name = name;
-        this.Result = result;
+        if (result != null) {
+            this.Result = result.sort((a, b) => (a.Date > b.Date) ? 1 : -1);
+        }
     }
     recalculate(transactionTypes) {
         this.Amount = 0;
@@ -36,6 +38,7 @@ export class DashboardOutputLeaf {
                 dashboardOutput.Result.push(Operation.createFromJson(result, frequencies, importances, tags, transactionTypes, transferTypes));
             }
         }
+        dashboardOutput.Result = dashboardOutput.Result.sort((a, b) => (a.Date > b.Date) ? 1 : -1);
         dashboardOutput.recalculate(transactionTypes);
         return dashboardOutput;
     }

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 using DataBaseWithBusinessLogicConnector.ApiEntities;
 using DataBaseWithBusinessLogicConnector.Interfaces;
 using PayglService.DashboardOutputElements;
+using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 
 namespace PayglService
 {
     public class Repository : IRepository
     {
         private ApiAdapter _apiAdapter;
-        private EntityAdapter _entityAdapter;
 
         #region Entities
         public ApiUser User { get; private set; }
@@ -38,7 +38,6 @@ namespace PayglService
             ConfigurationManager.ReadConfig();
             var dataBaseData = ConfigurationManager.DataBaseData();
             _apiAdapter = new ApiAdapter(dbEngine, dataBaseData.Address, dataBaseData.Port, dataBaseData.Table, dataBaseData.Login, dataBaseData.Password);
-            _entityAdapter = new EntityAdapter();
 
             Login("rado", "1234");
         }
@@ -170,12 +169,10 @@ namespace PayglService
             var result = new List<IDashboardOutput>();
              foreach (var dashboard in Dashboards.Where(d => d.IsVisible))
             {
-                var iOperations = new List<IOperation>();
-                var operations = _entityAdapter.GetOperations(Operations);
-                iOperations.AddRange(operations.Where(o => o.Parent == null).ToList());
+                var iOperations = new List<IApiOperation>();
 
-                var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-                iOperations.AddRange(operationsGroups);
+                iOperations.AddRange(Operations.Where(o => o.GroupId == null).ToList());
+                iOperations.AddRange(OperationsGroups);
 
                 result.Add(GenerateDashboardOutput(dashboard, iOperations));
             }
@@ -188,12 +185,10 @@ namespace PayglService
             var result = new List<IDashboardOutput>();
             foreach (var dashboard in Dashboards.Where(d => d.IsVisible))
             {
-                var iOperations = new List<IOperation>();
-                var operations = _entityAdapter.GetOperations(Operations);
-                iOperations.AddRange(operations.Where(o => o.Parent == null && o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+                var iOperations = new List<IApiOperation>();
 
-                var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-                iOperations.AddRange(operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+                iOperations.AddRange(Operations.Where(o => o.GroupId == null && o.GetDate() <= to.Date && o.GetDate() >= from.Date).ToList());
+                iOperations.AddRange(OperationsGroups.Where(o => o.GetDate() <= to.Date && o.GetDate() >= from.Date).ToList());
 
                 result.Add(GenerateDashboardOutput(dashboard, iOperations));
             }
@@ -203,24 +198,20 @@ namespace PayglService
 
         public IDashboardOutput GetDashboardOutput(string query, DateTime from, DateTime to)
         {
-            var iOperations = new List<IOperation>();
-            var operations = _entityAdapter.GetOperations(Operations);
-            iOperations.AddRange(operations.Where(o => o.Parent == null && o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+            var iOperations = new List<IApiOperation>();
 
-            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-            iOperations.AddRange(operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+            iOperations.AddRange(Operations.Where(o => o.GroupId == null && o.GetDate() <= to.Date && o.GetDate() >= from.Date).ToList());
+            iOperations.AddRange(OperationsGroups.Where(o => o.GetDate() <= to.Date && o.GetDate() >= from.Date).ToList());
 
             return GenerateDashboardOutput(query, iOperations);
         }
 
         public IDashboardOutput GetDashboardOutput(string query)
         {
-            var iOperations = new List<IOperation>();
-            var operations = _entityAdapter.GetOperations(Operations);
-            iOperations.AddRange(operations.Where(o => o.Parent == null).ToList());
+            var iOperations = new List<IApiOperation>();
 
-            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-            iOperations.AddRange(operationsGroups);
+            iOperations.AddRange(Operations.Where(o => o.GroupId == null).ToList());
+            iOperations.AddRange(OperationsGroups);
 
             return GenerateDashboardOutput(query, iOperations);
         }
@@ -232,12 +223,10 @@ namespace PayglService
             {
                 return null;
             }
-            var iOperations = new List<IOperation>();
-            var operations = _entityAdapter.GetOperations(Operations);
-            iOperations.AddRange(operations.Where(o => o.Parent == null && o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+            var iOperations = new List<IApiOperation>();
 
-            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-            iOperations.AddRange(operationsGroups.Where(o => o.Date.Date <= to.Date && o.Date.Date >= from.Date).ToList());
+            iOperations.AddRange(Operations.Where(o => o.GroupId == null && o.GetDate() <= to.Date && o.GetDate() >= from.Date).ToList());
+            iOperations.AddRange(OperationsGroups.Where(o => o.GetDate() <= to.Date && o.GetDate() >= from.Date).ToList());
 
             return GenerateDashboardOutput(dashboard, iOperations);
         }
@@ -250,32 +239,30 @@ namespace PayglService
                 return null;
             }
 
-            var iOperations = new List<IOperation>();
-            var operations = _entityAdapter.GetOperations(Operations);
-            iOperations.AddRange(operations.Where(o => o.Parent == null).ToList());
+            var iOperations = new List<IApiOperation>();
 
-            var operationsGroups = _entityAdapter.GetOperationsGroups(OperationsGroups);
-            iOperations.AddRange(operationsGroups);
+            iOperations.AddRange(Operations.Where(o => o.GroupId == null).ToList());
+            iOperations.AddRange(OperationsGroups);
 
             return GenerateDashboardOutput(dashboard, iOperations);
         }
 
-        private IDashboardOutput GenerateDashboardOutput(ApiDashboard dashboard, List<IOperation> iOperations)
+        private IDashboardOutput GenerateDashboardOutput(ApiDashboard dashboard, List<IApiOperation> iOperations)
         {
             var root = new DashboardOutput();
             root.Name = dashboard.Name;
             var generator = new DashboardOutputGenerator();
-            generator.Generate(ref root, _entityAdapter.GetDashboard(dashboard), iOperations, _entityAdapter);
+            generator.Generate(ref root, dashboard, iOperations);
 
             return root;
         }
 
-        private IDashboardOutput GenerateDashboardOutput(string query, List<IOperation> iOperations)
+        private IDashboardOutput GenerateDashboardOutput(string query, List<IApiOperation> iOperations)
         {
             var root = new DashboardOutputLeaf();
             root.Name = "output";
             var generator = new DashboardOutputGenerator();
-            generator.Generate(ref root, query, iOperations, _entityAdapter);
+            generator.Generate(ref root, query, iOperations);
 
             return root;
         }
@@ -327,7 +314,7 @@ namespace PayglService
 
         private void LoadOperationsGroups(ApiUser user)
         {
-            OperationsGroups = _apiAdapter.GetOperationsGroups(user, Operations, Frequencies, Importances, Tags);
+            OperationsGroups = _apiAdapter.GetOperationsGroups(user, Operations, Frequencies, Importances, TransactionTypes, Tags);
         }
 
         private void LoadDashboards(ApiUser user)

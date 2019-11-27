@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiImportance : IEntity
+    public class ApiImportance : IEntity, IParameter
     {
         public int? Id { get; set; }
         public bool IsDirty { get; set; }

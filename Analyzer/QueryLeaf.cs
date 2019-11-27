@@ -1,5 +1,7 @@
-﻿using DataBaseWithBusinessLogicConnector.Entities;
+﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
+using DataBaseWithBusinessLogicConnector.Entities;
 using DataBaseWithBusinessLogicConnector.Interfaces;
+using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,7 @@ namespace Analyzer
         public List<string> Right { get; private set; }
         public bool OnlyOperations { get; }
 
-        public List<IOperation> Result { get; private set; }
+        public List<IApiOperation> Result { get; private set; }
 
         public QueryLeaf(string left, string operation, List<string> right, bool onlyOperations)
         {
@@ -39,14 +41,14 @@ namespace Analyzer
             Operation = operation;
         }
 
-        public void Filter(List<IOperation> all)
+        public void Filter(List<IApiOperation> all)
         {
-            var result = new List<IOperation>(all);
+            var result = new List<IApiOperation>(all);
             if (OnlyOperations)
             {
-                var onlyOperations= result.Where(r => (r is Operation)).Select(r => (r as Operation)).ToList();
-                onlyOperations.AddRange(result.Where(r => (r is OperationsGroup)).SelectMany(r => (r as OperationsGroup)?.Operations).ToList());
-                result = new List<IOperation>();
+                var onlyOperations= result.Where(r => (r is ApiOperation)).Select(r => (r as ApiOperation)).ToList();
+                onlyOperations.AddRange(result.Where(r => (r is ApiOperationsGroup)).SelectMany(r => (r as ApiOperationsGroup)?.Operations).ToList());
+                result = new List<IApiOperation>();
                 result.AddRange(onlyOperations);
             }
             foreach (var key in KeyWords.List)

@@ -60,11 +60,11 @@ let DataService = class DataService {
         }
     }
     loadDashboardOutput(query, from, to) {
+        if (typeof (query) == "string" && query == "") {
+            query = "null";
+        }
         if (from != null && to != null) {
             return this.http.get(`api/dashboardsoutputs/${query}/${from}/${to}`).toPromise();
-        }
-        else if (typeof (query) == "string" && query == "") {
-            return this.http.get(`api/dashboardsoutputs/null`).toPromise();
         }
         else {
             return this.http.get(`api/dashboardsoutputs/${query}`).toPromise();

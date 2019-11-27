@@ -13,7 +13,9 @@ export class DashboardOutputLeaf implements IDashboardOutput {
 
     constructor(name?: string, result?: OperationLike[]) {
         this.Name = name
-        this.Result = result
+        if (result != null) {
+            this.Result = result.sort((a, b) => (a.Date > b.Date) ? 1 : -1)
+        }
     }
 
     recalculate(transactionTypes: TransactionType[]) {
@@ -44,6 +46,8 @@ export class DashboardOutputLeaf implements IDashboardOutput {
                 dashboardOutput.Result.push(Operation.createFromJson(result, frequencies, importances, tags, transactionTypes, transferTypes))
             }
         }
+
+        dashboardOutput.Result = dashboardOutput.Result.sort((a, b) => (a.Date > b.Date) ? 1 : -1)
 
         dashboardOutput.recalculate(transactionTypes);
 

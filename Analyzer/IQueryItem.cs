@@ -1,12 +1,12 @@
-﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+﻿using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System.Collections.Generic;
 
 namespace Analyzer
 {
     public interface IQueryItem
     {
-        List<IOperation> Result { get; }
+        List<IApiOperation> Result { get; }
         bool OnlyOperations { get; }
-        void Filter(List<IOperation> all);
+        void Filter(List<IApiOperation> all);
     }
 }

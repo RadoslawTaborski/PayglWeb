@@ -172,7 +172,7 @@ namespace DataBaseWithBusinessLogicConnector
             return OperationMapper.ConvertToApiEntitiesCollection(operations).ToList();
         }
 
-        public List<ApiOperationsGroup> GetOperationsGroups(ApiUser user, List<ApiOperation> operations, List<ApiFrequency> frequencies, List<ApiImportance> importances, List<ApiTag> tags)
+        public List<ApiOperationsGroup> GetOperationsGroups(ApiUser user, List<ApiOperation> operations, List<ApiFrequency> frequencies, List<ApiImportance> importances, List<ApiTransactionType> types, List<ApiTag> tags)
         {
             var groups = OperationsGroupAdapter.GetAll($"user_id={user.Id}");
             var filter = "";
@@ -187,7 +187,7 @@ namespace DataBaseWithBusinessLogicConnector
 
             var relations = OperationsGroupRelationAdapter.GetAll(filter).ToList();
 
-            OperationsGroupMapper.Update(OperationMapper, importances, tags, frequencies, operations, user, relations);
+            OperationsGroupMapper.Update(OperationMapper, importances, tags, frequencies, operations, user, relations, types);
             return OperationsGroupMapper.ConvertToApiEntitiesCollection(OperationsGroupAdapter.GetAll($"user_id={user.Id}")).ToList();
         }
 

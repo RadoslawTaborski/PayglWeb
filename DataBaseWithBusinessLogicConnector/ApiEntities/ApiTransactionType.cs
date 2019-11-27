@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiTransactionType : IEntity
+    public class ApiTransactionType : IEntity, IParameter
     {
         public int? Id { get;  set; }
         public bool IsDirty { get; set; }

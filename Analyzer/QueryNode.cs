@@ -1,4 +1,4 @@
-﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+﻿using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ namespace Analyzer
     public class QueryNode: IQueryItem
     {
         public List<IQueryItem> Items { get; private set; }
-        public List<IOperation> Result { get; private set; }
+        public List<IApiOperation> Result { get; private set; }
         public bool OnlyOperations { get; }
 
         public QueryNode(bool onlyOperations)
@@ -22,7 +22,7 @@ namespace Analyzer
             Items.Add(item);
         }
 
-        public void Filter(List<IOperation> all)
+        public void Filter(List<IApiOperation> all)
         {
             foreach(var item in Items)
             {

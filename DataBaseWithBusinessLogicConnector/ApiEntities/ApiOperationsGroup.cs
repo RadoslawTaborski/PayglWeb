@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using DataBaseWithBusinessLogicConnector.Properties;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
@@ -17,6 +17,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
         public string Description { get;  set; }
         public ApiFrequency Frequency { get;  set; }
         public ApiImportance Importance { get;  set; }
+        public ApiTransactionType TransactionType { get; private set; }
         public string Date { get;  set; }
         public ApiRelTag[] Tags { get;  set; }
         public ApiOperation[] Operations { get;  set; }
@@ -40,6 +41,37 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
         public void UpdateId(int? id)
         {
             Id = id;
+        }
+
+        public DateTime GetDate()
+        {
+            DateTime.TryParse(Date, out DateTime date);
+            return date.Date;
+        }
+
+        public void UpdateAmount(List<ApiTransactionType> types)
+        {
+            var amount = decimal.Zero;
+            foreach (var item in Operations)
+            {
+                if (item.TransactionType.Text == Properties.strings.income)
+                {
+                    amount += item.Amount;
+                }
+                else
+                {
+                    amount -= item.Amount;
+                }
+            }
+            if (amount < 0)
+            {
+                TransactionType = types.First(t => t.Text == strings.expense);
+                amount = Math.Abs(amount);
+            }
+            else
+            {
+                TransactionType = types.First(t => t.Text == strings.income);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using DataBaseWithBusinessLogicConnector.Interfaces;
+﻿using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace Analyzer
             }
         }
 
-        public static List<IOperation> FilterOperations(List<IOperation> all, QueryNode node)
+        public static List<IApiOperation> FilterOperations(List<IApiOperation> all, QueryNode node)
         {
             node.Filter(all);
             return node.Result;

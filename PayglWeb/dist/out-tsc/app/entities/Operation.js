@@ -9,7 +9,7 @@ export class Operation {
         this.TransferType = transferType;
         this.Frequency = frequency;
         this.Importance = importance;
-        this.Date = date;
+        this.Date = Operation.convertDate(date);
         this.ReceiptPath = receiptPath;
         this.Tags = tags;
         this.DetailsList = operationDetails;
@@ -25,7 +25,7 @@ export class Operation {
         operation.TransferType = transferTypes.filter(t => t.Id === data.TransferType.Id)[0];
         operation.Frequency = frequencies.filter(t => t.Id === data.Frequency.Id)[0];
         operation.Importance = importances.filter(t => t.Id === data.Importance.Id)[0];
-        operation.Date = data.Date;
+        operation.Date = Operation.convertDate(data.Date);
         operation.ReceiptPath = data.ReceiptPath;
         operation.Tags = [];
         for (let tag of data.Tags) {
@@ -37,6 +37,13 @@ export class Operation {
         }
         operation.Description = data.Description;
         return operation;
+    }
+    static convertDate(st) {
+        if (st == null) {
+            return "";
+        }
+        var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
+        return st.replace(pattern, '$3-$2-$1');
     }
 }
 //# sourceMappingURL=Operation.js.map

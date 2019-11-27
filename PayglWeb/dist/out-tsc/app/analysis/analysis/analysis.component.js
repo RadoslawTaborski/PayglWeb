@@ -16,7 +16,7 @@ let AnalysisComponent = class AnalysisComponent {
         });
     }
     getDashboards() {
-        return this.shared.dashboards;
+        return this.shared.dashboards.filter(d => d.IsVisible);
     }
     onDashboardClick(o) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

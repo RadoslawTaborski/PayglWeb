@@ -1,12 +1,12 @@
-﻿using DataBaseWithBusinessLogicConnector.Entities;
-using DataBaseWithBusinessLogicConnector.Interfaces;
+﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
+using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System.Collections.Generic;
 
 namespace PayglService.DashboardOutputElements
 {
     public class AnalyzerRunner
     {
-        public List<IOperation> Run(Filter filter, List<IOperation> operations)
+        public List<IApiOperation> Run(ApiFilter filter, List<IApiOperation> operations)
         {
             var query = Analyzer.Analyzer.StringToQuery(filter.Query);
             var result = Analyzer.Analyzer.FilterOperations(operations, query);

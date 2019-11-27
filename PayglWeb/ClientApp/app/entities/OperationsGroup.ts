@@ -24,9 +24,11 @@ export class OperationsGroup implements OperationLike, Countable{
         this.Description = description
         this.Frequency = frequency
         this.Importance = importance
-        this.Date = date
+        this.Date = OperationsGroup.convertDate(date);
         this.Tags = tags
-        this.Operations = operations
+        if (operations != null) {
+            this.Operations = operations.sort((a, b) => (a.Date > b.Date) ? 1 : -1)
+        }
     }
 
     recalculate(transactionTypes: TransactionType[]) {
@@ -56,15 +58,23 @@ export class OperationsGroup implements OperationLike, Countable{
         operationsGroup.User = User.createFromJson(data.User);
         operationsGroup.Frequency = frequencies.filter(t => t.Id === data.Frequency.Id)[0];
         operationsGroup.Importance = importances.filter(t => t.Id === data.Importance.Id)[0];
-        operationsGroup.Date = data.Date;
+        operationsGroup.Date = OperationsGroup.convertDate(data.Date);
         operationsGroup.Tags = [];
         for (let tag of data.Tags) {
             operationsGroup.Tags.push(TagRelation.createFromJson(tag, tags));
         }
         operationsGroup.Description = data.Description;
-
+        operationsGroup.Operations = operationsGroup.Operations.sort((a, b) => (a.Date > b.Date) ? 1 : -1)
         operationsGroup.recalculate(transactionTypes);
 
         return operationsGroup
+    }
+
+    private static convertDate(st: string): string {
+        if (st == null) {
+            return ""
+        }
+        var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
+        return st.replace(pattern, '$3-$2-$1');
     }
 }

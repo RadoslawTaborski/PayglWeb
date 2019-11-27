@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
-    public class ApiFrequency : IEntity
+    public class ApiFrequency : IEntity, IParameter
     {
         public int? Id { get; set; }
         public bool IsDirty { get; set; }

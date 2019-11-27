@@ -47,5 +47,11 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
         {
             Id = id;
         }
+
+        public DateTime GetDate()
+        {
+            DateTime.TryParse(Date, out DateTime date);
+            return date.Date;
+        }
     }
 }

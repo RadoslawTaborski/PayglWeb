@@ -2,73 +2,12 @@
     display: inline-block;
 }
 
-.inline-p {
-    display: inline;
-}
-
-.bg-income-dashboard {
-    background-color: #191970;
-}
-
-.bg-income-dashboard2 {
-    background-color: #00008B;
-}
-
-.bg-income-dashboard3 {
-    background-color: #0000CD;
-}
-
-.bg-income-group {
-    background-color: #4169E1;
-}
-
-.bg-income-group-detail {
-    background-color: #5F9EA0;
-}
-
-.bg-income-operation {
-    background-color: #7B68EE;
-}
-
-.bg-income-operation-detail {
-    background-color: #4682B4;
-}
-
-.bg-expense-dashboard {
-    background-color: #8B0000;
-}
-
-.bg-expense-dashboard2 {
-    background-color: #B22222;
-}
-
-.bg-expense-dashboard3 {
-    background-color: #FF0000;
-}
-
-.bg-expense-group {
-    background-color: #DC143C;
-}
-
-.bg-expense-group-detail {
-    background-color: #FF6347;
-}
-
-.bg-expense-operation {
-    background-color: #CD5C5C;
-}
-
-.bg-expense-operation-detail {
-    background-color: #FF7F50;
-}
-
-#col-3 {
-    column-count: 3;
-    grid-template-columns: 25% 60% 15%;
-}
-
 p {
     margin: 0
+}
+
+.inline-p {
+    display: inline;
 }
 
 .div-row {
@@ -78,4 +17,74 @@ p {
 .inner {
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.income-dashboard {
+    background-color: #011f4b;
+    color: white;
+}
+
+.income-dashboard2 {
+    background-color: #03396c;
+    color: white;
+}
+
+.income-dashboard3 {
+    background-color: #03396c;
+    color: white;
+}
+
+.income-group {
+    background-color: #386FA4;
+    color: #011f4b;
+}
+
+.income-group-detail {
+    background-color: #59A5D8;
+    color: #03396c;
+}
+
+.income-operation {
+    background-color: #84D2F6;
+    color: #03396c;
+}
+
+.income-operation-detail {
+    background-color: #91E5F6;
+    color: #386FA4;
+}
+
+.expense-dashboard {
+    background-color: #580000;
+    color: white;
+}
+
+.expense-dashboard2 {
+    background-color: #8A0000;
+    color: white;
+}
+
+.expense-dashboard3 {
+    background-color: #8A0000;
+    color: white;
+}
+
+.expense-group {
+    background-color: #C23B22;
+    color: #580000;
+}
+
+.expense-group-detail {
+    background-color: #FB6D4C;
+    color: #8A0000;
+}
+
+.expense-operation {
+    background-color: #FF9E79;
+    color: #8A0000;
+}
+
+.expense-operation-detail {
+    background-color: #FFD1A9;
+    color: #C23B22;
 }
