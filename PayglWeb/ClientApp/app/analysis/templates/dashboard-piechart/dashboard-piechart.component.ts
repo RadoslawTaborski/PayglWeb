@@ -52,8 +52,6 @@ export class DashboardPiechartComponent implements OnInit {
     }
 
     generateChart(dashboard: IDashboardOutput): Chart {
-        console.log(dashboard.Name)
-
         let dashboardLeaves: IDashboardOutput[] = this.getDashboardLeaves(dashboard);
         let labels = dashboardLeaves.map(a => a.Name);
         let data = dashboardLeaves.map(a => a.Amount)

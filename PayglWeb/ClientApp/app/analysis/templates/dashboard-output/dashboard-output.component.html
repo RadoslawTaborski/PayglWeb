@@ -87,16 +87,17 @@
     </div>
 </div>
 
-<div *ngFor="let dash of getDashboards(dashboard); let i = index">
+<div *ngFor="let dash of allDashboard">
     <div *ngIf="isSelected(dash)">
         <app-dashboard-piechart [dashboard]="dash"></app-dashboard-piechart>
     </div>
 </div>
-
-<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-    <div class="btn-group mr-2" role="group" aria-label="First group">
-        <div *ngFor="let dash of getDashboards(dashboard); let i = index">
-            <button type="button" class="btn btn-secondary" (click)="setDashboardForPieChart(dash)">{{i}}</button>
+<div *ngIf="allDashboard.length>1">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <div *ngFor="let dash of allDashboard; let i = index">
+                <button type="button" class="btn btn-secondary btn-sm" (click)="setDashboardForPieChart(dash)">{{i+1}}</button>
+            </div>
         </div>
     </div>
 </div>

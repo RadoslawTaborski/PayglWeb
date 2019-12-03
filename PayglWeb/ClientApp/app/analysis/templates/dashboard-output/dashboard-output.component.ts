@@ -12,10 +12,17 @@ export class DashboardOutputComponent implements OnInit {
     @Input() dashboard: IDashboardOutput;
     public clicked: IDashboardOutput[] = []
     public selectedPie: IDashboardOutput[] = []
+    public allDashboard: IDashboardOutput[] = []
 
     constructor(private state: ApplicationStateService) { }
 
     ngOnInit() {
+
+    }
+
+    ngOnChanges() {
+        this.allDashboard = this.getDashboards(this.dashboard)
+        this.setDashboardForPieChart(this.allDashboard[0])
     }
 
     getDashboardOutputItems(): IDashboardOutput[] {
@@ -77,7 +84,6 @@ export class DashboardOutputComponent implements OnInit {
     }
 
     isSelected(o: IDashboardOutput): boolean {
-        console.log(o.Name)
         return this.selectedPie.includes(o);
     }
 
