@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IDashboardOutput } from '../../../entities/IDashboardOutput';
 import { DashboardOutput } from '../../../entities/DashboardOutput';
+import { ApplicationStateService } from '../../../shared/application-state.service';
 
 @Component({
     selector: 'temp-dashboard',
@@ -10,8 +11,9 @@ import { DashboardOutput } from '../../../entities/DashboardOutput';
 export class DashboardOutputComponent implements OnInit {
     @Input() dashboard: IDashboardOutput;
     public clicked: IDashboardOutput[] = []
+    public selectedPie: IDashboardOutput[] = []
 
-    constructor() { }
+    constructor(private state: ApplicationStateService) { }
 
     ngOnInit() {
     }
@@ -44,6 +46,39 @@ export class DashboardOutputComponent implements OnInit {
                 this.clicked = []
             }
         }
+    }
+
+    getDashboards(dashboard: IDashboardOutput): IDashboardOutput[] {
+        let result: IDashboardOutput[] = []
+        if (!(dashboard instanceof DashboardOutput)) {
+            return result;
+        }
+        result.push(dashboard)
+        for (let leaf of (dashboard as DashboardOutput).Children) {
+            if (!(leaf instanceof DashboardOutput)) {
+                continue;
+            }
+            result.push(leaf)
+            for (let leaf2 of (leaf as DashboardOutput).Children) {
+                if (leaf2 instanceof DashboardOutput) {
+                    result.push(leaf2)
+                }
+            }
+        }
+
+        return result;
+    }
+
+    setDashboardForPieChart(dash: IDashboardOutput) {
+        if (!this.selectedPie.includes(dash)) {
+            this.selectedPie = []
+            this.selectedPie.push(dash);
+        }
+    }
+
+    isSelected(o: IDashboardOutput): boolean {
+        console.log(o.Name)
+        return this.selectedPie.includes(o);
     }
 
     isClicked(o: IDashboardOutput): boolean {

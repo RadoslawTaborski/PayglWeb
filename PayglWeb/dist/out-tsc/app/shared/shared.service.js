@@ -51,7 +51,7 @@ let SharedService = class SharedService {
     loadFiltersAndDashboards() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
-                this.loadAttributes();
+                yield this.loadAttributes();
             }
             let tmp;
             this.filters = [];
@@ -65,7 +65,7 @@ let SharedService = class SharedService {
     loadOperationsGroups(from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
-                this.loadAttributes();
+                yield this.loadAttributes();
             }
             let tmp;
             if (from != null && to != null) {
@@ -83,7 +83,7 @@ let SharedService = class SharedService {
     loadOperations(withoutParent, from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
-                this.loadAttributes();
+                yield this.loadAttributes();
             }
             let tmp;
             if (from != null && to != null) {
@@ -104,7 +104,7 @@ let SharedService = class SharedService {
     loadDashboardOutput(query, from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
-                this.loadAttributes();
+                yield this.loadAttributes();
             }
             let tmp;
             if (from != null && to != null) {
@@ -124,7 +124,7 @@ let SharedService = class SharedService {
     loadDashboardsOutputs(from, to) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
-                this.loadAttributes();
+                yield this.loadAttributes();
             }
             let tmp;
             if (from != null && to != null) {

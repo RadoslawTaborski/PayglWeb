@@ -1,4 +1,4 @@
-﻿<div class="div-row">
+﻿<div class="div-row" *ngIf="state.isScreenNormal()">
     <div class="div-row" *ngIf="isLoaded">
         <div class="div-row">
             <div class="div-row" style="padding-bottom:10px;">
@@ -16,9 +16,29 @@
                 </div>
             </div>
             <div *ngIf="output!=null">
-                <div class="row">Razem: {{output.Amount.toFixed(2)}} zł</div>
+                <div class="row">Razem: {{output.Amount.toFixed(2)}}zł</div>
                 <temp-dashboard [dashboard]="output"></temp-dashboard>
             </div>
+        </div>
+    </div>
+</div>
+<div class="div-row" *ngIf="state.isScreenMobile()">
+    <div class="div-row" *ngIf="isLoaded">
+        <div style="padding-bottom:10px;">
+            <div class="row">
+                <input [(ngModel)]="dateFrom" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateFrom" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
+                <input [(ngModel)]="dateTo" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateTo" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
+                <button class="btn btn-primary col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="search()">Szukaj</button>
+            </div>
+        </div>
+        <div class="div-row" style="padding-bottom: 20px; padding-top:20px;">
+            <select [(ngModel)]="selectedDashboard" name="selDashboard" (change)="onDashboardClick(selectedDashboard)" [required]="editable" class="custom-select">
+                <option *ngFor="let f of getDashboards()" [ngValue]="f">{{f.Name}}</option>
+            </select>
+        </div>
+        <div *ngIf="output!=null">
+            <div class="row">&nbsp; Razem: {{output.Amount.toFixed(2)}}zł</div>
+            <temp-dashboard [dashboard]="output"></temp-dashboard>
         </div>
     </div>
 </div>

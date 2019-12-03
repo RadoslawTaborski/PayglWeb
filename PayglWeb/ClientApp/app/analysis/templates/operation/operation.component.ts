@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 import { OperationLike } from '../../../entities/OperationLike';
 import { Operation } from '../../../entities/Operation';
+import { ApplicationStateService } from '../../../shared/application-state.service';
 
 @Component({
   selector: 'temp-operation',
@@ -11,12 +12,13 @@ export class OperationComponent implements OnInit {
     @Input() operation: OperationLike;
     public clicked: OperationLike[] = []
 
+    constructor(private state: ApplicationStateService) {}
+
     ngOnInit(): void {
         //console.log(this.operation)
     }
 
     onOperationClick(o: OperationLike, isNested: boolean) {
-        console.log("click in template")
         if (isNested) {
             console.log(!this.clicked.includes(o))
             if (!this.clicked.includes(o)) {

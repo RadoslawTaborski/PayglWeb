@@ -57,7 +57,7 @@ export class SharedService {
 
     async loadFiltersAndDashboards() {
         if (!this.isInitialize) {
-            this.loadAttributes()
+            await this.loadAttributes()
         }
         let tmp: any[]
         this.filters = []
@@ -71,7 +71,7 @@ export class SharedService {
 
     async loadOperationsGroups(from?: Date, to?: Date) {
         if (!this.isInitialize) {
-            this.loadAttributes()
+            await this.loadAttributes()
         }
         let tmp: any[]
         if (from != null && to != null) {
@@ -87,7 +87,7 @@ export class SharedService {
 
     async loadOperations(withoutParent?: boolean, from?: Date, to?: Date) {
         if (!this.isInitialize) {
-            this.loadAttributes()
+            await this.loadAttributes()
         }
         let tmp: any[]
         if (from != null && to != null) {
@@ -105,7 +105,7 @@ export class SharedService {
 
     async loadDashboardOutput(query?: string | number, from?: Date, to?: Date) {
         if (!this.isInitialize) {
-            this.loadAttributes()
+            await this.loadAttributes()
         }
         let tmp: any
         if (from != null && to != null) {
@@ -123,7 +123,7 @@ export class SharedService {
 
     async loadDashboardsOutputs(from?: Date, to?: Date) {
         if (!this.isInitialize) {
-            this.loadAttributes()
+            await this.loadAttributes()
         }
         let tmp: any[]
         if (from != null && to != null) {

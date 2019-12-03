@@ -37,7 +37,7 @@ let DataService = class DataService {
         return this.http.get("api/dashboards").toPromise();
     }
     loadOperationsGroups(from, to) {
-        if (from != null && to != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get(`api/operationsGroups/${from}/${to}`).toPromise();
@@ -47,7 +47,7 @@ let DataService = class DataService {
         }
     }
     loadOperations(withoutParent, from, to) {
-        if (from != null && to != null && withoutParent != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "" && withoutParent != null) {
             // var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = to.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get(`api/operations/${from}/${to}/${withoutParent}`).toPromise();
@@ -63,7 +63,7 @@ let DataService = class DataService {
         if (typeof (query) == "string" && query == "") {
             query = "null";
         }
-        if (from != null && to != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             return this.http.get(`api/dashboardsoutputs/${query}/${from}/${to}`).toPromise();
         }
         else {
@@ -71,7 +71,7 @@ let DataService = class DataService {
         }
     }
     loadDashboardsOutputs(from, to) {
-        if (from != null && to != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             return this.http.get(`api/dashboardsoutputs/${from}/${to}`).toPromise();
         }
         else {
@@ -80,12 +80,12 @@ let DataService = class DataService {
     }
     sendOperation(operation) {
         let json = JSON.stringify(operation);
-        console.log(json);
+        //console.log(json);
         return this.http.post(`api/operations`, json, httpOptions).toPromise();
     }
     sendOperationsGroup(operationsGroup) {
         let json = JSON.stringify(operationsGroup);
-        console.log(json);
+        //console.log(json);
         return this.http.post(`api/operationsGroups`, json, httpOptions).toPromise();
     }
 };

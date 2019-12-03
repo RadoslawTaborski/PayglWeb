@@ -2,14 +2,14 @@ import * as tslib_1 from "tslib";
 import { Component, Input } from '@angular/core';
 import { Operation } from '../../../entities/Operation';
 let OperationComponent = class OperationComponent {
-    constructor() {
+    constructor(state) {
+        this.state = state;
         this.clicked = [];
     }
     ngOnInit() {
         //console.log(this.operation)
     }
     onOperationClick(o, isNested) {
-        console.log("click in template");
         if (isNested) {
             console.log(!this.clicked.includes(o));
             if (!this.clicked.includes(o)) {

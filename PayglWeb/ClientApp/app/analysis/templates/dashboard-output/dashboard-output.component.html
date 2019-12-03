@@ -1,42 +1,102 @@
-﻿<div class="row" *ngFor="let d of getDashboardOutputItems()">
-    <div [ngClass]="{'income-dashboard': !isExpense(d), 'expense-dashboard': isExpense(d),'div-row': true}" style="margin-bottom:10px;">
-        <div class="card-header div-row" (click)="onGroupClick(d, false)">
-            <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d.Name}} </div>
-            <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d.Amount.toFixed(2)}} zł </div>
-        </div>
-        <div *ngIf="isClicked(d)">
-            <div *ngIf="d.Children!=undefined" style="padding-bottom: 15px;">
-                <div class="div-row inner" *ngFor="let d2 of d.Children">
-                    <div [ngClass]="{'income-dashboard2': !isExpense(d), 'expense-dashboard2': isExpense(d),'div-row': true}">
-                        <div class="card-header div-row" (click)="onGroupClick(d2, true)">
-                            <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d2.Name}} </div>
-                            <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d2.Amount.toFixed(2)}} zł </div>
-                        </div>
-                        <div *ngIf="isClicked(d2)">
-                            <div *ngIf="d2.Children!=undefined" style="padding-bottom: 15px;">
-                                <div class="div-row inner" *ngFor="let d3 of d2.Children" style="padding-bottom: 15px;">
-                                    <div [ngClass]="{'income-dashboard3': !isExpense(d), 'expense-dashboard3': isExpense(d),'div-row': true}">
-                                        <div class="card-header div-row">
-                                            <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d3.Name}} </div>
-                                            <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d3.Amount.toFixed(2)}} zł </div>
+﻿<div *ngIf="state.isScreenNormal()">
+    <div class="row" *ngFor="let d of getDashboardOutputItems()">
+        <div [ngClass]="{'income-dashboard': !isExpense(d), 'expense-dashboard': isExpense(d),'div-row': true}" style="margin-bottom:10px;">
+            <div class="card-header div-row" (click)="onGroupClick(d, false)">
+                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d.Name}} </div>
+                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d.Amount.toFixed(2)}}zł</div>
+            </div>
+            <div *ngIf="isClicked(d)">
+                <div *ngIf="d.Children!=undefined" style="padding-bottom: 15px;">
+                    <div class="div-row inner" *ngFor="let d2 of d.Children">
+                        <div [ngClass]="{'income-dashboard2': !isExpense(d), 'expense-dashboard2': isExpense(d),'div-row': true}">
+                            <div class="card-header div-row" (click)="onGroupClick(d2, true)">
+                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d2.Name}} </div>
+                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d2.Amount.toFixed(2)}}zł</div>
+                            </div>
+                            <div *ngIf="isClicked(d2)">
+                                <div *ngIf="d2.Children!=undefined" style="padding-bottom: 15px;">
+                                    <div class="div-row inner" *ngFor="let d3 of d2.Children" style="padding-bottom: 15px;">
+                                        <div [ngClass]="{'income-dashboard3': !isExpense(d), 'expense-dashboard3': isExpense(d),'div-row': true}">
+                                            <div class="card-header div-row">
+                                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d3.Name}} </div>
+                                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d3.Amount.toFixed(2)}}zł</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div *ngIf="d2.Result!=undefined" style="padding-bottom: 15px;">
-                                <div class="div-row inner" *ngFor="let o2 of d2.Result">
-                                    <temp-operation [operation]="o2"></temp-operation>
+                                <div *ngIf="d2.Result!=undefined" style="padding-bottom: 15px;">
+                                    <div class="div-row inner" *ngFor="let o2 of d2.Result">
+                                        <temp-operation [operation]="o2"></temp-operation>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div *ngIf="d.Result!=undefined" style="padding-bottom: 15px;">
-                <div class="div-row inner" *ngFor="let o of d.Result">
-                    <temp-operation [operation]="o"></temp-operation>
+                <div *ngIf="d.Result!=undefined" style="padding-bottom: 15px;">
+                    <div class="div-row inner" *ngFor="let o of d.Result">
+                        <temp-operation [operation]="o"></temp-operation>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="state.isScreenMobile()">
+    <div class="row" *ngFor="let d of getDashboardOutputItems()">
+        <div [ngClass]="{'income-dashboard': !isExpense(d), 'expense-dashboard': isExpense(d),'div-row': true}" style="margin-bottom:10px;">
+            <div class="card-header div-row" (click)="onGroupClick(d, false)">
+                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d.Name}} </div>
+                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d.Amount.toFixed(2)}}zł </div>
+            </div>
+            <div *ngIf="isClicked(d)">
+                <div *ngIf="d.Children!=undefined" style="padding-bottom: 15px;">
+                    <div class="div-row inner" *ngFor="let d2 of d.Children">
+                        <div [ngClass]="{'income-dashboard2': !isExpense(d), 'expense-dashboard2': isExpense(d),'div-row': true}">
+                            <div class="card-header div-row" (click)="onGroupClick(d2, true)">
+                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d2.Name}} </div>
+                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d2.Amount.toFixed(2)}}zł </div>
+                            </div>
+                            <div *ngIf="isClicked(d2)">
+                                <div *ngIf="d2.Children!=undefined" style="padding-bottom: 15px;">
+                                    <div class="div-row inner" *ngFor="let d3 of d2.Children" style="padding-bottom: 15px;">
+                                        <div [ngClass]="{'income-dashboard3': !isExpense(d), 'expense-dashboard3': isExpense(d),'div-row': true}">
+                                            <div class="card-header div-row">
+                                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">{{d3.Name}} </div>
+                                                <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">kwota: {{d3.Amount.toFixed(2)}}zł </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="d2.Result!=undefined" style="padding-bottom: 15px;">
+                                    <div class="div-row inner" *ngFor="let o2 of d2.Result">
+                                        <temp-operation [operation]="o2"></temp-operation>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="d.Result!=undefined" style="padding-bottom: 15px;">
+                    <div class="div-row inner" *ngFor="let o of d.Result">
+                        <temp-operation [operation]="o"></temp-operation>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngFor="let dash of getDashboards(dashboard); let i = index">
+    <div *ngIf="isSelected(dash)">
+        <app-dashboard-piechart [dashboard]="dash"></app-dashboard-piechart>
+    </div>
+</div>
+
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <div *ngFor="let dash of getDashboards(dashboard); let i = index">
+            <button type="button" class="btn btn-secondary" (click)="setDashboardForPieChart(dash)">{{i}}</button>
         </div>
     </div>
 </div>

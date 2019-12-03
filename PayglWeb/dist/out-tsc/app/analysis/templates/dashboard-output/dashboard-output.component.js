@@ -1,7 +1,8 @@
 import * as tslib_1 from "tslib";
 import { Component, Input } from '@angular/core';
 let DashboardOutputComponent = class DashboardOutputComponent {
-    constructor() {
+    constructor(state) {
+        this.state = state;
         this.clicked = [];
     }
     ngOnInit() {

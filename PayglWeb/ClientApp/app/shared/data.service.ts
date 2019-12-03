@@ -49,7 +49,7 @@ export class DataService {
     }
 
     loadOperationsGroups(from?: Date, to?: Date): Promise<any[]> {
-        if (from != null && to != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get<any[]>(`api/operationsGroups/${from}/${to}`).toPromise()
@@ -59,7 +59,7 @@ export class DataService {
     }
 
     loadOperations(withoutParent?: boolean, from?: Date, to?: Date): Promise<any[]> {
-        if (from != null && to != null && withoutParent != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "" && withoutParent != null) {
            // var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = to.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get<any[]>(`api/operations/${from}/${to}/${withoutParent}`).toPromise()
@@ -75,7 +75,7 @@ export class DataService {
             query = "null"
         }
 
-        if (from != null && to != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             return this.http.get<any[]>(`api/dashboardsoutputs/${query}/${from}/${to}`).toPromise()
         } else {
             return this.http.get<any[]>(`api/dashboardsoutputs/${query}`).toPromise()
@@ -83,7 +83,7 @@ export class DataService {
     }
 
     loadDashboardsOutputs(from?: Date, to?: Date): Promise<any[]> {
-        if (from != null && to != null) {
+        if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             return this.http.get<any[]>(`api/dashboardsoutputs/${from}/${to}`).toPromise()
         } else {
             return this.http.get<any[]>(`api/dashboardsoutputs/`).toPromise()
