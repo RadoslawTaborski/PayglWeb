@@ -1,11 +1,18 @@
 import * as tslib_1 from "tslib";
 import { Component, Input } from '@angular/core';
+import { DashboardOutput } from '../../../entities/DashboardOutput';
 let DashboardOutputComponent = class DashboardOutputComponent {
     constructor(state) {
         this.state = state;
         this.clicked = [];
+        this.selectedPie = [];
+        this.allDashboard = [];
     }
     ngOnInit() {
+    }
+    ngOnChanges() {
+        this.allDashboard = this.getDashboards(this.dashboard);
+        this.setDashboardForPieChart(this.allDashboard[0]);
     }
     getDashboardOutputItems() {
         if (this.dashboard != null) {
@@ -36,6 +43,34 @@ let DashboardOutputComponent = class DashboardOutputComponent {
                 this.clicked = [];
             }
         }
+    }
+    getDashboards(dashboard) {
+        let result = [];
+        if (!(dashboard instanceof DashboardOutput)) {
+            return result;
+        }
+        result.push(dashboard);
+        for (let leaf of dashboard.Children) {
+            if (!(leaf instanceof DashboardOutput)) {
+                continue;
+            }
+            result.push(leaf);
+            for (let leaf2 of leaf.Children) {
+                if (leaf2 instanceof DashboardOutput) {
+                    result.push(leaf2);
+                }
+            }
+        }
+        return result;
+    }
+    setDashboardForPieChart(dash) {
+        if (!this.selectedPie.includes(dash)) {
+            this.selectedPie = [];
+            this.selectedPie.push(dash);
+        }
+    }
+    isSelected(o) {
+        return this.selectedPie.includes(o);
     }
     isClicked(o) {
         return this.clicked.includes(o);

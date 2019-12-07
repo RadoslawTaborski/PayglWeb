@@ -48,7 +48,7 @@ export class DataService {
         return this.http.get<any[]>("api/dashboards").toPromise()
     }
 
-    loadOperationsGroups(from?: Date, to?: Date): Promise<any[]> {
+    loadOperationsGroups(from?: string, to?: string): Promise<any[]> {
         if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
@@ -58,7 +58,7 @@ export class DataService {
         }
     }
 
-    loadOperations(withoutParent?: boolean, from?: Date, to?: Date): Promise<any[]> {
+    loadOperations(withoutParent?: boolean, from?: string, to?: string): Promise<any[]> {
         if (from != null && to != null && from.toString() != "" && to.toString() != "" && withoutParent != null) {
            // var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = to.toISOString().slice(0, 10).replace(/-/g, "");
@@ -70,7 +70,7 @@ export class DataService {
         }
     }
 
-    loadDashboardOutput(query?: string | number, from?: Date, to?: Date): Promise<any[]> {
+    loadDashboardOutput(query?: string | number, from?: string, to?: string): Promise<any[]> {
         if (typeof (query) == "string" && query == "") {
             query = "null"
         }
@@ -82,7 +82,7 @@ export class DataService {
         }
     }
 
-    loadDashboardsOutputs(from?: Date, to?: Date): Promise<any[]> {
+    loadDashboardsOutputs(from?: string, to?: string): Promise<any[]> {
         if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             return this.http.get<any[]>(`api/dashboardsoutputs/${from}/${to}`).toPromise()
         } else {

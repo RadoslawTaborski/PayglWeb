@@ -61,7 +61,6 @@ export class DashboardPiechartComponent implements OnInit {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: '# of Votes',
                     data: data,
                     backgroundColor: this.colours,
                     borderWidth: 1
@@ -72,7 +71,23 @@ export class DashboardPiechartComponent implements OnInit {
                     text: dashboard.Name,
                     display: true
                 },
-            }
+                legend: {
+                    display: false,
+                    position: 'left',
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index] || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += "" + (Math.round((data.datasets[0].data[tooltipItem.index] as number) * 100) / 100).toFixed(2);
+                            return label;
+                        }
+                    }
+                }
+            },
         });
 
         return result;

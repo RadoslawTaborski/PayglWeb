@@ -69,7 +69,7 @@ export class SharedService {
         tmp.forEach(a => this.dashboards.push(Dashboard.createFromJson(a)))
     }
 
-    async loadOperationsGroups(from?: Date, to?: Date) {
+    async loadOperationsGroups(from?: string, to?: string) {
         if (!this.isInitialize) {
             await this.loadAttributes()
         }
@@ -85,7 +85,7 @@ export class SharedService {
         }
     }
 
-    async loadOperations(withoutParent?: boolean, from?: Date, to?: Date) {
+    async loadOperations(withoutParent?: boolean, from?: string, to?: string) {
         if (!this.isInitialize) {
             await this.loadAttributes()
         }
@@ -103,7 +103,7 @@ export class SharedService {
         } 
     }
 
-    async loadDashboardOutput(query?: string | number, from?: Date, to?: Date) {
+    async loadDashboardOutput(query?: string | number, from?: string, to?: string) {
         if (!this.isInitialize) {
             await this.loadAttributes()
         }
@@ -121,7 +121,7 @@ export class SharedService {
         }
     }
 
-    async loadDashboardsOutputs(from?: Date, to?: Date) {
+    async loadDashboardsOutputs(from?: string, to?: string) {
         if (!this.isInitialize) {
             await this.loadAttributes()
         }

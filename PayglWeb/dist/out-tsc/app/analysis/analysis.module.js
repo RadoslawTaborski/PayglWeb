@@ -12,11 +12,12 @@ import { AnalysisComponent } from './analysis/analysis.component';
 import { OperationComponent } from './templates/operation/operation.component';
 import { DashboardOutputComponent } from './templates/dashboard-output/dashboard-output.component';
 import { ChartsComponent } from './templates/charts/charts.component';
+import { DashboardPiechartComponent } from './templates/dashboard-piechart/dashboard-piechart.component';
 let AnalysisModule = class AnalysisModule {
 };
 AnalysisModule = tslib_1.__decorate([
     NgModule({
-        declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent, ChartsComponent],
+        declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent, ChartsComponent, DashboardPiechartComponent],
         imports: [
             CommonModule,
             FormsModule

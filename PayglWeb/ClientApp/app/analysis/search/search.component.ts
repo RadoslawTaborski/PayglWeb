@@ -6,6 +6,7 @@ import { Operation } from '../../entities/Operation';
 import { OperationLike } from '../../entities/OperationLike';
 import { DashboardOutput } from '../../entities/DashboardOutput';
 import { DashboardOutputLeaf } from '../../entities/DashboardOutputLeaf';
+import { IDashboardOutput } from '../../entities/IDashboardOutput';
 
 @Component({
     selector: 'app-search',
@@ -17,8 +18,8 @@ export class SearchComponent implements OnInit {
     public clicked: OperationLike[] = []
     public dashboard: DashboardOutput
     public query: string = ""
-    public dateFrom: Date
-    public dateTo: Date
+    public dateFrom: string
+    public dateTo: string
     public sum: number = 0
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
@@ -27,7 +28,9 @@ export class SearchComponent implements OnInit {
         await this.shared.loadAttributes()
         this.sum = 0
         await this.shared.loadDashboardOutput("", null, null)
-        console.log(this.shared.dashboardOutput);
+        let allDates = this.getAllDates(this.shared.dashboardOutput).sort()
+        this.dateFrom = allDates[0].substring(0, 10)
+        this.dateTo = allDates[allDates.length - 1].substring(0, 10)
         this.isLoaded = true;
         //console.log(this.isLoaded)
     }
@@ -99,5 +102,21 @@ export class SearchComponent implements OnInit {
         this.isLoaded = false;
         await this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo) 
         this.isLoaded=true
+    }
+
+    getAllDates(dashboard: IDashboardOutput): string[] {
+        let result: string[] = []
+
+        if (dashboard instanceof DashboardOutputLeaf) {
+            for (let leaf of (dashboard as DashboardOutputLeaf).Result) {
+                result.push(leaf.Date)
+            }
+        } else {
+            for (let child of (dashboard as DashboardOutput).Children) {
+                result = result.concat(this.getAllDates(child))
+            }
+        }
+
+        return result;
     }
 }

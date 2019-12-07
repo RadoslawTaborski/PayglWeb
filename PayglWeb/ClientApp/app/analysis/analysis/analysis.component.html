@@ -17,7 +17,7 @@
             </div>
             <div *ngIf="output!=null">
                 <div class="row">Razem: {{output.Amount.toFixed(2)}}zł</div>
-                <temp-dashboard [dashboard]="output"></temp-dashboard>
+                <temp-dashboard [dashboard]="output" [dateFrom]="dateFrom" [dateTo]="dateTo"></temp-dashboard>
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
         </div>
         <div *ngIf="output!=null">
             <div class="row">&nbsp; Razem: {{output.Amount.toFixed(2)}}zł</div>
-            <temp-dashboard [dashboard]="output"></temp-dashboard>
+            <temp-dashboard [dashboard]="output" [dateFrom]="dateFrom" [dateTo]="dateTo"></temp-dashboard>
         </div>
     </div>
 </div>

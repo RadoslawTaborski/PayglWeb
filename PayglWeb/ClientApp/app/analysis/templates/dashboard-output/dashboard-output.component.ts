@@ -10,9 +10,12 @@ import { ApplicationStateService } from '../../../shared/application-state.servi
 })
 export class DashboardOutputComponent implements OnInit {
     @Input() dashboard: IDashboardOutput;
+    @Input() dateFrom: Date
+    @Input() dateTo: Date
     public clicked: IDashboardOutput[] = []
     public selectedPie: IDashboardOutput[] = []
     public allDashboard: IDashboardOutput[] = []
+    public canDisplayCharts: boolean = false;
 
     constructor(private state: ApplicationStateService) { }
 
@@ -89,5 +92,9 @@ export class DashboardOutputComponent implements OnInit {
 
     isClicked(o: IDashboardOutput): boolean {
         return this.clicked.includes(o);
+    }
+
+    displayCharts() {
+        this.canDisplayCharts = !this.canDisplayCharts;
     }
 }

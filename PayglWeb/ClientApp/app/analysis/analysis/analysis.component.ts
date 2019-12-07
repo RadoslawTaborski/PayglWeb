@@ -16,8 +16,8 @@ import { DashboardOutputLeaf } from '../../entities/DashboardOutputLeaf';
 })
 export class AnalysisComponent implements OnInit {
     public isLoaded: boolean = false
-    public dateFrom: Date
-    public dateTo: Date
+    public dateFrom: string
+    public dateTo: string
     public clicked: Dashboard[] = []
     public selectedDashboard: Dashboard = null;
     public output: IDashboardOutput = null;
@@ -28,7 +28,11 @@ export class AnalysisComponent implements OnInit {
 
     async ngOnInit() {
         await this.shared.loadFiltersAndDashboards()
-        this.onDashboardClick(this.getDashboards()[0])
+        await this.onDashboardClick(this.getDashboards()[0])
+        let allDates = this.getAllDates(this.output).sort()
+        this.dateFrom = allDates[0].substring(0,10)
+        this.dateTo = allDates[allDates.length - 1].substring(0, 10)
+
         this.isLoaded = true;
     }
 
@@ -68,5 +72,21 @@ export class AnalysisComponent implements OnInit {
             this.output = this.shared.dashboardOutput
         }
         this.isLoaded = true
+    }
+
+    getAllDates(dashboard: IDashboardOutput) : string[] {
+        let result: string[] = []
+
+        if (dashboard instanceof DashboardOutputLeaf) {
+            for (let leaf of (dashboard as DashboardOutputLeaf).Result) {
+                result.push(leaf.Date)
+            }
+        } else {
+            for (let child of (dashboard as DashboardOutput).Children) {
+                result = result.concat(this.getAllDates(child))
+            }
+        }
+
+        return result;
     }
 }
