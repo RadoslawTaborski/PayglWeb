@@ -6,14 +6,16 @@ import { DataService } from '../shared/data.service';
 import { FormsModule } from '@angular/forms';
 import { SharedService } from '../shared/shared.service';
 import { ApplicationStateService } from '../shared/application-state.service';
+import { OperationEditDialogComponent } from './operation-edit-dialog/operation-edit-dialog.component';
+import { GroupEditDialogComponent } from './group-edit-dialog/group-edit-dialog.component';
 
 @NgModule({
-    declarations: [ManualOperationComponent, GroupComponent],
+    declarations: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent],
     imports: [
         CommonModule,
         FormsModule
     ],
-    exports: [ManualOperationComponent, GroupComponent],
+    exports: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent],
     providers: [
         SharedService,
         DataService,

@@ -7,6 +7,11 @@
         </div>
         <div [ngClass]="{'income-operation-detail': !isExpense(operation) && isOperation(operation), 'expense-operation-detail': isExpense(operation) && isOperation(operation), 'income-group-detail': !isExpense(operation) && !isOperation(operation), 'expense-group-detail': isExpense(operation) && !isOperation(operation),'div-row': true}" *ngIf="isClicked(operation)">
             <div class="div-row">
+                <button class="btn btn-success" style="float: right;" (click)="edit(operation)">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="div-row">
                 <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Częstotliwość:</div>
                 <p class="card-text inline-p">{{operation.Frequency.Text}}</p>
             </div>
@@ -36,6 +41,11 @@
                         </div>
                         <div [ngClass]="{'income-operation-detail': !isExpense(q) && isOperation(q), 'expense-operation-detail': isExpense(q) && isOperation(q), 'div-row': true}" *ngIf="isClicked(q)">
                             <div class="div-row">
+                                <button class="btn btn-success" style="float: right;" (click)="edit(q)">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="div-row">
                                 <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Typ transakcji:</div>
                                 <p class="card-text inline-p">{{q.TransactionType.Text}}</p>
                             </div>
@@ -58,6 +68,11 @@
             <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{operation.Description}} </div>
         </div>
         <div [ngClass]="{'income-operation-detail': !isExpense(operation) && isOperation(operation), 'expense-operation-detail': isExpense(operation) && isOperation(operation), 'income-group-detail': !isExpense(operation) && !isOperation(operation), 'expense-group-detail': isExpense(operation) && !isOperation(operation),'div-row': true}" *ngIf="isClicked(operation)">
+            <div class="div-row">
+                <button class="btn btn-success" style="float: right;" (click)="edit(operation)">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+            </div>
             <div class="div-row">
                 <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Częstotliwość:</div>
                 <p class="card-text inline-p">{{operation.Frequency.Text}}</p>
@@ -88,6 +103,11 @@
                         </div>
                         <div [ngClass]="{'income-operation-detail': !isExpense(q) && isOperation(q), 'expense-operation-detail': isExpense(q) && isOperation(q), 'div-row': true}" *ngIf="isClicked(q)">
                             <div class="div-row">
+                                <button class="btn btn-success" style="float: right;" (click)="edit(q)">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="div-row">
                                 <div class="card-text inline-block col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Typ transakcji:</div>
                                 <p class="card-text inline-p">{{q.TransactionType.Text}}</p>
                             </div>
@@ -100,5 +120,14 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div *ngIf="editedOperation!=undefined">
+    <div *ngIf="isOperation(editedOperation)">
+        <app-operation-edit-dialog [visible]="true" [operation]="editedOperation"></app-operation-edit-dialog>
+    </div>
+    <div *ngIf="!isOperation(editedOperation)">
+        <app-group-edit-dialog [visible]="true" [operation]="editedOperation"></app-group-edit-dialog>
     </div>
 </div>

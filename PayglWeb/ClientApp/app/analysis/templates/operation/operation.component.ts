@@ -11,6 +11,7 @@ import { ApplicationStateService } from '../../../shared/application-state.servi
 export class OperationComponent implements OnInit {
     @Input() operation: OperationLike;
     public clicked: OperationLike[] = []
+    editedOperation: OperationLike;
 
     constructor(private state: ApplicationStateService) {}
 
@@ -50,5 +51,10 @@ export class OperationComponent implements OnInit {
     isExpense(o: OperationLike): boolean {
         //console.log(o)
         return o.TransactionType.Text == 'wydatek'
+    }
+
+    edit(o: OperationLike) {
+        this.editedOperation = o;
+        console.log(o.Description)
     }
 }

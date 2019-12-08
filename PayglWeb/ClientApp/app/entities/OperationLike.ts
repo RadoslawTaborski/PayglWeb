@@ -1,4 +1,4 @@
-﻿import { User, Frequency, Importance, TagRelation, TransactionType } from "./entities";
+﻿import { User, Frequency, Importance, TagRelation, TransactionType, Tag } from "./entities";
 import { Countable } from './Countable';
 
 export interface OperationLike extends Countable {
@@ -9,4 +9,10 @@ export interface OperationLike extends Countable {
     Date: string;
     Tags: TagRelation[];
     Description: string;
+
+    markAllTagsForDeletion()
+    addTag(tag: TagRelation)
+    setTags(tags: Tag[])
+    tagToNewTagRelation(tag: Tag): TagRelation
+
 }

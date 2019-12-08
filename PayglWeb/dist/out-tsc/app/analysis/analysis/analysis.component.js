@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
 import { DashboardOutput } from '../../entities/DashboardOutput';
+import { DashboardOutputLeaf } from '../../entities/DashboardOutputLeaf';
 let AnalysisComponent = class AnalysisComponent {
     constructor(shared, state) {
         this.shared = shared;
@@ -14,7 +15,10 @@ let AnalysisComponent = class AnalysisComponent {
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadFiltersAndDashboards();
-            this.onDashboardClick(this.getDashboards()[0]);
+            yield this.onDashboardClick(this.getDashboards()[0]);
+            let allDates = this.getAllDates(this.output).sort();
+            this.dateFrom = allDates[0].substring(0, 10);
+            this.dateTo = allDates[allDates.length - 1].substring(0, 10);
             this.isLoaded = true;
         });
     }
@@ -59,6 +63,20 @@ let AnalysisComponent = class AnalysisComponent {
             }
             this.isLoaded = true;
         });
+    }
+    getAllDates(dashboard) {
+        let result = [];
+        if (dashboard instanceof DashboardOutputLeaf) {
+            for (let leaf of dashboard.Result) {
+                result.push(leaf.Date);
+            }
+        }
+        else {
+            for (let child of dashboard.Children) {
+                result = result.concat(this.getAllDates(child));
+            }
+        }
+        return result;
     }
 };
 AnalysisComponent = tslib_1.__decorate([

@@ -16,7 +16,9 @@ let SearchComponent = class SearchComponent {
             yield this.shared.loadAttributes();
             this.sum = 0;
             yield this.shared.loadDashboardOutput("", null, null);
-            console.log(this.shared.dashboardOutput);
+            let allDates = this.getAllDates(this.shared.dashboardOutput).sort();
+            this.dateFrom = allDates[0].substring(0, 10);
+            this.dateTo = allDates[allDates.length - 1].substring(0, 10);
             this.isLoaded = true;
             //console.log(this.isLoaded)
         });
@@ -85,6 +87,20 @@ let SearchComponent = class SearchComponent {
             yield this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo);
             this.isLoaded = true;
         });
+    }
+    getAllDates(dashboard) {
+        let result = [];
+        if (dashboard instanceof DashboardOutputLeaf) {
+            for (let leaf of dashboard.Result) {
+                result.push(leaf.Date);
+            }
+        }
+        else {
+            for (let child of dashboard.Children) {
+                result = result.concat(this.getAllDates(child));
+            }
+        }
+        return result;
     }
 };
 SearchComponent = tslib_1.__decorate([

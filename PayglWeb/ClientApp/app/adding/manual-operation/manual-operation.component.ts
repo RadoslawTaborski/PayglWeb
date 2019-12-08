@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { Frequency, Importance, Tag, TransactionType, TransferType, TagRelation, User, Language, Details } from '../../entities/entities';
 import { OperationsGroup } from "../../entities/OperationsGroup";
@@ -11,12 +11,18 @@ import { ApplicationStateService } from '../../shared/application-state.service'
     styleUrls: ['./manual-operation.component.css']
 })
 export class ManualOperationComponent implements OnInit {
+    @Input() operation: Operation
+    @Output() finishedOutput = new EventEmitter<boolean>();
+
+    title: string;
+    btnName: string;
+
     public isLoaded: boolean = false
     public editable: boolean = true
 
     public description: string = ""
     public amount: number = null
-    public date: Date = null
+    public date: string = null
     public selectedFrequency: any = ""
     public selectedImportance: any = ""
     public selectedTag: any = ""
@@ -30,8 +36,50 @@ export class ManualOperationComponent implements OnInit {
     async ngOnInit() {
         await this.shared.loadAttributes()
         await this.shared.loadOperationsGroups()
+        this.title = "Dodaj operację"
+        this.btnName = "Dodaj"
+        this.setEditModIfPossible()
         this.isLoaded = true;
         //console.log(this.isLoaded)
+    }
+
+    ngOnChanges() {
+        //console.log(this.operation)
+        this.setEditModIfPossible()
+    }
+
+    emitOutput() {
+        console.log("emited: finished")
+        this.finishedOutput.emit(true);
+    }
+
+    setEditModIfPossible() {
+        if (this.operation == null || this.operation == undefined) {
+            return
+        }
+        this.title = "Edytuj operację"
+        this.btnName = "Edytuj"
+        this.description = this.operation.Description
+        this.amount = this.operation.Amount
+        this.date = this.operation.Date.substring(0, 10)
+        this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0]
+        this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
+        this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0]
+        this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0]
+        this.selectedTags = []
+        console.log(this.operation.Tags)
+        for (let tag of this.operation.Tags) {
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1]
+        }
+        if (this.operation.GroupId != null) {
+            this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Id == this.operation.GroupId)[0]
+            this.editable = false;
+        } else {
+            this.editable = true;
+        }
     }
 
     getFrequencies(): Frequency[] {
@@ -76,46 +124,58 @@ export class ManualOperationComponent implements OnInit {
     }
 
     onGroupChange(selectedOperationGroup: OperationsGroup) {
-        console.log(selectedOperationGroup)
+        console.log(selectedOperationGroup, null)
+        console.log(selectedOperationGroup != null)
         if (selectedOperationGroup != null) {
+            console.log("here")
             this.editable = false;
             this.selectedFrequency = selectedOperationGroup.Frequency
             this.selectedImportance = selectedOperationGroup.Importance
             this.selectedTags = selectedOperationGroup.Tags.map(x => x.Tag)
-            this.selectedTag = this.selectedTags[this.selectedTags.length-1]
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1]
         } else {
-            this.editable=true
+            this.editable = true
         }
     }
 
     async onAdd() {
-        let operation = new Operation(null, this.selectedOperationGroup == null ? null : this.selectedOperationGroup.Id, this.tmpCreatingUser(), this.amount, this.selectedTransactionType, this.selectedTransferType, this.selectedFrequency, this.selectedImportance, this.date.toLocaleString(), "", this.tagsToNewTagRelations(this.selectedTags), [], this.description);
-        operation.IsDirty = true;
-        await this.shared.sendOperation(operation)
-        let tmp = (<HTMLFormElement>document.getElementById("form"))
-        this.clear()
-        tmp.reset()
-    }
+        if (this.selectedTags.length > 0) {
+            if (this.operation != undefined && this.operation != null) {
+                this.update(this.operation)
+            } else {
+                let operation = new Operation()
+                this.update(operation)
+            }
 
-    tagToNewTagRelation(tag: Tag): TagRelation {
-        let result = new TagRelation(null, tag);
-        result.IsDirty = true
+            let tmp = (<HTMLFormElement>document.getElementById("form"))
+            this.clear()
+            tmp.reset()
 
-        return result
-    }
-
-    tagsToNewTagRelations(tags: Tag[]): TagRelation[] {
-        let result: TagRelation[] = []
-        for (let tag of tags) {
-            result.push(this.tagToNewTagRelation(tag))
+            await this.emitOutput()
         }
+    }
 
-        return result
+    async update(operation: Operation) {
+        operation.Description = this.description
+        operation.Amount = this.amount
+        operation.User = this.tmpCreatingUser()
+        operation.GroupId = this.selectedOperationGroup != null ? this.selectedOperationGroup.Id : null
+        operation.TransactionType = this.selectedTransactionType
+        operation.TransferType = this.selectedTransferType
+        operation.Frequency = this.selectedFrequency
+        operation.Importance = this.selectedImportance
+        operation.Date = this.date.toLocaleString()
+        operation.ReceiptPath = ""
+        operation.setTags(this.selectedTags)
+        operation.DetailsList = []
+        operation.IsDirty = true;
+
+        await this.shared.sendOperation(operation)
     }
 
     tmpCreatingUser(): User {
         let language = new Language(1, "pl-PL", "polski")
-        let userDetails = new Details(1, "Taborski", "Rados�aw");
+        let userDetails = new Details(1, "Taborski", "Radosław");
         let user = new User(1, "rado", language, userDetails)
 
         return user

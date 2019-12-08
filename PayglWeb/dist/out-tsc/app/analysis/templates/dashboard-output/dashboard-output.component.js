@@ -7,6 +7,7 @@ let DashboardOutputComponent = class DashboardOutputComponent {
         this.clicked = [];
         this.selectedPie = [];
         this.allDashboard = [];
+        this.canDisplayCharts = false;
     }
     ngOnInit() {
     }
@@ -75,10 +76,19 @@ let DashboardOutputComponent = class DashboardOutputComponent {
     isClicked(o) {
         return this.clicked.includes(o);
     }
+    displayCharts() {
+        this.canDisplayCharts = !this.canDisplayCharts;
+    }
 };
 tslib_1.__decorate([
     Input()
 ], DashboardOutputComponent.prototype, "dashboard", void 0);
+tslib_1.__decorate([
+    Input()
+], DashboardOutputComponent.prototype, "dateFrom", void 0);
+tslib_1.__decorate([
+    Input()
+], DashboardOutputComponent.prototype, "dateTo", void 0);
 DashboardOutputComponent = tslib_1.__decorate([
     Component({
         selector: 'temp-dashboard',

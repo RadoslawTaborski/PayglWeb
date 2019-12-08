@@ -42,6 +42,10 @@ let OperationComponent = class OperationComponent {
         //console.log(o)
         return o.TransactionType.Text == 'wydatek';
     }
+    edit(o) {
+        this.editedOperation = o;
+        console.log(o.Description);
+    }
 };
 tslib_1.__decorate([
     Input()

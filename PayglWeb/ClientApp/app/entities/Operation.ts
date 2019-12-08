@@ -14,8 +14,8 @@ export class Operation implements OperationLike {
     Importance: Importance;
     Date: string;
     ReceiptPath: string;
-    Tags: TagRelation[];
-    DetailsList: OperationDetails[];
+    Tags: TagRelation[] = [];
+    DetailsList: OperationDetails[] = [];
     Description: string;
 
     constructor(id?: number, groupId?: number, user?: User, amount?: number, transactionType?: TransactionType, transferType?: TransferType, frequency?: Frequency, importance?: Importance, date?: string, receiptPath?: string, tags?: TagRelation[], operationDetails?: OperationDetails[], description?: string) {
@@ -29,8 +29,12 @@ export class Operation implements OperationLike {
         this.Importance = importance
         this.Date = Operation.convertDate(date);
         this.ReceiptPath = receiptPath
-        this.Tags = tags
-        this.DetailsList = operationDetails
+        if (tags != undefined) {
+            this.Tags = tags
+        }
+        if (operationDetails != undefined) {
+            this.DetailsList = operationDetails
+        }
         this.Description = description
     }
 
@@ -65,5 +69,40 @@ export class Operation implements OperationLike {
         }
         var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
         return st.replace(pattern, '$3-$2-$1');
+    }
+
+    markAllTagsForDeletion() {
+        for (let i = 0; i < this.Tags.length; ++i) {
+            let tag = this.Tags[i]
+            tag.IsDirty = true;
+            tag.IsMarkForDeletion = true;
+        }
+    }
+
+    addTag(tag: TagRelation) {
+        let filtered = this.Tags.filter(t => t.Tag.Text == tag.Tag.Text)
+        if (filtered.length == 0) {
+            tag.IsDirty = true;
+            this.Tags.push(tag);
+        } else {
+            let old = filtered[0]
+            old.IsDirty = false;
+            old.IsMarkForDeletion = false;
+        }
+    }
+
+    setTags(tags: Tag[]) {
+        this.markAllTagsForDeletion()
+        for (let tag of tags) {
+            let tagRel = this.tagToNewTagRelation(tag)
+            this.addTag(tagRel)
+        }
+    }
+
+    tagToNewTagRelation(tag: Tag): TagRelation {
+        let result = new TagRelation(null, tag);
+        result.IsDirty = true
+
+        return result
     }
 }

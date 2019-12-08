@@ -12,8 +12,8 @@ export class OperationsGroup implements OperationLike, Countable{
     Frequency: Frequency;
     Importance: Importance;
     Date: string;
-    Tags: TagRelation[];
-    Operations: Operation[];
+    Tags: TagRelation[] = [];
+    Operations: Operation[] = [];
 
     Amount: number = 0;
     TransactionType: TransactionType;
@@ -25,8 +25,10 @@ export class OperationsGroup implements OperationLike, Countable{
         this.Frequency = frequency
         this.Importance = importance
         this.Date = OperationsGroup.convertDate(date);
-        this.Tags = tags
-        if (operations != null) {
+        if (tags != undefined) {
+            this.Tags = tags
+        }
+        if (operations != null && operations != undefined) {
             this.Operations = operations.sort((a, b) => (a.Date > b.Date) ? 1 : -1)
         }
     }
@@ -76,5 +78,40 @@ export class OperationsGroup implements OperationLike, Countable{
         }
         var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
         return st.replace(pattern, '$3-$2-$1');
+    }
+
+    markAllTagsForDeletion() {
+        for (let i = 0; i < this.Tags.length; ++i) {
+            let tag = this.Tags[i]
+            tag.IsDirty = true;
+            tag.IsMarkForDeletion = true;
+        }
+    }
+
+    addTag(tag: TagRelation) {
+        let filtered = this.Tags.filter(t => t.Tag.Text == tag.Tag.Text)
+        if (filtered.length == 0) {
+            tag.IsDirty = true;
+            this.Tags.push(tag);
+        } else {
+            let old = filtered[0]
+            old.IsDirty = false;
+            old.IsMarkForDeletion = false;
+        }
+    }
+
+    setTags(tags: Tag[]) {
+        this.markAllTagsForDeletion()
+        for (let tag of tags) {
+            let tagRel = this.tagToNewTagRelation(tag)
+            this.addTag(tagRel)
+        }
+    }
+
+    tagToNewTagRelation(tag: Tag): TagRelation {
+        let result = new TagRelation(null, tag);
+        result.IsDirty = true
+
+        return result
     }
 }
