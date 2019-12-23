@@ -7,6 +7,9 @@
             <div class="div-row" *ngIf="state.isScreenNormal()">
                 <div class="div-row" *ngIf="isLoaded">
                     <div style="padding-bottom:10px">
+                        <div class="div-row" style="padding-top:10px; padding-bottom:10px;">
+                            <input [(ngModel)]="name" name="inpName" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control" type="text" autocomplete="off" placeholder="nazwa" />
+                        </div>
                         <div class="div-row" style="padding-bottom:10px;">
                             <button class="btn btn-primary" style="float: right; margin-left: 3px;" (click)="select()">Zatwierdź</button>
                         </div>

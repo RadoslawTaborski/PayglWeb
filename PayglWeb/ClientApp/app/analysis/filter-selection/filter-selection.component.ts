@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
-import { IFilter } from '../../entities/entities';
+import { IFilter, Filter, Dashboard } from '../../entities/entities';
 
 @Component({
   selector: 'app-filter-selection',
@@ -19,12 +19,20 @@ export class FilterSelectionComponent implements OnInit {
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
-    ngOnInit() {
+    async ngOnInit() {
+        await this.shared.loadFiltersAndDashboards()
         this.isLoaded = true;
+        //console.log(this.isLoaded)
     }
 
-    ngOnChanges() {
-        this.isLoaded = true;
+    getFilters(): Filter[] {
+        //console.log(this.shared.filters)
+        return this.shared.filters
+    }
+
+    getDashboards(): Dashboard[] {
+        //console.log(this.shared.dashboards)
+        return this.shared.dashboards.filter(d => ! d.IsVisible)
     }
 
     close() {
@@ -38,7 +46,12 @@ export class FilterSelectionComponent implements OnInit {
 
     async select() {
         this.isLoaded = false;
+        //console.log(this.filter)
         this.isLoaded = true
         this.emitOutput()
+    }
+
+    onItemChange(filter: IFilter) {
+        this.filter = filter
     }
 }

@@ -3,12 +3,12 @@
         <!----------------------NORMAL------------------>
         <div class="div-row">
             <div cdkDropList class="bg-main div-row text-white" (cdkDropListDropped)="drop($event, getDashboards())">
-                <div class="card-header bg-main div-row text-white" *ngFor="let o of getDashboards()" (click)="onDashboardClick(o)" cdkDrag>
+                <div class="card-header bg-main div-row text-white" *ngFor="let o of allDashboards" (click)="onDashboardClick(o)" cdkDrag>
                     <div style="padding-bottom:12px;">
                         <div class="card-text inline-block">
                             {{o.Name}}
                         </div>
-                        <button class="btn btn-sm btn-danger" style="float: right;" (click)="delete(o);$event.stopPropagation()">
+                        <button class="btn btn-sm btn-danger" style="float: right;" (click)="delete(o, null);$event.stopPropagation()">
                             <i class="fa fa-close" aria-hidden="true"></i>
                         </button>
                         <div style="float: right;">
@@ -21,7 +21,7 @@
                                 <div class="card-text inline-block">
                                     {{o2.Filter.Name}}
                                 </div>
-                                <button class="btn btn-sm btn-danger" style="float: right;" (click)="delete(o2.Filter);$event.stopPropagation()">
+                                <button class="btn btn-sm btn-danger" style="float: right;" (click)="delete(o, o2.Filter);$event.stopPropagation()">
                                     <i class="fa fa-close" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -39,6 +39,9 @@
                     <i class="fa fa-plus-circle"></i>
                 </button>
             </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-primary col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" style="margin:auto;" (click)="save()">Zapisz</button>
         </div>
     </div>
 </div>

@@ -8,16 +8,6 @@ let DashboardsComponent = class DashboardsComponent {
         this.state = state;
         this.isLoaded = false;
         this.clicked = [];
-        this.movies = [
-            'Episode I - The Phantom Menace',
-            'Episode II - Attack of the Clones',
-            'Episode III - Revenge of the Sith',
-            'Episode IV - A New Hope',
-            'Episode V - The Empire Strikes Back',
-            'Episode VI - Return of the Jedi',
-            'Episode VII - The Force Awakens',
-            'Episode VIII - The Last Jedi'
-        ];
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -31,6 +21,7 @@ let DashboardsComponent = class DashboardsComponent {
         return this.shared.dashboards;
     }
     onDashboardClick(o) {
+        console.log("click");
         if (!this.clicked.includes(o)) {
             this.clicked.push(o);
         }
@@ -47,9 +38,25 @@ let DashboardsComponent = class DashboardsComponent {
     isFilter(f) {
         return (f instanceof Filter);
     }
-    drop(event) {
+    drop(event, array) {
         console.log("here");
-        moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+        moveItemInArray(array, event.previousIndex, event.currentIndex);
+    }
+    addFilter(o) {
+        console.log("addFilter");
+        this.showFilterAddMode = true;
+    }
+    getResponseFromAddFilter($event) {
+        this.showFilterAddMode = false;
+    }
+    addDashboard() {
+        this.showDashboardAddMode = true;
+    }
+    getResponseFromNewDashboard($event) {
+        this.showDashboardAddMode = false;
+    }
+    delete(o) {
+        console.log("delete");
     }
 };
 DashboardsComponent = tslib_1.__decorate([

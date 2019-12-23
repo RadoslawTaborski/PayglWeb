@@ -10,7 +10,7 @@ import { IFilter } from '../../entities/entities';
 })
 export class DashboardNewComponent implements OnInit {
     @Input() visible: boolean
-    @Output() finishedOutput = new EventEmitter<IFilter>();
+    @Output() finishedOutput = new EventEmitter<string>();
 
     filter: IFilter
 
@@ -33,7 +33,7 @@ export class DashboardNewComponent implements OnInit {
 
     emitOutput() {
         console.log("emited: finished")
-        this.finishedOutput.emit(this.filter);
+        this.finishedOutput.emit(this.name);
     }
 
     async select() {
