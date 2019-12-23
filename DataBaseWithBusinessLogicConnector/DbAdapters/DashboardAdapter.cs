@@ -27,9 +27,9 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             _adapterHelper = new AdapterHelper(connector, Table, _columns.Keys.ToList());
         }
 
-        public void Delete(DalDashboard entity)
+        public void Delete(int? id)
         {
-            _adapterHelper.Delete(entity.Id);
+            _adapterHelper.Delete(id);
         }
 
         public IEnumerable<DalDashboard> GetAll(string filter = "")

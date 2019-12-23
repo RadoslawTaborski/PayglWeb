@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators"
 import { Operation } from '../entities/Operation';
 import { OperationsGroup } from '../entities/OperationsGroup';
+import { Filter } from '../entities/entities';
 
 const httpOptions = {
     headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -73,6 +74,8 @@ export class DataService {
     loadDashboardOutput(query?: string | number, from?: string, to?: string): Promise<any[]> {
         if (typeof (query) == "string" && query == "") {
             query = "null"
+        } else if (typeof (query) == "string") {
+            query = query.split('%').join('%25');
         }
 
         if (from != null && to != null && from.toString() != "" && to.toString() != "") {
@@ -100,5 +103,16 @@ export class DataService {
         let json = JSON.stringify(operationsGroup)
         //console.log(json);
         return this.http.post<any>(`api/operationsGroups`, json, httpOptions).toPromise();
+    }
+
+    sendFilter(filter: Filter): Promise<any[]> {
+        let json = JSON.stringify(filter)
+        console.log(json);
+        return this.http.post<any>(`api/filters`, json, httpOptions).toPromise();
+    }
+
+    deleteFilter(filter: Filter): Promise<any[]> {
+        //console.log(json);
+        return this.http.delete<any>(`api/filters/${filter.Id}`).toPromise();
     }
 }

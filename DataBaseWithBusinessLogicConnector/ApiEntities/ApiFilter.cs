@@ -10,12 +10,14 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
     public class ApiFilter : IEntity, IApiFilter
     {
-        public int? Id { get; private set; }
+        public int? Id { get; set; }
         public bool IsDirty { get; set; }
         public bool IsMarkForDeletion { get; set; }
-        public ApiUser User { get; private set; }
-        public string Name { get; private set; }
-        public string Query { get; private set; }
+        public ApiUser User { get; set; }
+        public string Name { get; set; }
+        public string Query { get; set; }
+
+        public ApiFilter() { }
 
         public ApiFilter(int? id, ApiUser user, string name, string query)
         {

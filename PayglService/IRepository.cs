@@ -40,13 +40,14 @@ namespace PayglService
         IEnumerable<ApiOperationsGroup> GetOperationsGroups();
         ApiOperationsGroup GetOperationsGroup(int id);
         IEnumerable<ApiOperationsGroup> GetOperationsGroups(DateTime from, DateTime to);
-
+        bool DeleteFilter(int id);
         void UpdateOperationsGroupComplex(ApiOperationsGroup group);
         void UpdateOperationComplex(ApiOperation newOperation);
 
         List<IDashboardOutput> GetDashboardsOutputs();
         List<IDashboardOutput> GetDashboardsOutputs(DateTime from, DateTime to);
         IDashboardOutput GetDashboardOutput(string query, DateTime from, DateTime to);
+        void UpdateFilter(ApiFilter filter);
         IDashboardOutput GetDashboardOutput(string query);
         IDashboardOutput GetDashboardOutput(int dashboardId, DateTime from, DateTime to);
         IDashboardOutput GetDashboardOutput(int dashboardId);

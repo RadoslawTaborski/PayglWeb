@@ -13,9 +13,10 @@ import { DashboardOutputComponent } from './templates/dashboard-output/dashboard
 import { DashboardPiechartComponent } from './templates/dashboard-piechart/dashboard-piechart.component';
 import { DashboardLinechartComponent } from './templates/dashboard-linechart/dashboard-linechart.component';
 import { AddingModule } from '../adding/adding.module';
+import { FilterSaveComponent } from './filter-save/filter-save.component';
 
 @NgModule({
-    declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent, DashboardPiechartComponent, DashboardLinechartComponent],
+    declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent, DashboardPiechartComponent, DashboardLinechartComponent, FilterSaveComponent],
     imports: [
         CommonModule,
         FormsModule,

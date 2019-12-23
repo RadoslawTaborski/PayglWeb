@@ -1,10 +1,28 @@
 import * as tslib_1 from "tslib";
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 let GroupEditDialogComponent = class GroupEditDialogComponent {
     constructor() { }
     ngOnInit() {
+        this.visible = true;
+    }
+    ngOnChanges() {
+        this.visible = true;
+    }
+    close() {
+        //console.log("close")
+        this.visible = false;
+    }
+    getResponseFromOperation($event) {
+        //console.log("got: " + $event)
+        this.close();
     }
 };
+tslib_1.__decorate([
+    Input()
+], GroupEditDialogComponent.prototype, "visible", void 0);
+tslib_1.__decorate([
+    Input()
+], GroupEditDialogComponent.prototype, "operation", void 0);
 GroupEditDialogComponent = tslib_1.__decorate([
     Component({
         selector: 'app-group-edit-dialog',

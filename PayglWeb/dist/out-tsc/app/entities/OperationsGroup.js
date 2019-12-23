@@ -2,6 +2,8 @@ import { Operation } from './Operation';
 import { User, TagRelation } from './entities';
 export class OperationsGroup {
     constructor(id, user, description, frequency, importance, date, tags, operations) {
+        this.Tags = [];
+        this.Operations = [];
         this.Amount = 0;
         this.Id = id;
         this.User = user;
@@ -9,8 +11,10 @@ export class OperationsGroup {
         this.Frequency = frequency;
         this.Importance = importance;
         this.Date = OperationsGroup.convertDate(date);
-        this.Tags = tags;
-        if (operations != null) {
+        if (tags != undefined) {
+            this.Tags = tags;
+        }
+        if (operations != null && operations != undefined) {
             this.Operations = operations.sort((a, b) => (a.Date > b.Date) ? 1 : -1);
         }
     }
@@ -58,6 +62,37 @@ export class OperationsGroup {
         }
         var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
         return st.replace(pattern, '$3-$2-$1');
+    }
+    markAllTagsForDeletion() {
+        for (let i = 0; i < this.Tags.length; ++i) {
+            let tag = this.Tags[i];
+            tag.IsDirty = true;
+            tag.IsMarkForDeletion = true;
+        }
+    }
+    addTag(tag) {
+        let filtered = this.Tags.filter(t => t.Tag.Text == tag.Tag.Text);
+        if (filtered.length == 0) {
+            tag.IsDirty = true;
+            this.Tags.push(tag);
+        }
+        else {
+            let old = filtered[0];
+            old.IsDirty = false;
+            old.IsMarkForDeletion = false;
+        }
+    }
+    setTags(tags) {
+        this.markAllTagsForDeletion();
+        for (let tag of tags) {
+            let tagRel = this.tagToNewTagRelation(tag);
+            this.addTag(tagRel);
+        }
+    }
+    tagToNewTagRelation(tag) {
+        let result = new TagRelation(null, tag);
+        result.IsDirty = true;
+        return result;
     }
 }
 //# sourceMappingURL=OperationsGroup.js.map

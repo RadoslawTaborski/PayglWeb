@@ -9,11 +9,12 @@ let OperationEditDialogComponent = class OperationEditDialogComponent {
         this.visible = true;
     }
     close() {
-        console.log("close");
+        //console.log("close")
         this.visible = false;
     }
     getResponseFromOperation($event) {
-        console.log("got: $event");
+        //console.log("got: " + $event)
+        this.close();
     }
 };
 tslib_1.__decorate([

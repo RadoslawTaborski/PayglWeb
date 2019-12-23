@@ -108,14 +108,6 @@ export class GroupComponent implements OnInit {
         return result
     }
 
-    tmpCreatingUser(): User {
-        let language = new Language(1, "pl-PL", "polski")
-        let userDetails = new Details(1, "Taborski", "Radosław");
-        let user = new User(1, "rado", language, userDetails)
-
-        return user
-    }
-
     clear() {
         this.description = ""
         this.date = null
@@ -144,7 +136,7 @@ export class GroupComponent implements OnInit {
 
     async update(group: OperationsGroup) {
         group.Description = this.description
-        group.User = this.tmpCreatingUser()
+        group.User = this.shared.tmpCreatingUser()
         group.Frequency = this.selectedFrequency
         group.Importance = this.selectedImportance
         group.Date = this.date.toLocaleString()
@@ -160,4 +152,5 @@ export class GroupComponent implements OnInit {
 
         await this.shared.sendOperationsGroup(group)
     }
+
 }

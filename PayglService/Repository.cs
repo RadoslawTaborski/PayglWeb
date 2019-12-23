@@ -110,6 +110,16 @@ namespace PayglService
             return Filters.Where(x => x.Id == id).FirstOrDefault();
         }
 
+        public bool DeleteFilter(int id)
+        {
+           return _apiAdapter.DeleteFilter(id);
+        }
+
+        public void UpdateFilter(ApiFilter filter)
+        {
+            _apiAdapter.UpdateFilter(filter);
+        }
+
         public IEnumerable<ApiDashboard> GetDashboards()
         {
             return Dashboards;

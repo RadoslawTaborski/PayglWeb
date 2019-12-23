@@ -1,6 +1,5 @@
 import * as tslib_1 from "tslib";
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { TagRelation, User, Language, Details } from '../../entities/entities';
 import { Operation } from "../../entities/Operation";
 let ManualOperationComponent = class ManualOperationComponent {
     constructor(shared, state) {
@@ -40,28 +39,32 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.finishedOutput.emit(true);
     }
     setEditModIfPossible() {
-        if (this.operation != null || this.operation != undefined) {
-            this.title = "Edytuj operację";
-            this.btnName = "Edytuj";
-            this.description = this.operation.Description;
-            this.amount = this.operation.Amount;
-            this.date = this.operation.Date.substring(0, 10);
-            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
-            this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
-            this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0];
-            this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0];
-            this.selectedTags = [];
-            console.log(this.operation.Tags);
-            for (let tag of this.operation.Tags) {
-                this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0]);
-            }
-            if (this.operation.GroupId != null) {
-                this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Id == this.operation.GroupId)[0];
-                this.editable = false;
-            }
-            else {
-                this.editable = true;
-            }
+        if (this.operation == null || this.operation == undefined) {
+            return;
+        }
+        this.title = "Edytuj operację";
+        this.btnName = "Edytuj";
+        this.description = this.operation.Description;
+        this.amount = this.operation.Amount;
+        this.date = this.operation.Date.substring(0, 10);
+        this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
+        this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
+        this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0];
+        this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0];
+        this.selectedTags = [];
+        console.log(this.operation.Tags);
+        for (let tag of this.operation.Tags) {
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0]);
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1];
+        }
+        if (this.operation.GroupId != null) {
+            this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Id == this.operation.GroupId)[0];
+            this.editable = false;
+        }
+        else {
+            this.editable = true;
         }
     }
     getFrequencies() {
@@ -114,33 +117,38 @@ let ManualOperationComponent = class ManualOperationComponent {
     }
     onAdd() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let id = this.operation != undefined && this.operation != null ? this.operation.Id : null;
-            let operation = new Operation(id, this.selectedOperationGroup == null ? null : this.selectedOperationGroup.Id, this.tmpCreatingUser(), this.amount, this.selectedTransactionType, this.selectedTransferType, this.selectedFrequency, this.selectedImportance, this.date.toLocaleString(), "", this.tagsToNewTagRelations(this.selectedTags), [], this.description);
-            operation.IsDirty = true;
-            yield this.shared.sendOperation(operation);
-            let tmp = document.getElementById("form");
-            this.clear();
-            tmp.reset();
-            yield this.emitOutput();
+            if (this.selectedTags.length > 0) {
+                if (this.operation != undefined && this.operation != null) {
+                    this.update(this.operation);
+                }
+                else {
+                    let operation = new Operation();
+                    this.update(operation);
+                }
+                let tmp = document.getElementById("form");
+                this.clear();
+                tmp.reset();
+                yield this.emitOutput();
+            }
         });
     }
-    tagToNewTagRelation(tag) {
-        let result = new TagRelation(null, tag);
-        result.IsDirty = true;
-        return result;
-    }
-    tagsToNewTagRelations(tags) {
-        let result = [];
-        for (let tag of tags) {
-            result.push(this.tagToNewTagRelation(tag));
-        }
-        return result;
-    }
-    tmpCreatingUser() {
-        let language = new Language(1, "pl-PL", "polski");
-        let userDetails = new Details(1, "Taborski", "Radosław");
-        let user = new User(1, "rado", language, userDetails);
-        return user;
+    update(operation) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            operation.Description = this.description;
+            operation.Amount = this.amount;
+            operation.User = this.shared.tmpCreatingUser();
+            operation.GroupId = this.selectedOperationGroup != null ? this.selectedOperationGroup.Id : null;
+            operation.TransactionType = this.selectedTransactionType;
+            operation.TransferType = this.selectedTransferType;
+            operation.Frequency = this.selectedFrequency;
+            operation.Importance = this.selectedImportance;
+            operation.Date = this.date.toLocaleString();
+            operation.ReceiptPath = "";
+            operation.setTags(this.selectedTags);
+            operation.DetailsList = [];
+            operation.IsDirty = true;
+            yield this.shared.sendOperation(operation);
+        });
     }
     clear() {
         this.description = "";

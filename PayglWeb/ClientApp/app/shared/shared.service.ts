@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { User, Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dashboard } from '../entities/entities'
+import { User, Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dashboard, Language, Details } from '../entities/entities'
 import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 import { DataService } from './data.service';
@@ -141,5 +141,21 @@ export class SharedService {
 
     async sendOperationsGroup(operationsGroup: OperationsGroup) {
         this.data.sendOperationsGroup(operationsGroup)
+    }
+
+    async sendFilter(filter: Filter) {
+        this.data.sendFilter(filter)
+    }
+
+    async deleteFilter(filter: Filter) {
+        this.data.deleteFilter(filter)
+    }
+
+    tmpCreatingUser(): User {
+        let language = new Language(1, "pl-PL", "polski")
+        let userDetails = new Details(1, "Taborski", "Radosław");
+        let user = new User(1, "rado", language, userDetails)
+
+        return user
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { OperationsGroup } from '../../entities/OperationsGroup';
@@ -7,6 +7,8 @@ import { OperationLike } from '../../entities/OperationLike';
 import { DashboardOutput } from '../../entities/DashboardOutput';
 import { DashboardOutputLeaf } from '../../entities/DashboardOutputLeaf';
 import { IDashboardOutput } from '../../entities/IDashboardOutput';
+import { Filter, User, Details, Language } from '../../entities/entities';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-search',
@@ -21,18 +23,37 @@ export class SearchComponent implements OnInit {
     public dateFrom: string
     public dateTo: string
     public sum: number = 0
+    public filter: Filter;
+    public saveMode: boolean = false;
 
-    constructor(private shared: SharedService, private state: ApplicationStateService) { }
+    constructor(private shared: SharedService, private state: ApplicationStateService, private activatedRoute: ActivatedRoute
+    ) {
+        this.getRouteParams();
+    }
+
+    getRouteParams() {
+        this.activatedRoute.queryParams.subscribe(params => {
+            let number = Number(params.number)
+            let user = this.shared.tmpCreatingUser();
+            let name = params.name;
+            let query = params.query;
+
+            this.filter = new Filter(number, user, name, query)
+        });
+    }
 
     async ngOnInit() {
+        this.isLoaded = false;
         await this.shared.loadAttributes()
         this.sum = 0
-        await this.shared.loadDashboardOutput("", null, null)
+        this.query = this.filter.Query;
+        await this.shared.loadDashboardOutput(this.query, null, null)
         let allDates = this.getAllDates(this.shared.dashboardOutput).sort()
-        this.dateFrom = allDates[0].substring(0, 10)
-        this.dateTo = allDates[allDates.length - 1].substring(0, 10)
+        if (allDates.length != 0) {
+            this.dateFrom = allDates[0].substring(0, 10)
+            this.dateTo = allDates[allDates.length - 1].substring(0, 10)
+        }
         this.isLoaded = true;
-        //console.log(this.isLoaded)
     }
 
     getOperationsLike(): OperationLike[] {
@@ -104,6 +125,11 @@ export class SearchComponent implements OnInit {
         this.isLoaded=true
     }
 
+    save(query: string) {
+        this.filter.Query = this.query
+        this.saveMode = true;
+    }
+
     getAllDates(dashboard: IDashboardOutput): string[] {
         let result: string[] = []
 
@@ -119,4 +145,9 @@ export class SearchComponent implements OnInit {
 
         return result;
     }
+
+    getResponseFromSave($event) {
+        this.saveMode = false;
+    }
+
 }

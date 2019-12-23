@@ -94,6 +94,19 @@ namespace DataBaseWithBusinessLogicConnector
             DashboardFilterMapper = new DashboardFilterMapper();
         }
 
+        public bool DeleteFilter(int id)
+        {
+            FilterAdapter.Delete(id);
+            return true;
+        }
+
+        public bool UpdateFilter(ApiFilter filter)
+        {
+            var dalFilter = FilterMapper.ConvertToDALEntity(filter);
+            var id = Update(dalFilter, FilterAdapter);
+            return true;
+        }
+
         public List<ApiLanguage> GetLanguages()
         {
             return LanguageMapper.ConvertToApiEntitiesCollection(LanguageAdapter.GetAll()).ToList();
@@ -270,7 +283,7 @@ namespace DataBaseWithBusinessLogicConnector
         {
             if (entity.IsMarkForDeletion)
             {
-                adapter.Delete(entity);
+                adapter.Delete(entity.Id);
             }
             else if (entity.IsDirty && entity.Id == null)
             {

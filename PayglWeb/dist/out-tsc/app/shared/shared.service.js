@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
-import { Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dashboard } from '../entities/entities';
+import { User, Frequency, Importance, Tag, TransactionType, TransferType, Filter, Dashboard, Language, Details } from '../entities/entities';
 import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 import { DashboardOutput } from '../entities/DashboardOutput';
@@ -145,6 +145,22 @@ let SharedService = class SharedService {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.data.sendOperationsGroup(operationsGroup);
         });
+    }
+    sendFilter(filter) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.data.sendFilter(filter);
+        });
+    }
+    deleteFilter(filter) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.data.deleteFilter(filter);
+        });
+    }
+    tmpCreatingUser() {
+        let language = new Language(1, "pl-PL", "polski");
+        let userDetails = new Details(1, "Taborski", "Radosław");
+        let user = new User(1, "rado", language, userDetails);
+        return user;
     }
 };
 SharedService = tslib_1.__decorate([

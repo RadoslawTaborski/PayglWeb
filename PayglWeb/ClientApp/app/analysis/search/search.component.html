@@ -2,7 +2,8 @@
     <div class="div-row" *ngIf="isLoaded">
         <div style="padding-bottom:10px">
             <div class="row">
-                <input [(ngModel)]="query" name="inpQuery" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control" type="text" autocomplete="off" placeholder="filtr" />
+                <input [(ngModel)]="query" name="inpQuery" class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 form-control" type="text" autocomplete="off" placeholder="filtr" />
+                <button class="btn btn-primary col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="margin-bottom: 1px;" (click)="save(query)">Zapisz</button>
             </div>
             <div class="row">
                 <input [(ngModel)]="dateFrom" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateFrom" autocomplete="off" class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 js-form-control form-control" placeholder="Data">
@@ -25,7 +26,8 @@
             <div class="row">
                 <input [(ngModel)]="dateFrom" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateFrom" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
                 <input [(ngModel)]="dateTo" onfocus="(this.type='date')" onblur="(this.type='text')" name="inpDateTo" autocomplete="off" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 js-form-control form-control" placeholder="Data">
-                <button class="btn btn-primary col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="search()">Szukaj</button>
+                <button class="btn btn-primary col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" (click)="save()">Zapisz</button>
+                <button class="btn btn-primary col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" (click)="search()">Szukaj</button>
             </div>
         </div>
         <div class="row">Razem: {{sum.toFixed(2)}}zł</div>
@@ -33,4 +35,7 @@
             <temp-operation [operation]="o"></temp-operation>
         </div>
     </div>
+</div>
+<div *ngIf="saveMode">
+    <app-filter-save [visible]="true" [filter]="filter" (finishedOutput)="getResponseFromSave($event)"></app-filter-save>
 </div>

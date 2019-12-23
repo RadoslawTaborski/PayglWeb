@@ -8,6 +8,6 @@ namespace DataBaseWithBusinessLogicConnector.Interfaces.Dal
         TDalEntity GetById(int? id);
         int Insert(TDalEntity entity);
         void Update(TDalEntity entity);
-        void Delete(TDalEntity entity);
+        void Delete(int? id);
     }
 }

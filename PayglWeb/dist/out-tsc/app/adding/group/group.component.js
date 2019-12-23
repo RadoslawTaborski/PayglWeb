@@ -1,11 +1,12 @@
 import * as tslib_1 from "tslib";
-import { Component } from '@angular/core';
-import { TagRelation, User, Language, Details } from '../../entities/entities';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { TagRelation } from '../../entities/entities';
 import { OperationsGroup } from '../../entities/OperationsGroup';
 let GroupComponent = class GroupComponent {
     constructor(shared, state) {
         this.shared = shared;
         this.state = state;
+        this.finishedOutput = new EventEmitter();
         this.isLoaded = false;
         this.description = "";
         this.date = null;
@@ -17,9 +18,39 @@ let GroupComponent = class GroupComponent {
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadAttributes();
+            this.title = "Dodaj grupę";
+            this.btnName = "Dodaj";
+            this.setEditModIfPossible();
             this.isLoaded = true;
             //console.log(this.isLoaded)
         });
+    }
+    ngOnChanges() {
+        //console.log(this.operation)
+        this.setEditModIfPossible();
+    }
+    emitOutput() {
+        console.log("emited: finished");
+        this.finishedOutput.emit(true);
+    }
+    setEditModIfPossible() {
+        if (this.operation == null || this.operation == undefined) {
+            return;
+        }
+        this.title = "Edytuj grupę";
+        this.btnName = "Edytuj";
+        this.description = this.operation.Description;
+        this.date = this.operation.Date.substring(0, 10);
+        this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
+        this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
+        this.selectedTags = [];
+        console.log(this.operation.Tags);
+        for (let tag of this.operation.Tags) {
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0]);
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1];
+        }
     }
     getFrequencies() {
         //console.log(this.shared.frequencies)
@@ -54,12 +85,6 @@ let GroupComponent = class GroupComponent {
         }
         return result;
     }
-    tmpCreatingUser() {
-        let language = new Language(1, "pl-PL", "polski");
-        let userDetails = new Details(1, "Taborski", "Rados�aw");
-        let user = new User(1, "rado", language, userDetails);
-        return user;
-    }
     clear() {
         this.description = "";
         this.date = null;
@@ -70,15 +95,46 @@ let GroupComponent = class GroupComponent {
     }
     onAdd() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let operationsGroup = new OperationsGroup(null, this.tmpCreatingUser(), this.description, this.selectedFrequency, this.selectedImportance, this.date.toLocaleString(), this.tagsToNewTagRelations(this.selectedTags), []);
-            operationsGroup.IsDirty = true;
-            yield this.shared.sendOperationsGroup(operationsGroup);
-            let tmp = document.getElementById("form");
-            this.clear();
-            tmp.reset();
+            if (this.selectedTags.length > 0) {
+                if (this.operation != undefined && this.operation != null) {
+                    this.update(this.operation);
+                }
+                else {
+                    let operation = new OperationsGroup();
+                    this.update(operation);
+                }
+                let tmp = document.getElementById("form");
+                this.clear();
+                tmp.reset();
+                yield this.emitOutput();
+            }
+        });
+    }
+    update(group) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            group.Description = this.description;
+            group.User = this.shared.tmpCreatingUser();
+            group.Frequency = this.selectedFrequency;
+            group.Importance = this.selectedImportance;
+            group.Date = this.date.toLocaleString();
+            group.setTags(this.selectedTags); // TODO: message if empty
+            group.IsDirty = true;
+            for (let operation of group.Operations) {
+                operation.Frequency = group.Frequency;
+                operation.Importance = group.Importance;
+                operation.setTags(group.Tags.filter(t => !t.IsMarkForDeletion).map(t => t.Tag));
+                operation.IsDirty = true;
+            }
+            yield this.shared.sendOperationsGroup(group);
         });
     }
 };
+tslib_1.__decorate([
+    Input()
+], GroupComponent.prototype, "operation", void 0);
+tslib_1.__decorate([
+    Output()
+], GroupComponent.prototype, "finishedOutput", void 0);
 GroupComponent = tslib_1.__decorate([
     Component({
         selector: 'app-group',

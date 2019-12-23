@@ -27,9 +27,9 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             _adapterHelper = new AdapterHelper(connector, Table, _columns.Keys.ToList());
         }
 
-        public void Delete(DalFilter entity)
+        public void Delete(int? id)
         {
-            _adapterHelper.Delete(entity.Id);
+            _adapterHelper.Delete(id);
         }
 
         public IEnumerable<DalFilter> GetAll(string filter = "")
@@ -79,7 +79,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             var name = _adapterHelper.ToStr(entity.Name, _columns["name"]);
             var query = _adapterHelper.ToStr(entity.Query, _columns["query"]);
 
-            _adapterHelper.Update(id, userId, name, query);
+            _adapterHelper.Update(id, id, userId, name, query);
         }
     }
 }

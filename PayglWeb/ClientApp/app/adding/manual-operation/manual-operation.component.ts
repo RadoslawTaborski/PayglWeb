@@ -158,7 +158,7 @@ export class ManualOperationComponent implements OnInit {
     async update(operation: Operation) {
         operation.Description = this.description
         operation.Amount = this.amount
-        operation.User = this.tmpCreatingUser()
+        operation.User = this.shared.tmpCreatingUser()
         operation.GroupId = this.selectedOperationGroup != null ? this.selectedOperationGroup.Id : null
         operation.TransactionType = this.selectedTransactionType
         operation.TransferType = this.selectedTransferType
@@ -171,14 +171,6 @@ export class ManualOperationComponent implements OnInit {
         operation.IsDirty = true;
 
         await this.shared.sendOperation(operation)
-    }
-
-    tmpCreatingUser(): User {
-        let language = new Language(1, "pl-PL", "polski")
-        let userDetails = new Details(1, "Taborski", "Radosław");
-        let user = new User(1, "rado", language, userDetails)
-
-        return user
     }
 
     clear() {

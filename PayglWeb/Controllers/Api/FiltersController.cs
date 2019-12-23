@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
+using Microsoft.AspNetCore.Mvc;
 using PayglService;
 using PayglWeb.Controllers.Helpers;
 using System;
@@ -39,6 +40,35 @@ namespace PayglWeb.Controllers.Api
             {
                 var json = JsonHelper.JsonFromObject(_repository.GetFilter(id), "IsDirty", "IsMarkForDeletion");
                 return Ok(json);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                bool result = _repository.DeleteFilter(id);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody]ApiFilter filter)
+        { //TODO: validators
+            try
+            {
+                _repository.UpdateFilter(filter);
+
+                return Created($"api/filters/{1}", filter); //TODO: not hardcode 1
             }
             catch (Exception)
             {

@@ -63,6 +63,9 @@ let DataService = class DataService {
         if (typeof (query) == "string" && query == "") {
             query = "null";
         }
+        else if (typeof (query) == "string") {
+            query = query.split('%').join('%25');
+        }
         if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             return this.http.get(`api/dashboardsoutputs/${query}/${from}/${to}`).toPromise();
         }
@@ -87,6 +90,15 @@ let DataService = class DataService {
         let json = JSON.stringify(operationsGroup);
         //console.log(json);
         return this.http.post(`api/operationsGroups`, json, httpOptions).toPromise();
+    }
+    sendFilter(filter) {
+        let json = JSON.stringify(filter);
+        console.log(json);
+        return this.http.post(`api/filters`, json, httpOptions).toPromise();
+    }
+    deleteFilter(filter) {
+        //console.log(json);
+        return this.http.delete(`api/filters/${filter.Id}`).toPromise();
     }
 };
 DataService = tslib_1.__decorate([

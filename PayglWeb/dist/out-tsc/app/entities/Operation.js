@@ -1,6 +1,8 @@
 import { User, TagRelation, OperationDetails } from './entities';
 export class Operation {
     constructor(id, groupId, user, amount, transactionType, transferType, frequency, importance, date, receiptPath, tags, operationDetails, description) {
+        this.Tags = [];
+        this.DetailsList = [];
         this.Id = id;
         this.GroupId = groupId;
         this.User = user;
@@ -11,8 +13,12 @@ export class Operation {
         this.Importance = importance;
         this.Date = Operation.convertDate(date);
         this.ReceiptPath = receiptPath;
-        this.Tags = tags;
-        this.DetailsList = operationDetails;
+        if (tags != undefined) {
+            this.Tags = tags;
+        }
+        if (operationDetails != undefined) {
+            this.DetailsList = operationDetails;
+        }
         this.Description = description;
     }
     static createFromJson(data, frequencies, importances, tags, transactionTypes, transferTypes) {
@@ -44,6 +50,37 @@ export class Operation {
         }
         var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
         return st.replace(pattern, '$3-$2-$1');
+    }
+    markAllTagsForDeletion() {
+        for (let i = 0; i < this.Tags.length; ++i) {
+            let tag = this.Tags[i];
+            tag.IsDirty = true;
+            tag.IsMarkForDeletion = true;
+        }
+    }
+    addTag(tag) {
+        let filtered = this.Tags.filter(t => t.Tag.Text == tag.Tag.Text);
+        if (filtered.length == 0) {
+            tag.IsDirty = true;
+            this.Tags.push(tag);
+        }
+        else {
+            let old = filtered[0];
+            old.IsDirty = false;
+            old.IsMarkForDeletion = false;
+        }
+    }
+    setTags(tags) {
+        this.markAllTagsForDeletion();
+        for (let tag of tags) {
+            let tagRel = this.tagToNewTagRelation(tag);
+            this.addTag(tagRel);
+        }
+    }
+    tagToNewTagRelation(tag) {
+        let result = new TagRelation(null, tag);
+        result.IsDirty = true;
+        return result;
     }
 }
 //# sourceMappingURL=Operation.js.map

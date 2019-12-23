@@ -17,14 +17,11 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
 
         public void Delete(int? id)
         {
-            if (id.HasValue)
-            {
-                string query = _queries.Delete;
-                query += string.Format(_queries.Where, $"id={id}");
-                _connection.DataAccess.ConnectToDb();
-                _connection.DataAccess.ExecuteNonQueryDb(query);
-                _connection.DataAccess.Disconnect();
-            }
+            string query = _queries.Delete;
+            query += string.Format(_queries.Where, $"id={id.Value}");
+            _connection.DataAccess.ConnectToDb();
+            _connection.DataAccess.ExecuteNonQueryDb(query);
+            _connection.DataAccess.Disconnect();
         }
 
         public DataSet GetAll(string filter)
@@ -91,14 +88,14 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
                     return "NULL";
                 case DataType.Decimal:
                     var dec = obj as decimal?;
-                    return $"'{dec.Value}'".Replace(",",".");
+                    return $"'{dec.Value}'".Replace(",", ".");
                 case DataType.Double:
                     return $"'{obj}'".Replace(",", ".");
                 case DataType.String:
                     return $"'{obj}'";
                 case DataType.Boolean:
-                    var boolean = (bool) obj;
-                    return boolean? "1" : "0";
+                    var boolean = (bool)obj;
+                    return boolean ? "1" : "0";
                 default:
                     throw new NotImplementedException();
             }

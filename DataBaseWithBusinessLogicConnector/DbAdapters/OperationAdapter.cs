@@ -31,9 +31,9 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             _adapterHelper = new AdapterHelper(connector, Table, _columns.Keys.ToList());
         }
 
-        public void Delete(DalOperation entity)
+        public void Delete(int? id)
         {
-            _adapterHelper.Delete(entity.Id);
+            _adapterHelper.Delete(id);
         }
 
         public IEnumerable<DalOperation> GetAll(string filter = "")

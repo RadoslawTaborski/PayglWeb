@@ -1,14 +1,27 @@
 ﻿<div class="div-row">
     <div class="div-row" *ngIf="isLoaded">
         <!----------------------NORMAL------------------>
-        <div *ngIf="state.isScreenNormal()">
+        <div>
             <div class="row" *ngFor="let o of getFilters()">
                 <div class="bg-main div-row text-white">
-                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" (click)="onFilterClick(o)">
-                        <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{o.Name}} </div>
+                    <div class="div-row" *ngIf="shouldBeShown(o)">
+                        <div [ngClass]="{'bg-success': messageIsSuccess(), 'bg-warning': messageIsWarning(), 'bg-danger': messageIsError(), 'div-row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12': true}">
+                            <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{infoMessage.message}}</div>
+                        </div>
+                    </div>
+                    <div class="card-header col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="card-text inline-block" (click)="onFilterClick(o)">
+                            {{o.Name}}
+                        </div>
+                        <button class="btn btn-sm btn-danger" style="float: right;" (click)="delete(o)">
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-sm btn-primary" style="float: right;" (click)="edit(o)">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
                     </div>
                     <div *ngIf="isClicked(o)">
-                        <div class="bg-main2 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="card-body bg-main2 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{o.Query}}</div>
                         </div>
                     </div>
