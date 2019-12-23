@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+﻿import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Filter } from '../../entities/entities';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { SharedService } from '../../shared/shared.service';

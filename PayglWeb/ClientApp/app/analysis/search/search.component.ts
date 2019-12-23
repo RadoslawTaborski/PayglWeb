@@ -26,8 +26,7 @@ export class SearchComponent implements OnInit {
     public filter: Filter;
     public saveMode: boolean = false;
 
-    constructor(private shared: SharedService, private state: ApplicationStateService, private activatedRoute: ActivatedRoute
-    ) {
+    constructor(private shared: SharedService, private state: ApplicationStateService, private activatedRoute: ActivatedRoute) {
         this.getRouteParams();
     }
 
@@ -38,7 +37,11 @@ export class SearchComponent implements OnInit {
             let name = params.name;
             let query = params.query;
 
-            this.filter = new Filter(number, user, name, query)
+            if (number !== undefined && user !== undefined && name !== undefined && query !== undefined) {
+                this.filter = new Filter(number, user, name, query)
+            } else {
+                this.filter = new Filter(null, user, "", "")
+            }
         });
     }
 
@@ -47,6 +50,7 @@ export class SearchComponent implements OnInit {
         await this.shared.loadAttributes()
         this.sum = 0
         this.query = this.filter.Query;
+        console.log("query: "+this.query)
         await this.shared.loadDashboardOutput(this.query, null, null)
         let allDates = this.getAllDates(this.shared.dashboardOutput).sort()
         if (allDates.length != 0) {

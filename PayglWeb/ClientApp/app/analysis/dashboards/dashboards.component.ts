@@ -2,6 +2,7 @@
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { Dashboard, IFilter, Filter } from '../../entities/entities';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-dashboards',
@@ -11,6 +12,8 @@ import { Dashboard, IFilter, Filter } from '../../entities/entities';
 export class DashboardsComponent implements OnInit {
     public isLoaded: boolean = false
     public clicked: IFilter[] = [];
+    showFilterAddMode: boolean;
+    showDashboardAddMode: boolean;
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
@@ -26,6 +29,7 @@ export class DashboardsComponent implements OnInit {
     }
 
     onDashboardClick(o: IFilter) {
+        console.log("click")
         if (!this.clicked.includes(o)) {
             this.clicked.push(o);
         } else {
@@ -42,5 +46,31 @@ export class DashboardsComponent implements OnInit {
 
     isFilter(f: IFilter): boolean {
         return (f instanceof Filter)
+    }
+
+    drop(event: CdkDragDrop<string[]>, array: IFilter[]) {
+        console.log("here")
+        moveItemInArray(array, event.previousIndex, event.currentIndex);
+    }
+
+    addFilter(o: IFilter) {
+        console.log("addFilter")
+        this.showFilterAddMode = true;
+    }
+
+    getResponseFromAddFilter($event) {
+        this.showFilterAddMode = false;
+    }
+
+    addDashboard() {
+        this.showDashboardAddMode = true;
+    }
+
+    getResponseFromNewDashboard($event) {
+        this.showDashboardAddMode = false;
+    }
+
+    delete(o: IFilter) {
+        console.log("delete")
     }
 }

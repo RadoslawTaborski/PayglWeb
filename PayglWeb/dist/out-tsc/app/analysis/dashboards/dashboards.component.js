@@ -1,12 +1,23 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
 import { Filter } from '../../entities/entities';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 let DashboardsComponent = class DashboardsComponent {
     constructor(shared, state) {
         this.shared = shared;
         this.state = state;
         this.isLoaded = false;
         this.clicked = [];
+        this.movies = [
+            'Episode I - The Phantom Menace',
+            'Episode II - Attack of the Clones',
+            'Episode III - Revenge of the Sith',
+            'Episode IV - A New Hope',
+            'Episode V - The Empire Strikes Back',
+            'Episode VI - Return of the Jedi',
+            'Episode VII - The Force Awakens',
+            'Episode VIII - The Last Jedi'
+        ];
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -35,6 +46,10 @@ let DashboardsComponent = class DashboardsComponent {
     }
     isFilter(f) {
         return (f instanceof Filter);
+    }
+    drop(event) {
+        console.log("here");
+        moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
     }
 };
 DashboardsComponent = tslib_1.__decorate([

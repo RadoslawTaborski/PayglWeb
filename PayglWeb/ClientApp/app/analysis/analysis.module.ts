@@ -14,13 +14,17 @@ import { DashboardPiechartComponent } from './templates/dashboard-piechart/dashb
 import { DashboardLinechartComponent } from './templates/dashboard-linechart/dashboard-linechart.component';
 import { AddingModule } from '../adding/adding.module';
 import { FilterSaveComponent } from './filter-save/filter-save.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FilterSelectionComponent } from './filter-selection/filter-selection.component';
+import { DashboardNewComponent } from './dashboard-new/dashboard-new.component';
 
 @NgModule({
-    declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent, DashboardPiechartComponent, DashboardLinechartComponent, FilterSaveComponent],
+    declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent, DashboardPiechartComponent, DashboardLinechartComponent, FilterSaveComponent, FilterSelectionComponent, DashboardNewComponent],
     imports: [
         CommonModule,
         FormsModule,
-        AddingModule
+        AddingModule,
+        DragDropModule
     ],
     exports: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent],
     providers: [
