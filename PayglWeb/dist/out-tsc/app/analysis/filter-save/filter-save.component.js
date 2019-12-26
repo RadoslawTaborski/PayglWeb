@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
 import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Message, MessageType } from '../templates/message/Message';
 let FilterSaveComponent = class FilterSaveComponent {
     constructor(shared, state) {
         this.shared = shared;
@@ -26,25 +27,51 @@ let FilterSaveComponent = class FilterSaveComponent {
     save() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
-            let filterCopy = this.filter;
-            filterCopy.Name = this.name;
-            filterCopy.IsDirty = true;
-            yield this.shared.sendFilter(filterCopy);
+            if (this.name.length > 3) {
+                let filterCopy = this.filter;
+                filterCopy.Name = this.name;
+                filterCopy.IsDirty = true;
+                yield this.shared.sendFilter(filterCopy);
+                this.showInfo = false;
+                this.emitOutput();
+            }
+            else {
+                this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki");
+                this.showInfo = true;
+            }
             this.isLoaded = true;
-            this.emitOutput();
         });
     }
     saveAs() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
-            let filterCopy = this.filter;
-            filterCopy.Id = null;
-            filterCopy.Name = this.name;
-            filterCopy.IsDirty = true;
-            yield this.shared.sendFilter(filterCopy);
+            if (this.name.length > 2) {
+                let filterCopy = this.filter;
+                filterCopy.Id = null;
+                filterCopy.Name = this.name;
+                filterCopy.IsDirty = true;
+                yield this.shared.sendFilter(filterCopy);
+                this.showInfo = false;
+                this.emitOutput();
+            }
+            else {
+                this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki");
+                this.showInfo = true;
+            }
             this.isLoaded = true;
-            this.emitOutput();
         });
+    }
+    showMessage() {
+        return this.showInfo == true;
+    }
+    messageIsWarning() {
+        return Message.messageIsWarning(this.infoMessage);
+    }
+    messageIsSuccess() {
+        return Message.messageIsSuccess(this.infoMessage);
+    }
+    messageIsError() {
+        return Message.messageIsError(this.infoMessage);
     }
 };
 tslib_1.__decorate([

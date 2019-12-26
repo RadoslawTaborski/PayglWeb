@@ -16,6 +16,7 @@ export class DashboardOutputComponent implements OnInit {
     public selectedPie: IDashboardOutput[] = []
     public allDashboard: IDashboardOutput[] = []
     public canDisplayCharts: boolean = false;
+    public chartsArePossible: boolean = false;
 
     constructor(private state: ApplicationStateService) { }
 
@@ -25,13 +26,22 @@ export class DashboardOutputComponent implements OnInit {
 
     ngOnChanges() {
         this.allDashboard = this.getDashboards(this.dashboard)
-        this.setDashboardForPieChart(this.allDashboard[0])
+        if (this.allDashboard.length >= 1) {
+            this.setDashboardForPieChart(this.allDashboard[0])
+        }
     }
 
     getDashboardOutputItems(): IDashboardOutput[] {
         if (this.dashboard != null) {
-            return (this.dashboard as DashboardOutput).Children
+            let result = (this.dashboard as DashboardOutput).Children
+            if (result != null && result.length > 0) {
+                this.chartsArePossible = true;
+            } else {
+                this.chartsArePossible = false;
+            }
+            return result
         }
+        this.chartsArePossible = false;
     }
 
     isExpense(o: IDashboardOutput): boolean {

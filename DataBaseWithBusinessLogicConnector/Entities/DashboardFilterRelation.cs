@@ -14,14 +14,14 @@ namespace DataBaseWithBusinessLogicConnector.Entities
         public bool IsMarkForDeletion { get; set; }
         public IFilter Filter { get; private set; }
         public bool IsVisible { get; private set; }
-        public int? IndexOfNext { get; private set; }
+        public int Order { get; private set; }
 
-        public DashboardFilterRelation(int? id, IFilter filter, bool isVisible, int? indexOfNext)
+        public DashboardFilterRelation(int? id, IFilter filter, bool isVisible, int order)
         {
             Id = id;
             Filter = filter;
             IsVisible = isVisible;
-            IndexOfNext = indexOfNext;
+            Order = order;
         }
 
         public void UpdateId(int? id)

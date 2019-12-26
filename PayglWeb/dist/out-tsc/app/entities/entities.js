@@ -147,11 +147,12 @@ export class Filter {
     }
 }
 export class Dashboard {
-    constructor(id, user, name, isVisible, relations) {
+    constructor(id, user, name, isVisible, order, relations) {
         this.Id = id;
         this.User = user;
         this.Name = name;
         this.IsVisible = isVisible;
+        this.Order = order;
         this.Relations = relations;
     }
     static createFromJson(data) {
@@ -160,25 +161,28 @@ export class Dashboard {
         dashboard.User = User.createFromJson(data.User);
         dashboard.IsVisible = data.IsVisible;
         dashboard.Name = data.Name;
+        dashboard.Order = data.Order;
         dashboard.Relations = [];
-        for (let relation of data.Relations) {
-            dashboard.Relations.push(DashboardFilterRelation.createFromJson(relation));
+        if (data.Relations != undefined) {
+            for (let relation of data.Relations) {
+                dashboard.Relations.push(DashboardFilterRelation.createFromJson(relation));
+            }
         }
         return dashboard;
     }
 }
 export class DashboardFilterRelation {
-    constructor(id, filter, isVisible, indexOfNext) {
+    constructor(id, filter, isVisible, order) {
         this.Id = id;
         this.Filter = filter;
         this.IsVisible = isVisible;
-        this.IndexOfNext = indexOfNext;
+        this.Order = order;
     }
     static createFromJson(data) {
         let relation = new DashboardFilterRelation();
         relation.Id = data.Id;
         relation.IsVisible = data.IsVisible;
-        relation.IndexOfNext = data.IndexOfNext;
+        relation.Order = data.Order;
         if (data.Filter.Relations != undefined) {
             relation.Filter = Dashboard.createFromJson(data.Filter);
         }
@@ -187,5 +191,7 @@ export class DashboardFilterRelation {
         }
         return relation;
     }
+}
+export class Boards {
 }
 //# sourceMappingURL=entities.js.map

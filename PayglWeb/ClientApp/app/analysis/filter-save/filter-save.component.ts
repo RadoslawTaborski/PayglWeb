@@ -2,6 +2,7 @@
 import { Filter } from '../../entities/entities';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { SharedService } from '../../shared/shared.service';
+import { Message, MessageType } from '../templates/message/Message';
 
 @Component({
   selector: 'app-filter-save',
@@ -15,6 +16,8 @@ export class FilterSaveComponent implements OnInit {
 
     isLoaded: boolean = false;
     name: string = "";
+    showInfo: boolean;
+    infoMessage: Message;
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
@@ -39,22 +42,50 @@ export class FilterSaveComponent implements OnInit {
 
     async save() {
         this.isLoaded = false;
-        let filterCopy = this.filter;
-        filterCopy.Name = this.name
-        filterCopy.IsDirty = true
-        await this.shared.sendFilter(filterCopy)
+        if (this.name.length > 3) {
+            let filterCopy = this.filter;
+            filterCopy.Name = this.name
+            filterCopy.IsDirty = true
+            await this.shared.sendFilter(filterCopy)
+            this.showInfo = false;
+            this.emitOutput()
+        } else {
+            this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki")
+            this.showInfo = true;
+        }
         this.isLoaded = true
-        this.emitOutput()
     }
 
     async saveAs() {
         this.isLoaded = false;
-        let filterCopy = this.filter;
-        filterCopy.Id = null;
-        filterCopy.Name = this.name
-        filterCopy.IsDirty = true
-        await this.shared.sendFilter(filterCopy)
+        if (this.name.length > 2) {
+            let filterCopy = this.filter;
+            filterCopy.Id = null;
+            filterCopy.Name = this.name
+            filterCopy.IsDirty = true
+            await this.shared.sendFilter(filterCopy)
+            this.showInfo = false;
+            this.emitOutput()
+        } else {
+            this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki")
+            this.showInfo = true;
+        }
         this.isLoaded = true
-        this.emitOutput()
+    }
+
+    showMessage(): boolean {
+        return this.showInfo == true
+    }
+
+    messageIsWarning() {
+        return Message.messageIsWarning(this.infoMessage)
+    }
+
+    messageIsSuccess() {
+        return Message.messageIsSuccess(this.infoMessage)
+    }
+
+    messageIsError() {
+        return Message.messageIsError(this.infoMessage)
     }
 }

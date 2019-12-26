@@ -5,7 +5,7 @@
             <div class="row" *ngFor="let o of getFilters()">
                 <div class="bg-main div-row text-white">
                     <div class="div-row" *ngIf="shouldBeShown(o)">
-                        <div [ngClass]="{'bg-success': messageIsSuccess(), 'bg-warning': messageIsWarning(), 'bg-danger': messageIsError(), 'div-row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12': true}">
+                        <div [ngClass]="{'bg-success': messageIsSuccess(), 'bg-warning': messageIsWarning(), 'bg-danger': messageIsError(), 'div-row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 white': true}">
                             <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{infoMessage.message}}</div>
                         </div>
                     </div>

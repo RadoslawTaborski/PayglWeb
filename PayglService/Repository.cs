@@ -110,14 +110,47 @@ namespace PayglService
             return Filters.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public bool DeleteFilter(int id)
+        public async void DeleteFilter(int id)
         {
-           return _apiAdapter.DeleteFilter(id);
+           _apiAdapter.DeleteFilter(id);
+           await Task.Run(() => ReloadData());
         }
 
-        public void UpdateFilter(ApiFilter filter)
+        public async void UpdateFilter(ApiFilter filter)
         {
             _apiAdapter.UpdateFilter(filter);
+            await Task.Run(() => ReloadData());
+        }
+
+        private ApiDashboard[] RepairDashboardArray(ApiDashboard[] dashboards)
+        {
+            for (int i = 0; i < dashboards.Length; i++)
+            {
+                for (int j = 0; j < dashboards[i].Relations.Count; j++)
+                {
+                    if (dashboards[i].Relations[j].Filter is ApiDashboard)
+                    {
+                        dashboards[i].Relations[j].Filter = dashboards.Where(d => d.Name == dashboards[i].Relations[j].Filter.Name).FirstOrDefault();
+                    }
+                }
+            }
+
+            return dashboards;
+        }
+
+        public async void UpdateDashboards(ApiDashboard[] dashboards)
+        {
+            dashboards=RepairDashboardArray(dashboards);
+            for (int i = 0; i < dashboards.Length; i++)
+            {
+                UpdateDashboard(ref dashboards[i]);
+            }
+            await Task.Run(() => ReloadData());
+        }
+
+        private void UpdateDashboard(ref ApiDashboard dashboard)
+        {
+            _apiAdapter.UpdateDashboardComplex(ref dashboard);
         }
 
         public IEnumerable<ApiDashboard> GetDashboards()

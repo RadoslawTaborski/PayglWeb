@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
 import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { Message, MessageType } from '../templates/message/Message';
 let DashboardNewComponent = class DashboardNewComponent {
     constructor(shared, state) {
         this.shared = shared;
@@ -15,18 +16,37 @@ let DashboardNewComponent = class DashboardNewComponent {
         this.isLoaded = true;
     }
     close() {
-        this.emitOutput();
+        this.emitOutput(undefined);
     }
-    emitOutput() {
+    emitOutput(name) {
         console.log("emited: finished");
-        this.finishedOutput.emit(this.filter);
+        this.finishedOutput.emit(name);
     }
     select() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
+            if (this.name.length > 2) {
+                this.emitOutput(this.name);
+                this.showInfo = false;
+            }
+            else {
+                this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki");
+                this.showInfo = true;
+            }
             this.isLoaded = true;
-            this.emitOutput();
         });
+    }
+    showMessage() {
+        return this.showInfo == true;
+    }
+    messageIsWarning() {
+        return Message.messageIsWarning(this.infoMessage);
+    }
+    messageIsSuccess() {
+        return Message.messageIsSuccess(this.infoMessage);
+    }
+    messageIsError() {
+        return Message.messageIsError(this.infoMessage);
     }
 };
 tslib_1.__decorate([

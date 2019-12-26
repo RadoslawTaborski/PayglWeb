@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Boards } from '../entities/entities';
 const httpOptions = {
     headers: new HttpHeaders().append('Content-Type', 'application/json')
 };
@@ -93,12 +94,21 @@ let DataService = class DataService {
     }
     sendFilter(filter) {
         let json = JSON.stringify(filter);
-        console.log(json);
+        //console.log(json);
         return this.http.post(`api/filters`, json, httpOptions).toPromise();
     }
     deleteFilter(filter) {
         //console.log(json);
         return this.http.delete(`api/filters/${filter.Id}`).toPromise();
+    }
+    sendDashboards(boards) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            let tmpBoards = new Boards();
+            tmpBoards.Dashboards = boards;
+            let json = JSON.stringify(tmpBoards);
+            //console.log(json);
+            return this.http.post(`api/dashboards`, json, httpOptions).toPromise();
+        });
     }
 };
 DataService = tslib_1.__decorate([

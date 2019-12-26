@@ -28,10 +28,12 @@ export class AnalysisComponent implements OnInit {
 
     async ngOnInit() {
         await this.shared.loadFiltersAndDashboards()
-        await this.onDashboardClick(this.getDashboards()[0])
-        let allDates = this.getAllDates(this.output).sort()
-        this.dateFrom = allDates[0].substring(0,10)
-        this.dateTo = allDates[allDates.length - 1].substring(0, 10)
+        if (this.getDashboards().length > 0) {
+            await this.onDashboardClick(this.getDashboards()[0])
+            let allDates = this.getAllDates(this.output).sort()
+            this.dateFrom = allDates[0].substring(0, 10)
+            this.dateTo = allDates[allDates.length - 1].substring(0, 10)
+        }
 
         this.isLoaded = true;
     }

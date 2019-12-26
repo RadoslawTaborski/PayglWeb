@@ -3,6 +3,7 @@ import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { Filter, Dashboard } from '../../entities/entities';
 import { Router } from '@angular/router';
+import { Message, MessageType } from '../templates/message/Message';
 
 @Component({
     selector: 'app-filters',
@@ -106,48 +107,14 @@ export class FiltersComponent implements OnInit {
     }
 
     messageIsWarning() {
-        if (this.infoMessage == null) {
-            return false;
-        }
-        if (this.infoMessage.type == MessageType.Warning) {
-            return true;
-        }
-        return false;
+        return Message.messageIsWarning(this.infoMessage)
     }
 
     messageIsSuccess() {
-        if (this.infoMessage == null) {
-            return false;
-        }
-        if (this.infoMessage.type == MessageType.Success) {
-            return true;
-        }
-        return false;
+        return Message.messageIsSuccess(this.infoMessage)
     }
 
     messageIsError() {
-        if (this.infoMessage == null) {
-            return false;
-        }
-        if (this.infoMessage.type == MessageType.Error) {
-            return true;
-        }
-        return false;
+        return Message.messageIsError(this.infoMessage)
     }
-}
-
-class Message {
-    public type: MessageType
-    public message: string
-
-    constructor(type: MessageType, message: string) {
-        this.type = type
-        this.message = message
-    }
-}
-
-enum MessageType {
-    Success = 1,
-    Warning = 2,
-    Error = 3
 }

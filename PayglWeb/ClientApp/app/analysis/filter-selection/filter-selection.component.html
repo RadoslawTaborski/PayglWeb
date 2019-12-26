@@ -4,13 +4,13 @@
             <button class="btn btn-sm btn-danger dialog__close-btn" (click)="close()">
                 <i class="fa fa-close" aria-hidden="true"></i>
             </button>
-            <div class="div-row" *ngIf="state.isScreenNormal()">
+            <div class="div-row">
                 <div class="div-row" *ngIf="isLoaded">
                     <div style="padding-bottom:10px; padding-left:5px;">
-                        <div class="div-row" *ngFor="let d of getDashboards()">
+                        <div class="div-row" *ngFor="let d of getDashboards(); let idx = index">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" checked="" (change)="onItemChange(d)">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" [(ngModel)]="filter" [value]="d">
                                     {{d.Name}}
                                 </label>
                             </div>                   
@@ -19,7 +19,7 @@
                         <div class="div-row" *ngFor="let f of getFilters()">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" checked="" (change)="onItemChange(f)">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" [(ngModel)]="filter" [value]="f">
                                     {{f.Name}}
                                 </label>
                             </div>

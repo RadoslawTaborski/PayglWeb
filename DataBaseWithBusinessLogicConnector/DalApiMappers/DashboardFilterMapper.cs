@@ -44,7 +44,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
                 filter = _dashboards.Where(t => t.Id == dataEntity.DashboardTargetId).FirstOrDefault();
             }
 
-            var result = new ApiDashboardFilterRelation(dataEntity.Id, filter, dataEntity.IsVisible, dataEntity.NextDashboardId);
+            var result = new ApiDashboardFilterRelation(dataEntity.Id, filter, dataEntity.IsVisible, dataEntity.Order);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
@@ -77,7 +77,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
                 dashboardId = (businessEntity.Filter as ApiDashboard).Id;
             }
 
-            var result = new DalDashboardFilterRelation(businessEntity.Id, source.Id, filterId, dashboardId, businessEntity.IsVisible, next?.Id);
+            var result = new DalDashboardFilterRelation(businessEntity.Id, source.Id, filterId, dashboardId, businessEntity.IsVisible, businessEntity.Order);
             result.IsDirty = businessEntity.IsDirty;
             result.IsMarkForDeletion = businessEntity.IsMarkForDeletion;
 

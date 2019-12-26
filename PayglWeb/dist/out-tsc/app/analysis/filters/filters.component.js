@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
 import { Filter, Dashboard } from '../../entities/entities';
+import { Message, MessageType } from '../templates/message/Message';
 let FiltersComponent = class FiltersComponent {
     constructor(shared, state, router) {
         this.shared = shared;
@@ -91,31 +92,13 @@ let FiltersComponent = class FiltersComponent {
         return this.infoMessages.includes(o);
     }
     messageIsWarning() {
-        if (this.infoMessage == null) {
-            return false;
-        }
-        if (this.infoMessage.type == MessageType.Warning) {
-            return true;
-        }
-        return false;
+        return Message.messageIsWarning(this.infoMessage);
     }
     messageIsSuccess() {
-        if (this.infoMessage == null) {
-            return false;
-        }
-        if (this.infoMessage.type == MessageType.Success) {
-            return true;
-        }
-        return false;
+        return Message.messageIsSuccess(this.infoMessage);
     }
     messageIsError() {
-        if (this.infoMessage == null) {
-            return false;
-        }
-        if (this.infoMessage.type == MessageType.Error) {
-            return true;
-        }
-        return false;
+        return Message.messageIsError(this.infoMessage);
     }
 };
 FiltersComponent = tslib_1.__decorate([
@@ -126,16 +109,4 @@ FiltersComponent = tslib_1.__decorate([
     })
 ], FiltersComponent);
 export { FiltersComponent };
-class Message {
-    constructor(type, message) {
-        this.type = type;
-        this.message = message;
-    }
-}
-var MessageType;
-(function (MessageType) {
-    MessageType[MessageType["Success"] = 1] = "Success";
-    MessageType[MessageType["Warning"] = 2] = "Warning";
-    MessageType[MessageType["Error"] = 3] = "Error";
-})(MessageType || (MessageType = {}));
 //# sourceMappingURL=filters.component.js.map

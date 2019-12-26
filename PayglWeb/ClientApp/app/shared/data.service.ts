@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators"
 import { Operation } from '../entities/Operation';
 import { OperationsGroup } from '../entities/OperationsGroup';
-import { Filter } from '../entities/entities';
+import { Filter, Dashboard, Boards } from '../entities/entities';
 
 const httpOptions = {
     headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -107,12 +107,21 @@ export class DataService {
 
     sendFilter(filter: Filter): Promise<any[]> {
         let json = JSON.stringify(filter)
-        console.log(json);
+        //console.log(json);
         return this.http.post<any>(`api/filters`, json, httpOptions).toPromise();
     }
 
     deleteFilter(filter: Filter): Promise<any[]> {
         //console.log(json);
         return this.http.delete<any>(`api/filters/${filter.Id}`).toPromise();
+    }
+
+    async sendDashboards(boards: Dashboard[]) {
+        let tmpBoards: Boards = new Boards()
+        tmpBoards.Dashboards = boards
+
+        let json = JSON.stringify(tmpBoards)
+        //console.log(json);
+        return this.http.post<any>(`api/dashboards`, json, httpOptions).toPromise();
     }
 }

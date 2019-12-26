@@ -51,7 +51,6 @@ CALL PROC_DROP_FOREIGN_KEY('dashboards', 'fk__dashboards__user_id');
 CALL PROC_DROP_FOREIGN_KEY('filters_dashboards_relations', 'fk__filters_dashboards_relations__filter_target_id');
 CALL PROC_DROP_FOREIGN_KEY('filters_dashboards_relations', 'fk__filters_dashboards_relations__dashboard_target_id');
 CALL PROC_DROP_FOREIGN_KEY('filters_dashboards_relations', 'fk__filters_dashboards_relations__dashboard_id');
-CALL PROC_DROP_FOREIGN_KEY('filters_dashboards_relations', 'fk__filters_dashboards_relations__next_id');
 
 
 DROP TABLE IF EXISTS `users`;
@@ -242,6 +241,7 @@ CREATE TABLE `dashboards`(
 , `user_id` INT NOT NULL
 , `name` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
 , `is_visible` TINYINT(1) NOT NULL
+, `oeder` INT NOT NULL
 , PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARSET=cp1250 COLLATE cp1250_polish_ci;
 ALTER TABLE `dashboards` ADD INDEX (`user_id`);
@@ -253,7 +253,7 @@ CREATE TABLE `filters_dashboards_relations`(
 , `filter_target_id` INT
 , `dashboard_target_id` INT
 , `is_visible` TINYINT(1) NOT NULL
-, `next_id` INT
+, `order` INT NOT NULL
 , PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARSET=cp1250 COLLATE cp1250_polish_ci;
 ALTER TABLE `filters_dashboards_relations` ADD INDEX (`dashboard_id`);
@@ -335,6 +335,3 @@ FOREIGN KEY (`filter_target_id`) REFERENCES `filters`(`id`);
 
 ALTER TABLE `filters_dashboards_relations` ADD CONSTRAINT `fk__filters_dashboards_relations__dashboard_target_id`
 FOREIGN KEY (`dashboard_target_id`) REFERENCES `dashboards`(`id`);
-
-ALTER TABLE `filters_dashboards_relations` ADD CONSTRAINT `fk__filters_dashboards_relations__next_id`
-FOREIGN KEY (`next_id`) REFERENCES `filters_dashboards_relations`(`id`);

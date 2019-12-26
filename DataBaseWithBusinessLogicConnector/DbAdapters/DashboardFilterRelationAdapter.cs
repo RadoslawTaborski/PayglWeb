@@ -19,7 +19,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             ["filter_target_id"] = DataType.IntegerNullable,
             ["dashboard_target_id"] = DataType.IntegerNullable,
             ["is_visible"] = DataType.Boolean,
-            ["next_id"] = DataType.IntegerNullable,
+            ["order"] = DataType.Integer,
         };
 
         private readonly AdapterHelper _adapterHelper;
@@ -43,7 +43,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             for (var i = 0; i < data.Tables[0].Rows.Count; ++i)
             {
                 var dataRow = data.Tables[0].Rows[i].ItemArray;
-                result.Add(new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2] != DBNull.Value ? int.Parse(dataRow[2].ToString()) : (int?)null, dataRow[3] != DBNull.Value ? int.Parse(dataRow[3].ToString()) : (int?)null, (bool)dataRow[4], dataRow[5] != DBNull.Value ? int.Parse(dataRow[5].ToString()) : (int?)null));
+                result.Add(new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2] != DBNull.Value ? int.Parse(dataRow[2].ToString()) : (int?)null, dataRow[3] != DBNull.Value ? int.Parse(dataRow[3].ToString()) : (int?)null, (bool)dataRow[4], int.Parse(dataRow[5].ToString())));
             }
 
             return result;
@@ -58,7 +58,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             if (data.Tables.Count > 0)
             {
                 var dataRow = data.Tables[0].Rows[0].ItemArray;
-                result = new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2] != DBNull.Value ? int.Parse(dataRow[2].ToString()) : (int?)null, dataRow[3] != DBNull.Value ? int.Parse(dataRow[3].ToString()) : (int?)null, (bool)dataRow[4], dataRow[5] != DBNull.Value ? int.Parse(dataRow[5].ToString()) : (int?)null);
+                result = new DalDashboardFilterRelation(int.Parse(dataRow[0].ToString()), int.Parse(dataRow[1].ToString()), dataRow[2] != DBNull.Value ? int.Parse(dataRow[2].ToString()) : (int?)null, dataRow[3] != DBNull.Value ? int.Parse(dataRow[3].ToString()) : (int?)null, (bool)dataRow[4], int.Parse(dataRow[5].ToString()));
             }
 
             return result;
@@ -71,7 +71,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             var filterTargetId = _adapterHelper.ToStr(entity.FilterTargetId, _columns["filter_target_id"]);
             var dashboardTargetId = _adapterHelper.ToStr(entity.DashboardTargetId, _columns["dashboard_target_id"]);
             var isVisible = _adapterHelper.ToStr(entity.IsVisible, _columns["is_visible"]);
-            var nextId = _adapterHelper.ToStr(entity.NextDashboardId, _columns["next_id"]);
+            var nextId = _adapterHelper.ToStr(entity.Order, _columns["order"]);
 
             return _adapterHelper.Insert(id, dashboardId, filterTargetId, dashboardTargetId, isVisible, nextId);
         }
@@ -83,9 +83,9 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             var filterTargetId = _adapterHelper.ToStr(entity.FilterTargetId, _columns["filter_target_id"]);
             var dashboardTargetId = _adapterHelper.ToStr(entity.DashboardTargetId, _columns["dashboard_target_id"]);
             var isVisible = _adapterHelper.ToStr(entity.IsVisible, _columns["is_visible"]);
-            var nextId = _adapterHelper.ToStr(entity.NextDashboardId, _columns["next_id"]);
+            var nextId = _adapterHelper.ToStr(entity.Order, _columns["order"]);
 
-            _adapterHelper.Update(id, dashboardId, filterTargetId, dashboardTargetId, isVisible, nextId);
+            _adapterHelper.Update(id, id, dashboardId, filterTargetId, dashboardTargetId, isVisible, nextId);
         }
     }
 }

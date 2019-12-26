@@ -1,5 +1,6 @@
 ﻿using DataBaseWithBusinessLogicConnector.Interfaces;
 using DataBaseWithBusinessLogicConnector.Interfaces.Api;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,23 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
 {
     public class ApiDashboardFilterRelation : IEntity
     {
-        public int? Id { get; private set; }
+        public int? Id { get; set; }
         public bool IsDirty { get; set; }
         public bool IsMarkForDeletion { get; set; }
-        public IApiFilter Filter { get; private set; }
-        public bool IsVisible { get; private set; }
-        public int? IndexOfNext { get; private set; }
 
-        public ApiDashboardFilterRelation(int? id, IApiFilter filter, bool isVisible, int? indexOfNext)
+        [JsonConverter(typeof(IFilterConverter))]
+        public IApiFilter Filter { get; set; }
+        public bool IsVisible { get; set; }
+        public int Order { get; set; }
+
+        public ApiDashboardFilterRelation() { }
+
+        public ApiDashboardFilterRelation(int? id, IApiFilter filter, bool isVisible, int order)
         {
             Id = id;
             Filter = filter;
             IsVisible = isVisible;
-            IndexOfNext = indexOfNext;
+            Order = order;
         }
 
         public void UpdateId(int? id)

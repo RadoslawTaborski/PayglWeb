@@ -31,7 +31,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public Dashboard ConvertToEntity(ApiDashboard dataEntity)
         {
             var user = _userMapper.ConvertToEntity(dataEntity.User);
-            var result = new Dashboard(dataEntity.Id, user, dataEntity.Name, dataEntity.IsVisible);
+            var result = new Dashboard(dataEntity.Id, user, dataEntity.Name, dataEntity.IsVisible, dataEntity.Order);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
@@ -51,7 +51,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
         public ApiDashboard ConvertToApiEntity(Dashboard dataEntity)
         {
             var user = _userMapper.ConvertToApiEntity(dataEntity.User);
-            var result = new ApiDashboard(dataEntity.Id, user, dataEntity.Name, dataEntity.IsVisible);
+            var result = new ApiDashboard(dataEntity.Id, user, dataEntity.Name, dataEntity.IsVisible, dataEntity.Order);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;

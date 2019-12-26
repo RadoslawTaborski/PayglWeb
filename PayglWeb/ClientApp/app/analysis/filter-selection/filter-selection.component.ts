@@ -1,7 +1,8 @@
 ﻿import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
-import { IFilter, Filter, Dashboard } from '../../entities/entities';
+import { IFilter, Filter, Dashboard, DashboardFilterRelation } from '../../entities/entities';
+import { Message, MessageType } from '../templates/message/Message';
 
 @Component({
   selector: 'app-filter-selection',
@@ -10,29 +11,56 @@ import { IFilter, Filter, Dashboard } from '../../entities/entities';
 })
 export class FilterSelectionComponent implements OnInit {
     @Input() visible: boolean
+    @Input() selected: Dashboard
+    @Input() enableDashboards: Dashboard[]
     @Output() finishedOutput = new EventEmitter<IFilter>();
 
     filter: IFilter
+    selectedItems: IFilter[]=[]
 
     isLoaded: boolean = false;
     name: string = "";
+    showInfo: boolean;
+    infoMessage: Message;
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     async ngOnInit() {
         await this.shared.loadFiltersAndDashboards()
+        this.selectedItems = this.getNestedFiltersAndDashboards(this.selected);
+        console.log(this.selectedItems)
         this.isLoaded = true;
-        //console.log(this.isLoaded)
+        //console.log(this.selected)
+    }
+
+    private findAllFilters(output: IFilter[], relations: DashboardFilterRelation[]) {
+        for (let relation of relations) {
+            if (relation.Filter instanceof Filter) {
+                output.push(relation.Filter)
+            } else if (relation.Filter instanceof Dashboard) {
+                output.push(relation.Filter)
+                this.findAllFilters(output, relation.Filter.Relations)
+            }
+        }
+    }
+
+    private getNestedFiltersAndDashboards(dashboard: Dashboard): IFilter[]{
+        let result : IFilter[] = []
+        this.findAllFilters(result, dashboard.Relations)
+        result.push(dashboard)
+        return result
     }
 
     getFilters(): Filter[] {
-        //console.log(this.shared.filters)
-        return this.shared.filters
+        let tmp = this.shared.filters.filter(f => !this.selectedItems.map(i => (i.Name)).includes(f.Name))
+        //console.log(tmp)
+        return tmp
     }
 
     getDashboards(): Dashboard[] {
-        //console.log(this.shared.dashboards)
-        return this.shared.dashboards.filter(d => ! d.IsVisible)
+        let tmp = this.enableDashboards.filter(d => !d.IsVisible).filter(f => !this.selectedItems.map(i => (i.Name)).includes(f.Name))
+        //console.log(tmp)
+        return tmp
     }
 
     close() {
@@ -51,7 +79,19 @@ export class FilterSelectionComponent implements OnInit {
         this.emitOutput()
     }
 
-    onItemChange(filter: IFilter) {
-        this.filter = filter
+    showMessage(): boolean {
+        return this.showInfo == true
+    }
+
+    messageIsWarning() {
+        return Message.messageIsWarning(this.infoMessage)
+    }
+
+    messageIsSuccess() {
+        return Message.messageIsSuccess(this.infoMessage)
+    }
+
+    messageIsError() {
+        return Message.messageIsError(this.infoMessage)
     }
 }

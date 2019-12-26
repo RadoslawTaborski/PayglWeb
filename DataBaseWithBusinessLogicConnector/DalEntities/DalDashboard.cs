@@ -15,13 +15,15 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
         public int? UserId { get; private set; }
         public string Name { get; private set; }
         public bool IsVisible { get; private set; }
+        public int Order { get; private set; }
 
-        public DalDashboard(int? id, int? userId, string name, bool isVisible)
+        public DalDashboard(int? id, int? userId, string name, bool isVisible, int order)
         {
             Id = id;
             UserId = userId;
             Name = name;
             IsVisible = isVisible;
+            Order = order;
         }
     }
 }

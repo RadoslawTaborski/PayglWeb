@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Remove="ClientApp\app\analysis\templates\message\Message.ts" />
     <TypeScriptCompile Remove="ClientApp\app\app-routing.module.ts" />
     <TypeScriptCompile Remove="ClientApp\app\entities\Countable.ts" />
     <TypeScriptCompile Remove="ClientApp\app\entities\DashboardOutput.ts" />
@@ -327,11 +328,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.5.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="OdeToCode.UseNodeModules" Version="1.0.6" />
   </ItemGroup>
 

@@ -29,6 +29,8 @@ namespace PayglWeb
         options.ClientErrorMapping[404].Link =
             "https://httpstatuses.com/404";
     });
+            services.AddControllers()
+    .AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

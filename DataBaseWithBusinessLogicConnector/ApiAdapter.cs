@@ -94,6 +94,55 @@ namespace DataBaseWithBusinessLogicConnector
             DashboardFilterMapper = new DashboardFilterMapper();
         }
 
+        public void UpdateDashboardComplex(ref ApiDashboard dashboard)
+        {
+            if (dashboard.IsMarkForDeletion)
+            {
+                DeleteDashboard(dashboard);
+            }
+            else if (dashboard.IsDirty && dashboard.Id == null)
+            {
+                InsertDashboard(ref dashboard);
+            }
+            else if (dashboard.IsDirty)
+            {
+                UpdateDashboard(dashboard);
+            }
+        }
+
+        private void UpdateDashboard(ApiDashboard dashboard)
+        {
+            var tmp = DashboardMapper.ConvertToDALEntity(dashboard);
+            foreach (var relation in tmp.Relations)
+            {
+                Update(relation, DashboardFilterRelationAdapter);
+            }
+            DashboardAdapter.Update(tmp.Dashboard);
+        }
+
+        private void InsertDashboard(ref ApiDashboard dashboard)
+        {
+            var tmp = DashboardMapper.ConvertToDALEntity(dashboard);
+
+            var idx = DashboardAdapter.Insert(tmp.Dashboard);
+            dashboard.UpdateId(idx);
+            foreach (var relation in tmp.Relations)
+            {
+                relation.UpdateDashboardId(idx);
+                DashboardFilterRelationAdapter.Insert(relation);
+            }
+        }
+
+        private void DeleteDashboard(ApiDashboard dashboard)
+        {
+            var tmp = DashboardMapper.ConvertToDALEntity(dashboard);
+            foreach (var relation in tmp.Relations)
+            {
+                DashboardFilterRelationAdapter.Delete(relation.Id);
+            }
+            DashboardAdapter.Delete(tmp.Dashboard.Id);
+        }
+
         public bool DeleteFilter(int id)
         {
             FilterAdapter.Delete(id);
@@ -226,7 +275,7 @@ namespace DataBaseWithBusinessLogicConnector
                 dashboards.Where(t => t.Id == group.Key).FirstOrDefault().UpdateRelations(DashboardFilterMapper.ConvertToApiEntitiesCollection(group));
             }
 
-            return dashboards;
+            return dashboards.OrderBy(o=>o.Order).ToList();
         }
 
         public List<ApiFilter> GetFilters(ApiUser user)

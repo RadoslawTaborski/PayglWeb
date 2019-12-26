@@ -1,9 +1,18 @@
 ﻿<div class="div-row">
+    <div *ngIf="isLoaded == false" style="text-align: center; padding-top: 5em">
+        <h1><i class="fa fa-spinner fa-spin"></i></h1>
+    </div>
     <div class="div-row" *ngIf="isLoaded">
         <!----------------------NORMAL------------------>
+        <div class="div-row" style="padding-top:5px;" *ngIf="showMessage()">
+            <div [ngClass]="{'bg-success': messageIsSuccess(), 'bg-warning': messageIsWarning(), 'bg-danger': messageIsError(), 'div-row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 white': true}">
+                <div class="card-text inline-block col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">{{infoMessage.message}}</div>
+            </div>
+        </div>
+
         <div class="div-row">
-            <div cdkDropList class="bg-main div-row text-white" (cdkDropListDropped)="drop($event, getDashboards())">
-                <div class="card-header bg-main div-row text-white" *ngFor="let o of allDashboards" (click)="onDashboardClick(o)" cdkDrag>
+            <div cdkDropList class="bg-main div-row text-white" (cdkDropListDropped)="drop($event, allDashboards)">
+                <div class="card-header bg-main div-row text-white" *ngFor="let o of getDashboards(allDashboards)" (click)="onDashboardClick(o)" cdkDrag>
                     <div style="padding-bottom:12px;">
                         <div class="card-text inline-block">
                             {{o.Name}}
@@ -12,12 +21,12 @@
                             <i class="fa fa-close" aria-hidden="true"></i>
                         </button>
                         <div style="float: right;">
-                            <input class="form-check-input" type="checkbox" value="" [checked]="o.IsVisible" (click)="$event.stopPropagation()">
+                            <input class="form-check-input" type="checkbox" value="" [checked]="o.IsVisible" [disabled]="dashboardIsUsed(o)" (change)="changeVisible(o)" (click)="$event.stopPropagation()">
                         </div>
                     </div>
                     <div class="div-row" *ngIf="isClicked(o) && !isFilter(o)">
                         <div cdkDropList class="bg-main2 div-row text-white" (cdkDropListDropped)="drop($event, o.Relations)">
-                            <div class="card-header bg-main2 div-row text-white" *ngFor="let o2 of o.Relations" (click)="onDashboardClick(o2);$event.stopPropagation()" cdkDrag>
+                            <div class="card-header bg-main2 div-row text-white" *ngFor="let o2 of getRelations(o.Relations)" (click)="onDashboardClick(o2);$event.stopPropagation()" cdkDrag>
                                 <div class="card-text inline-block">
                                     {{o2.Filter.Name}}
                                 </div>
@@ -47,11 +56,11 @@
 </div>
 
 <div *ngIf="showFilterAddMode">
-    <app-filter-selection [visible]="true" (finishedOutput)="getResponseFromAddFilter($event)"></app-filter-selection>
+    <app-filter-selection [visible]="true" [selected]="selected" [enableDashboards]="getDashboards(allDashboards)" (finishedOutput)="getResponseFromAddFilter($event)"></app-filter-selection>
 </div>
 
 <div *ngIf="showDashboardAddMode">
-    <app-dashboard-new [visible]="true" (finishedOutput)="getResponseFromNewDashboard($event)"></app-dashboard-new>
+    <app-dashboard-new [visible]="true" [allDashboards]="getDashboards(allDashboards)" (finishedOutput)="getResponseFromNewDashboard($event)"></app-dashboard-new>
 </div>
 
 

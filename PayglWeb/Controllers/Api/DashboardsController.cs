@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
+using Microsoft.AspNetCore.Mvc;
 using PayglService;
 using PayglWeb.Controllers.Helpers;
 using System;
@@ -45,5 +46,27 @@ namespace PayglWeb.Controllers.Api
                 return BadRequest("Failed");
             }
         }
+
+        [HttpPost]
+        public IActionResult Post([FromBody]Boards boards)
+        { //TODO: validators
+            try
+            {
+                _repository.UpdateDashboards(boards.Dashboards);
+
+                return Created($"api/dashboards/", boards); //TODO: not hardcode 1
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed");
+            }
+        }
+    }
+
+    public class Boards
+    {
+        public ApiDashboard[] Dashboards { get; set; }
+
+        public Boards() { }
     }
 }

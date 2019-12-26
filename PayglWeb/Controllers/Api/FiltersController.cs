@@ -52,8 +52,8 @@ namespace PayglWeb.Controllers.Api
         {
             try
             {
-                bool result = _repository.DeleteFilter(id);
-                return Ok(result);
+                _repository.DeleteFilter(id);
+                return Ok();
             }
             catch (Exception)
             {

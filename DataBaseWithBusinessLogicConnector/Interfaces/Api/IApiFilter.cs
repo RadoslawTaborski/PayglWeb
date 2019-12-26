@@ -8,6 +8,6 @@ namespace DataBaseWithBusinessLogicConnector.Interfaces.Api
 {
     public interface IApiFilter
     {
-        
+        string Name { get; set; }
     }
 }

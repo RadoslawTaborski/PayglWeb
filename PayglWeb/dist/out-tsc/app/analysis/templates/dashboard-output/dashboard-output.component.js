@@ -8,17 +8,28 @@ let DashboardOutputComponent = class DashboardOutputComponent {
         this.selectedPie = [];
         this.allDashboard = [];
         this.canDisplayCharts = false;
+        this.chartsArePossible = false;
     }
     ngOnInit() {
     }
     ngOnChanges() {
         this.allDashboard = this.getDashboards(this.dashboard);
-        this.setDashboardForPieChart(this.allDashboard[0]);
+        if (this.allDashboard.length >= 1) {
+            this.setDashboardForPieChart(this.allDashboard[0]);
+        }
     }
     getDashboardOutputItems() {
         if (this.dashboard != null) {
-            return this.dashboard.Children;
+            let result = this.dashboard.Children;
+            if (result != null && result.length > 0) {
+                this.chartsArePossible = true;
+            }
+            else {
+                this.chartsArePossible = false;
+            }
+            return result;
         }
+        this.chartsArePossible = false;
     }
     isExpense(o) {
         return o.TransactionType.Text == 'wydatek';

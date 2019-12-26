@@ -151,6 +151,10 @@ export class SharedService {
         this.data.deleteFilter(filter)
     }
 
+    async sendDashboards(boards: Dashboard[]) {
+        this.data.sendDashboards(boards)
+    }
+
     tmpCreatingUser(): User {
         let language = new Language(1, "pl-PL", "polski")
         let userDetails = new Details(1, "Taborski", "Radosław");

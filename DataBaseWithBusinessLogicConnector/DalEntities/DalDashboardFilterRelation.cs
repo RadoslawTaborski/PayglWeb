@@ -16,16 +16,21 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
         public int? FilterTargetId { get; private set; }
         public int? DashboardTargetId { get; private set; }
         public bool IsVisible { get; private set; }
-        public int? NextDashboardId { get; private set; }
+        public int Order { get; private set; }
 
-        public DalDashboardFilterRelation(int? id, int? dashboardId, int? filterTargetId, int? dashboardTargetId, bool isVisible, int? nextDashboardId)
+        public DalDashboardFilterRelation(int? id, int? dashboardId, int? filterTargetId, int? dashboardTargetId, bool isVisible, int order)
         {
             Id = id;
             DashboardId = dashboardId;
             FilterTargetId = filterTargetId;
             DashboardTargetId = dashboardTargetId;
             IsVisible = isVisible;
-            NextDashboardId = nextDashboardId;
+            Order = order;
+        }
+
+        public void UpdateDashboardId(int index)
+        {
+            DashboardId = index;
         }
     }
 }

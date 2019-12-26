@@ -45,7 +45,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
                 filter = tmp;
             }
 
-            var result = new DashboardFilterRelation(dataEntity.Id, filter, dataEntity.IsVisible, dataEntity.IndexOfNext);
+            var result = new DashboardFilterRelation(dataEntity.Id, filter, dataEntity.IsVisible, dataEntity.Order);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;
@@ -73,7 +73,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntityMappers
             {
                 filter = _dashboardMapper.ConvertToApiEntity(dataEntity.Filter as Dashboard);
             }
-            var result = new ApiDashboardFilterRelation(dataEntity.Id, filter, dataEntity.IsVisible, dataEntity.IndexOfNext);
+            var result = new ApiDashboardFilterRelation(dataEntity.Id, filter, dataEntity.IsVisible, dataEntity.Order);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;

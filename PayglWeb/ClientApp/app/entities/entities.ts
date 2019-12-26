@@ -232,13 +232,15 @@ export class Dashboard implements IFilter {
     User: User;
     IsVisible: boolean;
     Name: string;
+    Order: number;
     Relations: DashboardFilterRelation[]
 
-    constructor(id?: number, user?: User, name?: string, isVisible?: boolean, relations?: DashboardFilterRelation[]) {
+    constructor(id?: number, user?: User, name?: string, isVisible?: boolean, order?: number, relations?: DashboardFilterRelation[]) {
         this.Id = id
         this.User = user
         this.Name = name
         this.IsVisible = isVisible
+        this.Order = order
         this.Relations = relations
     }
 
@@ -248,9 +250,12 @@ export class Dashboard implements IFilter {
         dashboard.User = User.createFromJson(data.User)
         dashboard.IsVisible = data.IsVisible
         dashboard.Name = data.Name
-        dashboard.Relations=[]
-        for (let relation of data.Relations) {
-            dashboard.Relations.push(DashboardFilterRelation.createFromJson(relation))
+        dashboard.Order = data.Order
+        dashboard.Relations = []
+        if (data.Relations != undefined) {
+            for (let relation of data.Relations) {
+                dashboard.Relations.push(DashboardFilterRelation.createFromJson(relation))
+            }
         }
         return dashboard
     }
@@ -262,20 +267,20 @@ export class DashboardFilterRelation {
     IsMarkForDeletion: boolean;
     Filter: IFilter;
     IsVisible: boolean;
-    IndexOfNext: number;
+    Order: number;
 
-    constructor(id?: number, filter?: IFilter, isVisible?: boolean, indexOfNext?: number) {
+    constructor(id?: number, filter?: IFilter, isVisible?: boolean, order?: number) {
         this.Id = id
         this.Filter = filter
         this.IsVisible = isVisible
-        this.IndexOfNext = indexOfNext
+        this.Order = order
     }
 
     static createFromJson(data: any): DashboardFilterRelation {
         let relation = new DashboardFilterRelation();
         relation.Id = data.Id;
         relation.IsVisible = data.IsVisible
-        relation.IndexOfNext = data.IndexOfNext
+        relation.Order = data.Order
         if (data.Filter.Relations != undefined) {
             relation.Filter = Dashboard.createFromJson(data.Filter)
         } else {
@@ -286,5 +291,12 @@ export class DashboardFilterRelation {
 }
 
 export interface IFilter {
+    Id: number
     Name: string
+    IsDirty: boolean
+    IsMarkForDeletion: boolean
+}
+
+export class Boards {
+    Dashboards: Dashboard[];
 }

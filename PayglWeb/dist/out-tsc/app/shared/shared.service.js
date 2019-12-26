@@ -156,6 +156,11 @@ let SharedService = class SharedService {
             this.data.deleteFilter(filter);
         });
     }
+    sendDashboards(boards) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.data.sendDashboards(boards);
+        });
+    }
     tmpCreatingUser() {
         let language = new Language(1, "pl-PL", "polski");
         let userDetails = new Details(1, "Taborski", "Radosław");
