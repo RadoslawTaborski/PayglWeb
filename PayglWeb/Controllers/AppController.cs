@@ -30,6 +30,13 @@ namespace PayglWeb.Controllers
             return View();
         }
 
+        [HttpGet("import")]
+        public IActionResult Import()
+        {
+            ViewBag.Title = "Import";
+            return View();
+        }
+
         [HttpGet("search")]
         public IActionResult Search()
         {

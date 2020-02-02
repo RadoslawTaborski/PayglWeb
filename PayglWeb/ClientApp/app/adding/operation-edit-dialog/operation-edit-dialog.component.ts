@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Operation } from '../../entities/Operation';
+import { OperationMode } from '../manual-operation/manual-operation.component';
 
 @Component({
     selector: 'app-operation-edit-dialog',
@@ -9,6 +10,7 @@ import { Operation } from '../../entities/Operation';
 export class OperationEditDialogComponent implements OnInit {
     @Input() visible: boolean
     @Input() operation: Operation
+    mode: OperationMode = OperationMode.Import
 
     constructor() { }
 

@@ -1,7 +1,10 @@
 import * as tslib_1 from "tslib";
 import { Component, Input } from '@angular/core';
+import { OperationMode } from '../manual-operation/manual-operation.component';
 let OperationEditDialogComponent = class OperationEditDialogComponent {
-    constructor() { }
+    constructor() {
+        this.mode = OperationMode.Import;
+    }
     ngOnInit() {
         this.visible = true;
         console.log("hello world");

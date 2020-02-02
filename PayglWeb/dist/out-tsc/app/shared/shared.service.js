@@ -19,6 +19,7 @@ let SharedService = class SharedService {
         this.operations = [];
         this.operationsGroups = [];
         this.dashboardsOutputs = [];
+        this.importedOperations = [];
     }
     loadAttributes() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -159,6 +160,19 @@ let SharedService = class SharedService {
     sendDashboards(boards) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.data.sendDashboards(boards);
+        });
+    }
+    loadOperationsFromCsv(id, fileToUpload) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                yield this.loadAttributes();
+            }
+            let tmp;
+            tmp = yield this.data.postFile(id, fileToUpload);
+            this.importedOperations = [];
+            for (let operation of tmp.reverse()) {
+                this.importedOperations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType, true));
+            }
         });
     }
     tmpCreatingUser() {

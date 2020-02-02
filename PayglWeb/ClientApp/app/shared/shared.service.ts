@@ -21,6 +21,7 @@ export class SharedService {
     operationsGroups: OperationsGroup[] = [];
     dashboardsOutputs: IDashboardOutput[] = [];
     dashboardOutput: IDashboardOutput;
+    importedOperations: Operation[] = [];
 
     constructor(private data: DataService) { }
 
@@ -153,6 +154,19 @@ export class SharedService {
 
     async sendDashboards(boards: Dashboard[]) {
         this.data.sendDashboards(boards)
+    }
+
+    async loadOperationsFromCsv(id: number, fileToUpload: File) {
+        if (!this.isInitialize) {
+            await this.loadAttributes()
+        }
+        let tmp: any[]
+        tmp = await this.data.postFile(id, fileToUpload)
+
+        this.importedOperations = []
+        for (let operation of tmp.reverse()) {
+            this.importedOperations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType, true))
+        }
     }
 
     tmpCreatingUser(): User {

@@ -8,14 +8,15 @@ import { SharedService } from '../shared/shared.service';
 import { ApplicationStateService } from '../shared/application-state.service';
 import { OperationEditDialogComponent } from './operation-edit-dialog/operation-edit-dialog.component';
 import { GroupEditDialogComponent } from './group-edit-dialog/group-edit-dialog.component';
+import { ImportComponent } from './import/import.component';
 
 @NgModule({
-    declarations: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent],
+    declarations: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent, ImportComponent],
     imports: [
         CommonModule,
         FormsModule
     ],
-    exports: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent],
+    exports: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent, ImportComponent],
     providers: [
         SharedService,
         DataService,

@@ -129,8 +129,12 @@ export class TagRelation {
         this.Tag = tag
     }
 
-    static createFromJson(data: any, tags: Tag[]): TagRelation {
+    static createFromJson(data: any, tags: Tag[], asNew: boolean = false): TagRelation {
         let tagRelation = new TagRelation()
+        if (asNew) {
+            tagRelation.IsDirty = true
+            tagRelation.IsMarkForDeletion = false
+        }
         tagRelation.Id = data.Id
         tagRelation.Tag = tags.filter(t => t.Id === data.Tag.Id)[0]
 
@@ -189,8 +193,12 @@ export class OperationDetails {
         this.Amount = amount
     }
 
-    static createFromJson(data: any): OperationDetails {
+    static createFromJson(data: any, asNew: boolean = false): OperationDetails {
         let operationDetails = new OperationDetails()
+        if (asNew) {
+            operationDetails.IsDirty = true
+            operationDetails.IsMarkForDeletion = false
+        }
         operationDetails.Id = data.Id
         operationDetails.Name = data.Name
         operationDetails.Quantity = data.Quantity

@@ -26,6 +26,7 @@ let ManualOperationComponent = class ManualOperationComponent {
             this.title = "Dodaj operację";
             this.btnName = "Dodaj";
             this.setEditModIfPossible();
+            this.setImportModIfPossible();
             this.isLoaded = true;
             //console.log(this.isLoaded)
         });
@@ -33,13 +34,14 @@ let ManualOperationComponent = class ManualOperationComponent {
     ngOnChanges() {
         //console.log(this.operation)
         this.setEditModIfPossible();
+        this.setImportModIfPossible();
     }
     emitOutput() {
         console.log("emited: finished");
         this.finishedOutput.emit(true);
     }
     setEditModIfPossible() {
-        if (this.operation == null || this.operation == undefined) {
+        if (this.mode != OperationMode.Edit) {
             return;
         }
         this.title = "Edytuj operację";
@@ -51,6 +53,39 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
         this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0];
         this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0];
+        this.selectedTags = [];
+        console.log(this.operation.Tags);
+        for (let tag of this.operation.Tags) {
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0]);
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1];
+        }
+        if (this.operation.GroupId != null) {
+            this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Id == this.operation.GroupId)[0];
+            this.editable = false;
+        }
+        else {
+            this.editable = true;
+        }
+    }
+    setImportModIfPossible() {
+        if (this.mode != OperationMode.Import) {
+            return;
+        }
+        this.title = "Importuj operację";
+        this.btnName = "Importuj";
+        this.description = this.operation.Description;
+        this.amount = this.operation.Amount;
+        this.date = this.operation.Date.substring(0, 10);
+        if (this.operation.Frequency != null)
+            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
+        if (this.operation.Importance != null)
+            this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
+        if (this.operation.TransactionType != null)
+            this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0];
+        if (this.operation.TransferType != null)
+            this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0];
         this.selectedTags = [];
         console.log(this.operation.Tags);
         for (let tag of this.operation.Tags) {
@@ -144,6 +179,7 @@ let ManualOperationComponent = class ManualOperationComponent {
             operation.Importance = this.selectedImportance;
             operation.Date = this.date.toLocaleString();
             operation.ReceiptPath = "";
+            console.log(this.selectedTags);
             operation.setTags(this.selectedTags);
             operation.DetailsList = [];
             operation.IsDirty = true;
@@ -168,6 +204,9 @@ tslib_1.__decorate([
     Input()
 ], ManualOperationComponent.prototype, "operation", void 0);
 tslib_1.__decorate([
+    Input()
+], ManualOperationComponent.prototype, "mode", void 0);
+tslib_1.__decorate([
     Output()
 ], ManualOperationComponent.prototype, "finishedOutput", void 0);
 ManualOperationComponent = tslib_1.__decorate([
@@ -178,4 +217,10 @@ ManualOperationComponent = tslib_1.__decorate([
     })
 ], ManualOperationComponent);
 export { ManualOperationComponent };
+export var OperationMode;
+(function (OperationMode) {
+    OperationMode[OperationMode["Add"] = 0] = "Add";
+    OperationMode[OperationMode["Edit"] = 1] = "Edit";
+    OperationMode[OperationMode["Import"] = 2] = "Import";
+})(OperationMode || (OperationMode = {}));
 //# sourceMappingURL=manual-operation.component.js.map

@@ -84,7 +84,7 @@ let DataService = class DataService {
     }
     sendOperation(operation) {
         let json = JSON.stringify(operation);
-        //console.log(json);
+        console.log(json);
         return this.http.post(`api/operations`, json, httpOptions).toPromise();
     }
     sendOperationsGroup(operationsGroup) {
@@ -109,6 +109,12 @@ let DataService = class DataService {
             //console.log(json);
             return this.http.post(`api/dashboards`, json, httpOptions).toPromise();
         });
+    }
+    postFile(id, fileToUpload) {
+        const formData = new FormData();
+        formData.append('files', fileToUpload, fileToUpload.name);
+        console.log(formData);
+        return this.http.post(`api/import/${id}`, formData).toPromise();
     }
 };
 DataService = tslib_1.__decorate([

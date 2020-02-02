@@ -38,25 +38,33 @@ export class Operation implements OperationLike {
         this.Description = description
     }
 
-    static createFromJson(data: any, frequencies: Frequency[], importances: Importance[], tags: Tag[], transactionTypes: TransactionType[], transferTypes: TransferType[]): Operation {
+    static createFromJson(data: any, frequencies: Frequency[], importances: Importance[], tags: Tag[], transactionTypes: TransactionType[], transferTypes: TransferType[], asNew: boolean = false): Operation {
         let operation = new Operation()
+        if (asNew) {
+            operation.IsDirty = true
+            operation.IsMarkForDeletion = false
+        }
         operation.Id = data.Id;
         operation.GroupId = data.GroupId;
         operation.User = User.createFromJson(data.User);
         operation.Amount = data.Amount;
-        operation.TransactionType = transactionTypes.filter(t => t.Id === data.TransactionType.Id)[0];
-        operation.TransferType = transferTypes.filter(t => t.Id === data.TransferType.Id)[0];
-        operation.Frequency = frequencies.filter(t => t.Id === data.Frequency.Id)[0];
-        operation.Importance = importances.filter(t => t.Id === data.Importance.Id)[0];
+        if (data.TransactionType!=null)
+            operation.TransactionType = transactionTypes.filter(t => t.Id === data.TransactionType.Id)[0];
+        if (data.TransferType != null)
+            operation.TransferType = transferTypes.filter(t => t.Id === data.TransferType.Id)[0];
+        if (data.Frequency != null)
+            operation.Frequency = frequencies.filter(t => t.Id === data.Frequency.Id)[0];
+        if (data.Importance != null)
+            operation.Importance = importances.filter(t => t.Id === data.Importance.Id)[0];
         operation.Date = Operation.convertDate(data.Date);
         operation.ReceiptPath = data.ReceiptPath;
         operation.Tags = [];
         for (let tag of data.Tags) {
-            operation.Tags.push(TagRelation.createFromJson(tag, tags));
+            operation.Tags.push(TagRelation.createFromJson(tag, tags, asNew));
         }
         operation.DetailsList = [];
         for (let detail of data.DetailsList) {
-            operation.DetailsList.push(OperationDetails.createFromJson(detail));
+            operation.DetailsList.push(OperationDetails.createFromJson(detail, asNew));
         }
         operation.Description = data.Description;
 
@@ -83,10 +91,10 @@ export class Operation implements OperationLike {
         let filtered = this.Tags.filter(t => t.Tag.Text == tag.Tag.Text)
         if (filtered.length == 0) {
             tag.IsDirty = true;
+            tag.IsMarkForDeletion = false;
             this.Tags.push(tag);
         } else {
             let old = filtered[0]
-            old.IsDirty = false;
             old.IsMarkForDeletion = false;
         }
     }

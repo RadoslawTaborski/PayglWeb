@@ -95,7 +95,7 @@ export class DataService {
 
     sendOperation(operation: Operation): Promise<any[]> {
         let json = JSON.stringify(operation)
-        //console.log(json);
+        console.log(json);
         return this.http.post<any>(`api/operations`, json, httpOptions).toPromise();
     }
 
@@ -123,5 +123,12 @@ export class DataService {
         let json = JSON.stringify(tmpBoards)
         //console.log(json);
         return this.http.post<any>(`api/dashboards`, json, httpOptions).toPromise();
+    }
+
+    postFile(id: number, fileToUpload: File): Promise<any[]> {
+        const formData: FormData = new FormData();
+        formData.append('files', fileToUpload, fileToUpload.name);
+        console.log(formData)
+        return this.http.post<any>(`api/import/${id}`, formData).toPromise();
     }
 }

@@ -83,8 +83,12 @@ export class TagRelation {
         this.Id = id;
         this.Tag = tag;
     }
-    static createFromJson(data, tags) {
+    static createFromJson(data, tags, asNew = false) {
         let tagRelation = new TagRelation();
+        if (asNew) {
+            tagRelation.IsDirty = true;
+            tagRelation.IsMarkForDeletion = false;
+        }
         tagRelation.Id = data.Id;
         tagRelation.Tag = tags.filter(t => t.Id === data.Tag.Id)[0];
         return tagRelation;
@@ -121,8 +125,12 @@ export class OperationDetails {
         this.Quantity = quantity;
         this.Amount = amount;
     }
-    static createFromJson(data) {
+    static createFromJson(data, asNew = false) {
         let operationDetails = new OperationDetails();
+        if (asNew) {
+            operationDetails.IsDirty = true;
+            operationDetails.IsMarkForDeletion = false;
+        }
         operationDetails.Id = data.Id;
         operationDetails.Name = data.Name;
         operationDetails.Quantity = data.Quantity;

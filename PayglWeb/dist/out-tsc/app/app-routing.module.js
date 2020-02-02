@@ -7,10 +7,12 @@ import { SearchComponent } from './analysis/search/search.component';
 import { FiltersComponent } from './analysis/filters/filters.component';
 import { DashboardsComponent } from './analysis/dashboards/dashboards.component';
 import { AnalysisComponent } from './analysis/analysis/analysis.component';
+import { ImportComponent } from './adding/import/import.component';
 export const routes = [
     { path: '', redirectTo: 'operation', pathMatch: 'full' },
     { path: 'operation', component: ManualOperationComponent },
     { path: 'group', component: GroupComponent },
+    { path: 'import', component: ImportComponent },
     { path: 'search', component: SearchComponent },
     { path: 'filters', component: FiltersComponent },
     { path: 'dashboards', component: DashboardsComponent },

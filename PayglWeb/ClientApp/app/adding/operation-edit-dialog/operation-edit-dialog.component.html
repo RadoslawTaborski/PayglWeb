@@ -5,7 +5,7 @@
                 <i class="fa fa-close" aria-hidden="true"></i>
             </button>
             <div class="modal-body">
-                <app-manual-operation [operation]="operation" (finishedOutput)="getResponseFromOperation($event)"></app-manual-operation>
+                <app-manual-operation [operation]="operation" [mode]="mode" (finishedOutput)="getResponseFromOperation($event)"></app-manual-operation>
             </div>
         </div>
     </div>

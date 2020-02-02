@@ -1,0 +1,12 @@
+﻿<div *ngIf="!fileUploaded" class="form-group">
+    <input class="btn btn-primary" type="file" id="file" (change)="handleFileInput($event.target.files)">
+    <button class="btn btn-primary" (click)="uploadFile()">Importuj</button>
+</div>
+
+<div *ngIf="fileUploaded">
+    <app-manual-operation [operation]="getOperation()" [mode]="mode"></app-manual-operation>
+    <button class="btn btn-primary" (click)="previous()">Poprzedni</button>
+    <button class="btn btn-primary" (click)="next()">Następny</button>
+    <button class="btn btn-primary" (click)="ignore()">Ignoruj</button>
+    <button class="btn btn-primary" (click)="split()">Rozdziel</button>
+</div>

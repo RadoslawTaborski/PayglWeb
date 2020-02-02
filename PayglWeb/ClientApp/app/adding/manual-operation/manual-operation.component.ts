@@ -12,6 +12,7 @@ import { ApplicationStateService } from '../../shared/application-state.service'
 })
 export class ManualOperationComponent implements OnInit {
     @Input() operation: Operation
+    @Input() mode: OperationMode
     @Output() finishedOutput = new EventEmitter<boolean>();
 
     title: string;
@@ -40,6 +41,7 @@ export class ManualOperationComponent implements OnInit {
         this.title = "Dodaj operację"
         this.btnName = "Dodaj"
         this.setEditModIfPossible()
+        this.setImportModIfPossible()
         this.isLoaded = true;
         //console.log(this.isLoaded)
     }
@@ -47,6 +49,7 @@ export class ManualOperationComponent implements OnInit {
     ngOnChanges() {
         //console.log(this.operation)
         this.setEditModIfPossible()
+        this.setImportModIfPossible()
     }
 
     emitOutput() {
@@ -55,7 +58,7 @@ export class ManualOperationComponent implements OnInit {
     }
 
     setEditModIfPossible() {
-        if (this.operation == null || this.operation == undefined) {
+        if (this.mode != OperationMode.Edit) {
             return
         }
         this.title = "Edytuj operację"
@@ -67,6 +70,39 @@ export class ManualOperationComponent implements OnInit {
         this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
         this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0]
         this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0]
+        this.selectedTags = []
+        console.log(this.operation.Tags)
+        for (let tag of this.operation.Tags) {
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1]
+        }
+        if (this.operation.GroupId != null) {
+            this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Id == this.operation.GroupId)[0]
+            this.editable = false;
+        } else {
+            this.editable = true;
+        }
+    }
+
+    setImportModIfPossible() {
+        if (this.mode != OperationMode.Import) {
+            return
+        }
+        this.title = "Importuj operację"
+        this.btnName = "Importuj"
+        this.description = this.operation.Description
+        this.amount = this.operation.Amount
+        this.date = this.operation.Date.substring(0, 10)
+        if (this.operation.Frequency!=null)
+            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0]
+        if (this.operation.Importance != null)
+            this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
+        if (this.operation.TransactionType != null)
+            this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0]
+        if (this.operation.TransferType != null)
+            this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0]
         this.selectedTags = []
         console.log(this.operation.Tags)
         for (let tag of this.operation.Tags) {
@@ -167,6 +203,7 @@ export class ManualOperationComponent implements OnInit {
         operation.Importance = this.selectedImportance
         operation.Date = this.date.toLocaleString()
         operation.ReceiptPath = ""
+        console.log(this.selectedTags)
         operation.setTags(this.selectedTags)
         operation.DetailsList = []
         operation.IsDirty = true;
@@ -188,4 +225,10 @@ export class ManualOperationComponent implements OnInit {
 
         this.editable = true
     }
+}
+
+export enum OperationMode {
+    Add = 0,
+    Edit,
+    Import
 }
