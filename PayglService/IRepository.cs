@@ -32,7 +32,6 @@ namespace PayglService
 
         IEnumerable<ApiTag> GetTags();
         ApiTag GetTag(int id);
-
         IEnumerable<ApiOperation> GetOperations(bool withoutParent = false);
         ApiOperation GetOperation(int id);
         IEnumerable<ApiOperation> GetOperations(DateTime from, DateTime to, bool withoutParent = false);
@@ -52,5 +51,10 @@ namespace PayglService
         IDashboardOutput GetDashboardOutput(int dashboardId, DateTime from, DateTime to);
         IDashboardOutput GetDashboardOutput(int dashboardId);
         void UpdateDashboards(ApiDashboard[] dashboards);
+
+        IEnumerable<ApiOperation> GetOperationsFromSchematics(int bankId, List<string> lines);
+        IEnumerable<ApiBank> GetBanks();
+        ApiBank GetBanks(int id);
+        ApiSettings GetSettings();
     }
 }

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\ClientApp\dist\favicon-full.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\app\analysis\templates\message\Message.ts" />
     <TypeScriptCompile Remove="ClientApp\app\app-routing.module.ts" />
     <TypeScriptCompile Remove="ClientApp\app\entities\Countable.ts" />
@@ -23,11 +27,13 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="wwwroot\ClientApp\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\ClientApp\dist\favicon-full.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="wwwroot\lib\font-awesome\.npmignore" />
     <None Include="wwwroot\lib\font-awesome\css\font-awesome.css.map" />
     <None Include="wwwroot\lib\font-awesome\fonts\fontawesome-webfont.svg" />
@@ -339,6 +345,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PayglService\PayglService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\favicon-full.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClientApp\favicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="MyPublishScripts" BeforeTargets="BeforePublish">

@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{45D5
 		Scripts\Diagram.png = Scripts\Diagram.png
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Importer", "Importer\Importer.csproj", "{410399D5-F977-4CD1-82A8-0E0501BAA57A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{35DF9273-AE1B-404D-A2B1-75E00E6B1DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35DF9273-AE1B-404D-A2B1-75E00E6B1DFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35DF9273-AE1B-404D-A2B1-75E00E6B1DFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{410399D5-F977-4CD1-82A8-0E0501BAA57A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{410399D5-F977-4CD1-82A8-0E0501BAA57A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{410399D5-F977-4CD1-82A8-0E0501BAA57A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{410399D5-F977-4CD1-82A8-0E0501BAA57A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

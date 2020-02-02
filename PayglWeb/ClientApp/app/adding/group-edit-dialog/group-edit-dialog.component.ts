@@ -4,7 +4,7 @@ import { OperationsGroup } from '../../entities/OperationsGroup';
 @Component({
   selector: 'app-group-edit-dialog',
   templateUrl: './group-edit-dialog.component.html',
-  styleUrls: ['./group-edit-dialog.component.css']
+  styleUrls: ['./group-edit-dialog.component.css'],
 })
 export class GroupEditDialogComponent implements OnInit {
     @Input() visible: boolean
@@ -14,10 +14,12 @@ export class GroupEditDialogComponent implements OnInit {
 
     ngOnInit() {
         this.visible = true;
+        console.log("hello world")
     }
 
     ngOnChanges() {
         this.visible = true;
+        console.log("hello world")
     }
 
     close() {

@@ -4,9 +4,11 @@ let OperationEditDialogComponent = class OperationEditDialogComponent {
     constructor() { }
     ngOnInit() {
         this.visible = true;
+        console.log("hello world");
     }
     ngOnChanges() {
         this.visible = true;
+        console.log("hello world");
     }
     close() {
         //console.log("close")

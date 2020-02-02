@@ -18,10 +18,16 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
         public void Delete(int? id)
         {
             string query = _queries.Delete;
-            query += string.Format(_queries.Where, $"id={id.Value}");
-            _connection.DataAccess.ConnectToDb();
-            _connection.DataAccess.ExecuteNonQueryDb(query);
-            _connection.DataAccess.Disconnect();
+            if (id.HasValue)
+            {
+                query += string.Format(_queries.Where, $"id={id.Value}");
+                _connection.DataAccess.ConnectToDb();
+                _connection.DataAccess.ExecuteNonQueryDb(query);
+                _connection.DataAccess.Disconnect();
+            } else
+            {
+                Console.WriteLine($"{query} with argument null couldn't be executed.");
+            }
         }
 
         public DataSet GetAll(string filter)

@@ -35,6 +35,10 @@ namespace DataBaseWithBusinessLogicConnector
         private FilterAdapter FilterAdapter { get; }
         private DashboardAdapter DashboardAdapter { get; }
         private DashboardFilterRelationAdapter DashboardFilterRelationAdapter { get; }
+        private BankAdapter BankAdapter { get; }
+        private SettingsAdapter SettingsAdapter { get; }
+        private SchematicTypeAdapter SchematicTypeAdapter { get; }
+        private SchematicAdapter SchematicAdapter { get; }
 
         #endregion
 
@@ -54,6 +58,11 @@ namespace DataBaseWithBusinessLogicConnector
         private FilterMapper FilterMapper { get; set; }
         private DashboardMapper DashboardMapper { get; set; }
         private DashboardFilterMapper DashboardFilterMapper { get; set; }
+        private BankMapper BankMapper { get; set; }
+        private SettingsMapper SettingsMapper { get; set; }
+        private SchematicTypeMapper SchematicTypeMapper {get; set;}
+        private SchematicMapper SchematicMapper { get; set; }
+    
         #endregion
 
         public ApiAdapter(IDataBaseManagerFactory dbEngine, string address, string port, string table, string login, string password)
@@ -77,6 +86,10 @@ namespace DataBaseWithBusinessLogicConnector
             FilterAdapter = new FilterAdapter(DbConnector);
             DashboardAdapter = new DashboardAdapter(DbConnector);
             DashboardFilterRelationAdapter = new DashboardFilterRelationAdapter(DbConnector);
+            BankAdapter = new BankAdapter(DbConnector);
+            SettingsAdapter = new SettingsAdapter(DbConnector);
+            SchematicTypeAdapter = new SchematicTypeAdapter(DbConnector);
+            SchematicAdapter = new SchematicAdapter(DbConnector);
 
             LanguageMapper = new LanguageMapper();
             UserMapper = new UserMapper();
@@ -92,6 +105,10 @@ namespace DataBaseWithBusinessLogicConnector
             FilterMapper = new FilterMapper();
             DashboardMapper = new DashboardMapper();
             DashboardFilterMapper = new DashboardFilterMapper();
+            BankMapper = new BankMapper();
+            SettingsMapper = new SettingsMapper();
+            SchematicTypeMapper = new SchematicTypeMapper();
+            SchematicMapper = new SchematicMapper();
         }
 
         public void UpdateDashboardComplex(ref ApiDashboard dashboard)
@@ -159,6 +176,28 @@ namespace DataBaseWithBusinessLogicConnector
         public List<ApiLanguage> GetLanguages()
         {
             return LanguageMapper.ConvertToApiEntitiesCollection(LanguageAdapter.GetAll()).ToList();
+        }
+
+        public List<ApiBank> GetBanks()
+        {
+            return BankMapper.ConvertToApiEntitiesCollection(BankAdapter.GetAll()).ToList();
+        }
+
+        public List<ApiSchematicType> GetSchematicTypes()
+        {
+            return SchematicTypeMapper.ConvertToApiEntitiesCollection(SchematicTypeAdapter.GetAll()).ToList();
+        }
+
+        public List<ApiSchematic> GetSchematic(ApiUser user, List<ApiSchematicType> schematicTypes)
+        {
+            SchematicMapper.Update(user, schematicTypes);
+            return SchematicMapper.ConvertToApiEntitiesCollection(SchematicAdapter.GetAll($"user_id={user.Id}")).ToList();
+        }
+
+        public ApiSettings GetSettings(ApiUser user)
+        {
+            SettingsMapper.Update(user);
+            return SettingsMapper.ConvertToApiEntitiesCollection(SettingsAdapter.GetAll($"user_id={user.Id}")).LastOrDefault();
         }
 
         public (ApiUser User, ApiLanguage Language) GetUserAndLanguage(string login, string password)

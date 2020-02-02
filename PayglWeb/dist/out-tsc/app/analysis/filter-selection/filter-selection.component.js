@@ -34,8 +34,7 @@ let FilterSelectionComponent = class FilterSelectionComponent {
     getNestedFiltersAndDashboards(dashboard) {
         let result = [];
         this.findAllFilters(result, dashboard.Relations);
-        result = result.filter(f => f.Name != dashboard.Name);
-        console.log(result);
+        result.push(dashboard);
         return result;
     }
     getFilters() {

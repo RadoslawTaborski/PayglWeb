@@ -31,7 +31,8 @@ export class ManualOperationComponent implements OnInit {
     public selectedTransferType: any = ""
     public selectedOperationGroup: OperationsGroup = null
 
-    constructor(private shared: SharedService, private state: ApplicationStateService) { }
+    constructor(private shared: SharedService, private state: ApplicationStateService) {
+    }
 
     async ngOnInit() {
         await this.shared.loadAttributes()

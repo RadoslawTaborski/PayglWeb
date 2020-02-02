@@ -133,7 +133,7 @@ namespace Analyzer
                 result += "^" + tmp + "|";
             }
             result = result.Substring(0, result.Length - 1);
-            result += ")";
+            result += "$)";
 
             return result;
         }

@@ -44,7 +44,8 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
-              "ClientApp/favicon.ico",
+              "ClientApp/favicon.png",
+              "ClientApp/favicon-full.png",
               "ClientApp/assets"
             ],
             "styles": [
@@ -104,7 +105,8 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "ClientApp/favicon.ico",
+              "ClientApp/favicon.png",
+              "ClientApp/favicon-full.png",
               "ClientApp/assets"
             ],
             "styles": [

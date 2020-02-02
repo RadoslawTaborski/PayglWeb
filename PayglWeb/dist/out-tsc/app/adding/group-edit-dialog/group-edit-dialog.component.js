@@ -4,9 +4,11 @@ let GroupEditDialogComponent = class GroupEditDialogComponent {
     constructor() { }
     ngOnInit() {
         this.visible = true;
+        console.log("hello world");
     }
     ngOnChanges() {
         this.visible = true;
+        console.log("hello world");
     }
     close() {
         //console.log("close")
@@ -27,7 +29,7 @@ GroupEditDialogComponent = tslib_1.__decorate([
     Component({
         selector: 'app-group-edit-dialog',
         templateUrl: './group-edit-dialog.component.html',
-        styleUrls: ['./group-edit-dialog.component.css']
+        styleUrls: ['./group-edit-dialog.component.css'],
     })
 ], GroupEditDialogComponent);
 export { GroupEditDialogComponent };

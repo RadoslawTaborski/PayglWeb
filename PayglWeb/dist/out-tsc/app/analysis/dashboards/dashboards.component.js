@@ -17,7 +17,7 @@ let DashboardsComponent = class DashboardsComponent {
             this.allDashboards = this.shared.dashboards;
             //console.log(this.allDashboards)
             this.isLoaded = true;
-            console.log(this.allDashboards);
+            //console.log(this.allDashboards)
             //console.log(this.isLoaded)
         });
     }
@@ -64,7 +64,7 @@ let DashboardsComponent = class DashboardsComponent {
             this.selected.IsDirty = true;
             let firstIdxOfDeleted = this.selected.Relations.findIndex(t => t.IsMarkForDeletion);
             firstIdxOfDeleted = firstIdxOfDeleted > 0 ? firstIdxOfDeleted : this.selected.Relations.length;
-            console.log(firstIdxOfDeleted);
+            //console.log(firstIdxOfDeleted);
             this.selected.Relations.splice(firstIdxOfDeleted, 0, tmp);
         }
     }
@@ -79,7 +79,7 @@ let DashboardsComponent = class DashboardsComponent {
             tmp.IsDirty = true;
             let firstIdxOfDeleted = this.allDashboards.findIndex(t => t.IsMarkForDeletion);
             firstIdxOfDeleted = firstIdxOfDeleted > 0 ? firstIdxOfDeleted : this.allDashboards.length;
-            console.log(firstIdxOfDeleted);
+            //console.log(firstIdxOfDeleted);
             this.allDashboards.splice(firstIdxOfDeleted, 0, tmp);
         }
     }
@@ -87,9 +87,11 @@ let DashboardsComponent = class DashboardsComponent {
         //console.log(this.allDashboards)
         let boardIdx = this.allDashboards.indexOf(d);
         if (o == null) {
+            //console.log("here0")
             if (this.dashboardIsUsed(d)) {
                 this.infoMessage = new Message(MessageType.Warning, "Element jest używany. Najpierw usuń zależność.");
                 this.showInfo = true;
+                //console.log("here")
             }
             else {
                 if (d.Id != null) {
@@ -113,7 +115,8 @@ let DashboardsComponent = class DashboardsComponent {
                 moveItemInArray(this.allDashboards[boardIdx].Relations, this.allDashboards[boardIdx].Relations.indexOf(rel), this.allDashboards[boardIdx].Relations.length - 1);
                 rel.IsDirty = true;
                 rel.IsMarkForDeletion = true;
-                d.Order = this.allDashboards[boardIdx].Relations.length - 1;
+                rel.Order = this.allDashboards[boardIdx].Relations.length - 1;
+                d.IsDirty = true;
             }
             else {
                 let index = d.Relations.indexOf(rel, 0);
@@ -187,11 +190,11 @@ let DashboardsComponent = class DashboardsComponent {
     }
     dashboardIsUsed(d) {
         let allUsed = [];
-        for (let item of this.allDashboards.filter(f => !f.IsMarkForDeletion)) {
+        for (let item of this.getDashboards(this.allDashboards)) {
             allUsed = allUsed.concat(this.getNestedDashboards(item));
         }
-        //console.log(allUsed)
-        if (allUsed.includes(d)) {
+        //console.log("here: ", allUsed)
+        if (allUsed.filter(f => f.Name == d.Name).length > 0) {
             return true;
         }
         else {
@@ -199,10 +202,9 @@ let DashboardsComponent = class DashboardsComponent {
         }
     }
     findAllUsedDashboards(output, relations) {
-        for (let relation of relations) {
+        for (let relation of relations.filter(f => !f.IsMarkForDeletion)) {
             if (relation.Filter instanceof Dashboard) {
                 output.push(relation.Filter);
-                this.findAllUsedDashboards(output, relation.Filter.Relations);
             }
         }
     }
@@ -211,9 +213,13 @@ let DashboardsComponent = class DashboardsComponent {
         this.findAllUsedDashboards(result, dashboard.Relations);
         return result;
     }
+    changeVisible(o) {
+        o.IsVisible = !o.IsVisible;
+        o.IsDirty = true;
+    }
     reload() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            yield new Promise(resolve => setTimeout(resolve, 3000));
+            yield new Promise(resolve => setTimeout(resolve, 4000));
             this.ngOnInit();
         });
     }

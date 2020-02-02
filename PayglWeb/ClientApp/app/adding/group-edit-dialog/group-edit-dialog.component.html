@@ -1,10 +1,12 @@
 <div *ngIf="visible" class="dialog bg-secondary">
-    <div class="modal-dialog dialog-modal" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <button class="btn btn-sm btn-danger dialog__close-btn" (click)="close()">
                 <i class="fa fa-close" aria-hidden="true"></i>
             </button>
-            <app-group [operation]="operation" (finishedOutput)="getResponseFromOperation($event)"></app-group>
+            <div class="modal-body">
+                <app-group [operation]="operation" (finishedOutput)="getResponseFromOperation($event)"></app-group>
+            </div>
         </div>
     </div>
 </div>

@@ -10,6 +10,9 @@ using DataBaseWithBusinessLogicConnector.ApiEntities;
 using DataBaseWithBusinessLogicConnector.Interfaces;
 using PayglService.DashboardOutputElements;
 using DataBaseWithBusinessLogicConnector.Interfaces.Api;
+using Importer;
+using System.Text.RegularExpressions;
+using PayglService.Helpers;
 
 namespace PayglService
 {
@@ -19,6 +22,10 @@ namespace PayglService
 
         #region Entities
         public ApiUser User { get; private set; }
+        public ApiSettings Settings { get; private set; }
+        public List<ApiBank> Banks { get; private set; }
+        public List<ApiSchematicType> SchematicTypes { get; private set; }
+        public List<ApiSchematic> Schematic { get; private set; }
         public ApiUserDetails UserDetails { get; private set; }
         public ApiLanguage Language { get; private set; }
         public List<ApiLanguage> Languages { get; private set; }
@@ -31,6 +38,7 @@ namespace PayglService
         public List<ApiOperationsGroup> OperationsGroups { get; private set; }
         public List<ApiFilter> Filters { get; private set; }
         public List<ApiDashboard> Dashboards { get; private set; }
+
         #endregion
 
         public Repository(IDataBaseManagerFactory dbEngine)
@@ -45,8 +53,9 @@ namespace PayglService
         public void Login(string login, string password)
         {
             LoadUserAndLanguage(login, password);
-            LoadSettings();
+            LoadUserConfiguration();
             LoadAttributes();
+            LoadSystemConfiguration();
             ReloadData();
         }
 
@@ -112,8 +121,8 @@ namespace PayglService
 
         public async void DeleteFilter(int id)
         {
-           _apiAdapter.DeleteFilter(id);
-           await Task.Run(() => ReloadData());
+            _apiAdapter.DeleteFilter(id);
+            await Task.Run(() => ReloadData());
         }
 
         public async void UpdateFilter(ApiFilter filter)
@@ -140,7 +149,7 @@ namespace PayglService
 
         public async void UpdateDashboards(ApiDashboard[] dashboards)
         {
-            dashboards=RepairDashboardArray(dashboards);
+            dashboards = RepairDashboardArray(dashboards);
             for (int i = 0; i < dashboards.Length; i++)
             {
                 UpdateDashboard(ref dashboards[i]);
@@ -210,7 +219,7 @@ namespace PayglService
         public List<IDashboardOutput> GetDashboardsOutputs()
         {
             var result = new List<IDashboardOutput>();
-             foreach (var dashboard in Dashboards.Where(d => d.IsVisible))
+            foreach (var dashboard in Dashboards.Where(d => d.IsVisible))
             {
                 var iOperations = new List<IApiOperation>();
 
@@ -322,6 +331,30 @@ namespace PayglService
             await Task.Run(() => ReloadData());
         }
 
+        public IEnumerable<ApiOperation> GetOperationsFromSchematics(int bankId, List<string> lines)
+        {
+            return Import(bankId, lines);
+        }
+
+        public IEnumerable<ApiBank> GetBanks()
+        {
+            return Banks;
+        }
+        public ApiBank GetBanks(int id)
+        {
+            return Banks.Where(b => b.Id == id).FirstOrDefault();
+        }
+
+        public ApiSettings GetSettings()
+        {
+            return Settings;
+        }
+
+        private void LoadSystemConfiguration()
+        {
+            Banks = _apiAdapter.GetBanks();
+        }
+
         private void LoadUserAndLanguage(string login, string password)
         {
             var mainData = _apiAdapter.GetUserAndLanguage(login, password);
@@ -338,8 +371,10 @@ namespace PayglService
             Tags = _apiAdapter.GetTags(Language);
         }
 
-        private void LoadSettings()
+        private void LoadUserConfiguration()
         {
+            LoadSettings(User);
+            LoadSchematics(User);
             LoadFilters(User);
             LoadDashboards(User);
         }
@@ -368,6 +403,49 @@ namespace PayglService
         private void LoadFilters(ApiUser user)
         {
             Filters = _apiAdapter.GetFilters(user);
+        }
+
+        private void LoadSettings(ApiUser user)
+        {
+            Settings = _apiAdapter.GetSettings(user);
+        }
+
+        private void LoadSchematics(ApiUser user)
+        {
+            SchematicTypes = _apiAdapter.GetSchematicTypes();
+            Schematic = _apiAdapter.GetSchematic(user, SchematicTypes);
+        }
+
+        private List<ApiOperation> Import(int bankId, List<string> lines)
+        {
+            var ignored = Schematic.Where(t => t.Type.Id == 1);
+
+            var importFactory = ImportFactory.GetFactory(GetBanks(bankId).Name);
+            var importer = importFactory.CreateImporter();
+            var transactions = new List<Transaction>();
+
+            transactions.AddRange(importer.ReadTransactions(lines));
+
+            foreach (var ignoredItem in ignored)
+            {
+                if (ignoredItem.Context.DescriptionRegex == "")
+                {
+                    ignoredItem.Context.DescriptionRegex = ".*";
+                }
+
+                if (ignoredItem.Context.TitleRegex == "")
+                {
+                    ignoredItem.Context.TitleRegex = ".*";
+                }
+
+                transactions = transactions.Where(t => !Regex.Match(t.ContractorData, ignoredItem.Context.DescriptionRegex).Success || !Regex.Match(t.Title, ignoredItem.Context.TitleRegex).Success).ToList();
+            }
+
+            transactions.Reverse();
+            var mapper = new TransactionsToApiOperationsMapper();
+            mapper.setSchematics(Schematic.Where(t => t.Type.Id == 2));
+            var a = mapper.ConvertToEntitiesCollection(transactions, User, Importances, Frequencies, Tags, TransactionTypes, TransferTypes).ToList();
+            return a;
         }
     }
 }

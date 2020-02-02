@@ -51,7 +51,10 @@ CALL PROC_DROP_FOREIGN_KEY('dashboards', 'fk__dashboards__user_id');
 CALL PROC_DROP_FOREIGN_KEY('filters_dashboards_relations', 'fk__filters_dashboards_relations__filter_target_id');
 CALL PROC_DROP_FOREIGN_KEY('filters_dashboards_relations', 'fk__filters_dashboards_relations__dashboard_target_id');
 CALL PROC_DROP_FOREIGN_KEY('filters_dashboards_relations', 'fk__filters_dashboards_relations__dashboard_id');
-
+CALL PROC_DROP_FOREIGN_KEY('schematics', 'fk__schematics__type_id');
+CALL PROC_DROP_FOREIGN_KEY('schematics', 'fk__schematics__user_id');
+CALL PROC_DROP_FOREIGN_KEY('schematics', 'fk__schematics__type_id');
+CALL PROC_DROP_FOREIGN_KEY('settings', 'fk__settings__user_id');
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` ( 
@@ -258,6 +261,44 @@ CREATE TABLE `filters_dashboards_relations`(
 )ENGINE = InnoDB CHARSET=cp1250 COLLATE cp1250_polish_ci;
 ALTER TABLE `filters_dashboards_relations` ADD INDEX (`dashboard_id`);
 
+DROP TABLE IF EXISTS `schematic_types`;
+CREATE TABLE `schematic_types`(
+`id` INT NOT NULL AUTO_INCREMENT
+, `name` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
+, PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARSET=cp1250 COLLATE cp1250_polish_ci;
+
+INSERT INTO `schematic_types` (`id`, `name`) VALUES(NULL, 'ignored');
+INSERT INTO `schematic_types` (`id`, `name`) VALUES(NULL, 'imported');
+
+DROP TABLE IF EXISTS `schematics`;
+CREATE TABLE `schematics`(
+`id` INT NOT NULL AUTO_INCREMENT
+, `type_id` INT NOT NULL 
+, `json` LONGTEXT
+, `user_id` INT NOT NULL
+, PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARSET=cp1250 COLLATE cp1250_polish_ci;
+ALTER TABLE `schematics` ADD INDEX (`user_id`);
+
+DROP TABLE IF EXISTS `banks`;
+CREATE TABLE `banks`(
+`id` INT NOT NULL AUTO_INCREMENT
+, `name` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
+, PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARSET=cp1250 COLLATE cp1250_polish_ci;
+
+INSERT INTO `banks` (`id`, `name`) VALUES(NULL, 'ING');
+
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE `settings`(
+`id` INT NOT NULL AUTO_INCREMENT
+, `json` LONGTEXT
+, `user_id` INT NOT NULL
+, PRIMARY KEY (`id`)
+)ENGINE = InnoDB CHARSET=cp1250 COLLATE cp1250_polish_ci;
+ALTER TABLE `settings` ADD INDEX (`user_id`);
+
 ALTER TABLE `users` ADD CONSTRAINT `fk__users__details_id`
 FOREIGN KEY (`details_id`) REFERENCES `user_details`(`id`);
 
@@ -335,3 +376,12 @@ FOREIGN KEY (`filter_target_id`) REFERENCES `filters`(`id`);
 
 ALTER TABLE `filters_dashboards_relations` ADD CONSTRAINT `fk__filters_dashboards_relations__dashboard_target_id`
 FOREIGN KEY (`dashboard_target_id`) REFERENCES `dashboards`(`id`);
+
+ALTER TABLE `schematics` ADD CONSTRAINT `fk__schematics__type_id`
+FOREIGN KEY (`type_id`) REFERENCES `schematic_types`(`id`);
+
+ALTER TABLE `schematics` ADD CONSTRAINT `fk__schematics__user_id`
+FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+
+ALTER TABLE `settings` ADD CONSTRAINT `fk__settings__user_id`
+FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);

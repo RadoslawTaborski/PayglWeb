@@ -1,10 +1,12 @@
 ﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PayglService;
 using PayglWeb.Controllers.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

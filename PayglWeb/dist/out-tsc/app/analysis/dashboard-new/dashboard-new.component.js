@@ -18,6 +18,9 @@ let DashboardNewComponent = class DashboardNewComponent {
     close() {
         this.emitOutput(undefined);
     }
+    nameIsUsed(name) {
+        return this.allDashboards.map(m => m.Name).includes(name);
+    }
     emitOutput(name) {
         console.log("emited: finished");
         this.finishedOutput.emit(name);
@@ -26,11 +29,17 @@ let DashboardNewComponent = class DashboardNewComponent {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
             if (this.name.length > 2) {
-                this.emitOutput(this.name);
-                this.showInfo = false;
+                if (!this.nameIsUsed(this.name)) {
+                    this.emitOutput(this.name);
+                    this.showInfo = false;
+                }
+                else {
+                    this.infoMessage = new Message(MessageType.Warning, "Nazwa jest już używana");
+                    this.showInfo = true;
+                }
             }
             else {
-                this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki");
+                this.infoMessage = new Message(MessageType.Warning, "Nazwa musi mieć minimum 3 znaki");
                 this.showInfo = true;
             }
             this.isLoaded = true;
@@ -52,6 +61,9 @@ let DashboardNewComponent = class DashboardNewComponent {
 tslib_1.__decorate([
     Input()
 ], DashboardNewComponent.prototype, "visible", void 0);
+tslib_1.__decorate([
+    Input()
+], DashboardNewComponent.prototype, "allDashboards", void 0);
 tslib_1.__decorate([
     Output()
 ], DashboardNewComponent.prototype, "finishedOutput", void 0);
