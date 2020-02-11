@@ -46,15 +46,20 @@ export class ManualOperationComponent implements OnInit {
         //console.log(this.isLoaded)
     }
 
-    ngOnChanges() {
+    async ngOnChanges() {
         //console.log(this.operation)
+        this.isLoaded = false
+        await this.shared.loadAttributes()
+        await this.shared.loadOperationsGroups()
+        this.clear()
         this.setEditModIfPossible()
         this.setImportModIfPossible()
+        this.isLoaded = true;
     }
 
-    emitOutput() {
+    emitOutput(result: boolean) {
         console.log("emited: finished")
-        this.finishedOutput.emit(true);
+        this.finishedOutput.emit(result);
     }
 
     setEditModIfPossible() {
@@ -71,7 +76,6 @@ export class ManualOperationComponent implements OnInit {
         this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0]
         this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0]
         this.selectedTags = []
-        console.log(this.operation.Tags)
         for (let tag of this.operation.Tags) {
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
         }
@@ -104,7 +108,6 @@ export class ManualOperationComponent implements OnInit {
         if (this.operation.TransferType != null)
             this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0]
         this.selectedTags = []
-        console.log(this.operation.Tags)
         for (let tag of this.operation.Tags) {
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
         }
@@ -188,7 +191,7 @@ export class ManualOperationComponent implements OnInit {
             this.clear()
             tmp.reset()
 
-            await this.emitOutput()
+            await this.emitOutput(true)
         }
     }
 

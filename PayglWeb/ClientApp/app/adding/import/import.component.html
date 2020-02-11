@@ -1,12 +1,42 @@
-﻿<div *ngIf="!fileUploaded" class="form-group">
-    <input class="btn btn-primary" type="file" id="file" (change)="handleFileInput($event.target.files)">
-    <button class="btn btn-primary" (click)="uploadFile()">Importuj</button>
-</div>
+﻿<div *ngIf="isLoaded">
+    <div *ngIf="!fileUploaded" class="form-group">
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="file" (change)="handleFileInput($event.target.files)" />
+                <label class="custom-file-label" for="file">Wybierz plik</label>
+            </div>
+            <div class="input-group-append">
+                <span class="input-group-text" (click)="uploadFile()" id="">Importuj</span>
+            </div>
+        </div>
+    </div>
 
-<div *ngIf="fileUploaded">
-    <app-manual-operation [operation]="getOperation()" [mode]="mode"></app-manual-operation>
-    <button class="btn btn-primary" (click)="previous()">Poprzedni</button>
-    <button class="btn btn-primary" (click)="next()">Następny</button>
-    <button class="btn btn-primary" (click)="ignore()">Ignoruj</button>
-    <button class="btn btn-primary" (click)="split()">Rozdziel</button>
+    <div class="div-row" style="width:100%" *ngIf="fileUploaded">
+        <app-manual-operation *ngIf = "isLoaded" [operation]="operation" [mode]="mode" (finishedOutput)="getResponseFromOperation($event)"></app-manual-operation>
+        <div class="btn-group" style="width:100%">
+            <button class="btn btn-primary" (click)="previous()">Poprzedni</button>
+            <button class="btn btn-primary" (click)="next()">Następny</button>
+            <button class="btn btn-primary" (click)="ignore()">Ignoruj</button>
+            <button class="btn btn-primary" (click)="split()">Rozdziel</button>
+        </div>
+    </div>
+
+    <div *ngIf="modalVisible" class="dialog bg-secondary">
+        <div class="modal-dialog dialog-modal" role="document">
+            <div class="modal-content">
+                <button class="btn btn-sm btn-danger dialog__close-btn" (click)="close()">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input [(ngModel)]="amount" required class="form-control" name="inpAmount" type="number" step="0.01" min="0" autocomplete="off" placeholder="Kwota">
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-primary" (click)="ok()">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>

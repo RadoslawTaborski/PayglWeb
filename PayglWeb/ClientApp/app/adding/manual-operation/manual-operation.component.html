@@ -58,7 +58,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select [(ngModel)]="selectedOperationGroup" name="selOperationsGroups" (change)="onGroupChange(selectedOperationGroup)" class="custom-select">
+                                <select [(ngModel)]="selectedOperationGroup" name="selOperationsGroups" (change)="onGroupChange(selectedOperationGroup)" class="custom-select" >
                                     <option [ngValue]="null" selected>Brak grupy</option>
                                     <option *ngFor="let f of getOperationsGroups()" [ngValue]="f">{{f.Date.substring(0,10)}} {{f.Description}}</option>
                                 </select>

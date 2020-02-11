@@ -67,7 +67,7 @@ export class Operation {
         }
     }
     addTag(tag) {
-        let filtered = this.Tags.filter(t => t.Tag.Text == tag.Tag.Text && t.IsDirty == false);
+        let filtered = this.Tags.filter(t => t.Tag.Text == tag.Tag.Text);
         if (filtered.length == 0) {
             tag.IsDirty = true;
             tag.IsMarkForDeletion = false;
@@ -75,7 +75,6 @@ export class Operation {
         }
         else {
             let old = filtered[0];
-            old.IsDirty = false;
             old.IsMarkForDeletion = false;
         }
     }
