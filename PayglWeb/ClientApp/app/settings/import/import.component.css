@@ -1,0 +1,50 @@
+.inline-block {
+    display: inline-block;
+}
+
+p {
+    margin: 0
+}
+
+.inline-p {
+    display: inline;
+}
+
+.div-row {
+    width: 100%;
+}
+
+.inner {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.ignored {
+    background-color: #011f4b;
+    color: white;
+}
+
+.schematic {
+    background-color: #011f4b;
+    color: white;
+}
+
+.schematic2 {
+    background-color: #03396c;
+    color: white;
+}
+
+.schematicDetails {
+    background-color: #386FA4;
+    color: white;
+}
+
+.ignored {
+    background-color: #580000;
+    color: white;
+}
+
+.ignored2 {
+    background-color: #8A0000;
+    color: white;
+}

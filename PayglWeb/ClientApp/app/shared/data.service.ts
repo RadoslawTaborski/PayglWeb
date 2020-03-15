@@ -4,6 +4,7 @@ import { map } from "rxjs/operators"
 import { Operation } from '../entities/Operation';
 import { OperationsGroup } from '../entities/OperationsGroup';
 import { Filter, Dashboard, Boards } from '../entities/entities';
+import { Schematic, Schematics } from '../entities/Schematic';
 
 const httpOptions = {
     headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -47,6 +48,10 @@ export class DataService {
 
     loadDashboards(): Promise<any[]> {
         return this.http.get<any[]>("api/dashboards").toPromise()
+    }
+
+    loadSchematics(): any[] | PromiseLike<any[]> {
+        return this.http.get<any[]>("api/schematics").toPromise()
     }
 
     loadOperationsGroups(from?: string, to?: string): Promise<any[]> {
@@ -109,6 +114,21 @@ export class DataService {
         let json = JSON.stringify(filter)
         //console.log(json);
         return this.http.post<any>(`api/filters`, json, httpOptions).toPromise();
+    }
+
+    sendSchematics(schematics: Schematic[]) {
+        let tmp: Schematics = new Schematics()
+        tmp.Schematics = schematics
+
+        let json = JSON.stringify(tmp)
+        //console.log(json);
+        return this.http.post<any>(`api/schematics`, json, httpOptions).toPromise();
+    }
+
+    sendSchematic(schematic: Schematic): Promise<any[]> {
+        let json = schematic.toJson()
+        console.log(json);
+        return this.http.post<any>(`api/schematics`, json, httpOptions).toPromise();
     }
 
     deleteFilter(filter: Filter): Promise<any[]> {

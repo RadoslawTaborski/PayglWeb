@@ -4,6 +4,7 @@ import { Frequency, Importance, Tag, TransactionType, TransferType, TagRelation,
 import { OperationsGroup } from "../../entities/OperationsGroup";
 import { Operation } from "../../entities/Operation";
 import { ApplicationStateService } from '../../shared/application-state.service';
+import { Schematic, SchematicContext } from '../../entities/Schematic';
 
 @Component({
     selector: 'app-manual-operation',
@@ -31,6 +32,9 @@ export class ManualOperationComponent implements OnInit {
     public selectedTransactionType: any = ""
     public selectedTransferType: any = ""
     public selectedOperationGroup: OperationsGroup = null
+
+    public editSchematic: boolean = false
+    public editedSchematic: Schematic = null
 
     constructor(private shared: SharedService, private state: ApplicationStateService) {
     }
@@ -60,6 +64,11 @@ export class ManualOperationComponent implements OnInit {
     emitOutput(result: boolean) {
         console.log("emited: finished")
         this.finishedOutput.emit(result);
+    }
+
+    isAddMode(): boolean {
+        console.log(this.mode, this.mode == OperationMode.Add || this.mode == null)
+        return this.mode == OperationMode.Add || this.mode == null
     }
 
     setEditModIfPossible() {
@@ -227,6 +236,30 @@ export class ManualOperationComponent implements OnInit {
         this.selectedOperationGroup = null
 
         this.editable = true
+    }
+
+    createGroup() {
+        console.log("group")
+    }
+
+    createSchematic() {
+        console.log("add")
+        this.editedSchematic = new Schematic(null, null, new SchematicContext("", "", "", null, null, []), this.shared.tmpCreatingUser())
+        this.editSchematic = true
+    }
+
+    async getResponse($event) {
+        console.log("event", $event)
+        if ($event != null) {
+            await this.save($event)
+        }
+        this.editSchematic = false;
+        this.editedSchematic = null;
+    }
+
+    async save(schematic: Schematic) {
+        console.log("save")
+        await this.shared.sendSchematic(schematic)
     }
 }
 

@@ -1,6 +1,7 @@
 import * as tslib_1 from "tslib";
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Operation } from "../../entities/Operation";
+import { Schematic, SchematicContext } from '../../entities/Schematic';
 let ManualOperationComponent = class ManualOperationComponent {
     constructor(shared, state) {
         this.shared = shared;
@@ -18,6 +19,8 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.selectedTransactionType = "";
         this.selectedTransferType = "";
         this.selectedOperationGroup = null;
+        this.editSchematic = false;
+        this.editedSchematic = null;
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -32,13 +35,24 @@ let ManualOperationComponent = class ManualOperationComponent {
         });
     }
     ngOnChanges() {
-        //console.log(this.operation)
-        this.setEditModIfPossible();
-        this.setImportModIfPossible();
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            //console.log(this.operation)
+            this.isLoaded = false;
+            yield this.shared.loadAttributes();
+            yield this.shared.loadOperationsGroups();
+            this.clear();
+            this.setEditModIfPossible();
+            this.setImportModIfPossible();
+            this.isLoaded = true;
+        });
     }
-    emitOutput() {
+    emitOutput(result) {
         console.log("emited: finished");
-        this.finishedOutput.emit(true);
+        this.finishedOutput.emit(result);
+    }
+    isAddMode() {
+        console.log(this.mode, this.mode == OperationMode.Add || this.mode == null);
+        return this.mode == OperationMode.Add || this.mode == null;
     }
     setEditModIfPossible() {
         if (this.mode != OperationMode.Edit) {
@@ -54,7 +68,6 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.selectedTransactionType = this.getTransactionTypes().filter(t => t.Id == this.operation.TransactionType.Id)[0];
         this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0];
         this.selectedTags = [];
-        console.log(this.operation.Tags);
         for (let tag of this.operation.Tags) {
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0]);
         }
@@ -87,7 +100,6 @@ let ManualOperationComponent = class ManualOperationComponent {
         if (this.operation.TransferType != null)
             this.selectedTransferType = this.getTransferTypes().filter(t => t.Id == this.operation.TransferType.Id)[0];
         this.selectedTags = [];
-        console.log(this.operation.Tags);
         for (let tag of this.operation.Tags) {
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0]);
         }
@@ -163,7 +175,7 @@ let ManualOperationComponent = class ManualOperationComponent {
                 let tmp = document.getElementById("form");
                 this.clear();
                 tmp.reset();
-                yield this.emitOutput();
+                yield this.emitOutput(true);
             }
         });
     }
@@ -198,6 +210,30 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.selectedTransferType = "";
         this.selectedOperationGroup = null;
         this.editable = true;
+    }
+    createGroup() {
+        console.log("group");
+    }
+    createSchematic() {
+        console.log("add");
+        this.editedSchematic = new Schematic(null, null, new SchematicContext("", "", "", null, null, []), this.shared.tmpCreatingUser());
+        this.editSchematic = true;
+    }
+    getResponse($event) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            console.log("event", $event);
+            if ($event != null) {
+                yield this.save($event);
+            }
+            this.editSchematic = false;
+            this.editedSchematic = null;
+        });
+    }
+    save(schematic) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            console.log("save");
+            yield this.shared.sendSchematic(schematic);
+        });
     }
 };
 tslib_1.__decorate([

@@ -11,9 +11,9 @@
         </div>
     </div>
 
-    <div class="div-row" style="width:100%" *ngIf="fileUploaded">
+    <div class="div-row" *ngIf="fileUploaded">
         <app-manual-operation *ngIf = "isLoaded" [operation]="operation" [mode]="mode" (finishedOutput)="getResponseFromOperation($event)"></app-manual-operation>
-        <div class="btn-group" style="width:100%">
+        <div class="btn-group div-row">
             <button class="btn btn-primary" (click)="previous()">Poprzedni</button>
             <button class="btn btn-primary" (click)="next()">Następny</button>
             <button class="btn btn-primary" (click)="ignore()">Ignoruj</button>

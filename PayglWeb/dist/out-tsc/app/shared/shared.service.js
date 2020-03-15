@@ -5,6 +5,7 @@ import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 import { DashboardOutput } from '../entities/DashboardOutput';
 import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
+import { Schematic } from '../entities/Schematic';
 let SharedService = class SharedService {
     constructor(data) {
         this.data = data;
@@ -20,6 +21,7 @@ let SharedService = class SharedService {
         this.operationsGroups = [];
         this.dashboardsOutputs = [];
         this.importedOperations = [];
+        this.schematics = [];
     }
     loadAttributes() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -61,6 +63,18 @@ let SharedService = class SharedService {
             this.dashboards = [];
             tmp = yield this.data.loadDashboards();
             tmp.forEach(a => this.dashboards.push(Dashboard.createFromJson(a)));
+        });
+    }
+    loadSchematics() {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                yield this.loadAttributes();
+            }
+            let tmp;
+            this.schematics = [];
+            tmp = yield this.data.loadSchematics();
+            //console.log(tmp)
+            tmp.forEach(a => this.schematics.push(Schematic.createFromJson(a, this.frequencies, this.importances, this.tags)));
         });
     }
     loadOperationsGroups(from, to) {
@@ -160,6 +174,16 @@ let SharedService = class SharedService {
     sendDashboards(boards) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.data.sendDashboards(boards);
+        });
+    }
+    sendSchematics(schematics) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.data.sendSchematics(schematics);
+        });
+    }
+    sendSchematic(schematic) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.data.sendSchematic(schematic);
         });
     }
     loadOperationsFromCsv(id, fileToUpload) {

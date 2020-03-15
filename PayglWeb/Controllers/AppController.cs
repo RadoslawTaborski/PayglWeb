@@ -64,5 +64,12 @@ namespace PayglWeb.Controllers
             ViewBag.Title = "Analysis";
             return View();
         }
+
+        [HttpGet("importsettings")]
+        public IActionResult ImportSettings()
+        {
+            ViewBag.Title = "ImportSettings";
+            return View();
+        }
     }
 }

@@ -58,19 +58,28 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select [(ngModel)]="selectedOperationGroup" name="selOperationsGroups" (change)="onGroupChange(selectedOperationGroup)" class="custom-select" >
+                                <select [(ngModel)]="selectedOperationGroup" name="selOperationsGroups" (change)="onGroupChange(selectedOperationGroup)" class="custom-select">
                                     <option [ngValue]="null" selected>Brak grupy</option>
                                     <option *ngFor="let f of getOperationsGroups()" [ngValue]="f">{{f.Date.substring(0,10)}} {{f.Description}}</option>
                                 </select>
                             </div>
-                            <button class="btn btn-primary" type="submit">{{btnName}}</button>
+
+                            <div class="btn-group div-row">
+                                <button class="btn btn-primary" type="submit">{{btnName}}</button>
+                            </div>
                         </fieldset>
                     </form>
+                    <div class="btn-group div-row">
+                        <button class="btn btn-primary" (click)="createGroup()">Utwórz grupę</button>
+                        <button *ngIf="!isAddMode()" class="btn btn-primary" (click)="createSchematic()">Utwórz schemat</button>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-4 offset-lg-1">
             </div>
         </div>
     </div>
-
+    <div>
+        <app-schematic-dialog [visible]="editSchematic" [schematic]="editedSchematic" (finishedOutput)="getResponse($event)"></app-schematic-dialog>
+    </div>
 </div>

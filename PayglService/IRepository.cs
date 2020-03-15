@@ -54,6 +54,8 @@ namespace PayglService
 
         IEnumerable<ApiOperation> GetOperationsFromSchematics(int bankId, List<string> lines);
         IEnumerable<ApiBank> GetBanks();
+        IEnumerable<ApiSchematic> GetSchematics();
+        void UpdateSchematic(ApiSchematic schematic);
         ApiBank GetBanks(int id);
         ApiSettings GetSettings();
     }

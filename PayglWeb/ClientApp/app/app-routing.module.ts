@@ -7,6 +7,7 @@ import { FiltersComponent } from './analysis/filters/filters.component';
 import { DashboardsComponent } from './analysis/dashboards/dashboards.component';
 import { AnalysisComponent } from './analysis/analysis/analysis.component';
 import { ImportComponent } from './adding/import/import.component';
+import { ImportComponent as ImportSettings } from './settings/import/import.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'operation', pathMatch: 'full' },
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: 'filters', component: FiltersComponent },
     { path: 'dashboards', component: DashboardsComponent },
     { path: 'analysis', component: AnalysisComponent },
+    { path: 'importsettings', component: ImportSettings },
     { path: '**', redirectTo: 'operation' }
 ];
 

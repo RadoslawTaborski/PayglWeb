@@ -79,7 +79,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             var json = _adapterHelper.ToStr(entity.Json, _columns["json"]);
             var typeId = _adapterHelper.ToStr(entity.TypeId, _columns["type_id"]);
 
-            _adapterHelper.Update(id, typeId, json, userId);
+            _adapterHelper.Update(id, id, typeId, json, userId);
         }
     }
 }

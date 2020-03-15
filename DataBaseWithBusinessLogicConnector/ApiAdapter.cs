@@ -348,6 +348,13 @@ namespace DataBaseWithBusinessLogicConnector
             UpdateOperationComplex(dalObjects);
         }
 
+        public bool UpdateSchematic(ApiSchematic schematic)
+        {
+            var dalObjects = SchematicMapper.ConvertToDALEntity(schematic);
+            var id = Update(dalObjects, SchematicAdapter);
+            return true;
+        }
+
         private void UpdateOperationComplex(OperationComplex dalObjects)
         {
             var dalOperation = dalObjects.Operation;

@@ -25,7 +25,7 @@ namespace PayglService
         public ApiSettings Settings { get; private set; }
         public List<ApiBank> Banks { get; private set; }
         public List<ApiSchematicType> SchematicTypes { get; private set; }
-        public List<ApiSchematic> Schematic { get; private set; }
+        public List<ApiSchematic> Schematics { get; private set; }
         public ApiUserDetails UserDetails { get; private set; }
         public ApiLanguage Language { get; private set; }
         public List<ApiLanguage> Languages { get; private set; }
@@ -336,6 +336,11 @@ namespace PayglService
             return Import(bankId, lines);
         }
 
+        public IEnumerable<ApiSchematic> GetSchematics()
+        {
+            return Schematics;
+        }
+
         public IEnumerable<ApiBank> GetBanks()
         {
             return Banks;
@@ -413,12 +418,12 @@ namespace PayglService
         private void LoadSchematics(ApiUser user)
         {
             SchematicTypes = _apiAdapter.GetSchematicTypes();
-            Schematic = _apiAdapter.GetSchematic(user, SchematicTypes);
+            Schematics = _apiAdapter.GetSchematic(user, SchematicTypes);
         }
 
         private List<ApiOperation> Import(int bankId, List<string> lines)
         {
-            var ignored = Schematic.Where(t => t.Type.Id == 1);
+            var ignored = Schematics.Where(t => t.Type.Id == 1);
 
             var importFactory = ImportFactory.GetFactory(GetBanks(bankId).Name);
             var importer = importFactory.CreateImporter();
@@ -443,9 +448,14 @@ namespace PayglService
 
             transactions.Reverse();
             var mapper = new TransactionsToApiOperationsMapper();
-            mapper.setSchematics(Schematic.Where(t => t.Type.Id == 2));
+            mapper.setSchematics(Schematics.Where(t => t.Type.Id == 2));
             var a = mapper.ConvertToEntitiesCollection(transactions, User, Importances, Frequencies, Tags, TransactionTypes, TransferTypes).ToList();
             return a;
+        }
+
+        public void UpdateSchematic(ApiSchematic schematic)
+        {
+            _apiAdapter.UpdateSchematic(schematic);
         }
     }
 }

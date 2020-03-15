@@ -7,6 +7,7 @@ import { AnalysisModule } from './analysis/analysis.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { SettingsModule } from './settings/settings.module';
 let AppModule = class AppModule {
 };
 AppModule = tslib_1.__decorate([
@@ -18,6 +19,7 @@ AppModule = tslib_1.__decorate([
             BrowserModule,
             AddingModule,
             AnalysisModule,
+            SettingsModule,
             AppRoutingModule,
             HttpClientModule
         ],

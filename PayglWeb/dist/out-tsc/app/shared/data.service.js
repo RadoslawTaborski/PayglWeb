@@ -2,6 +2,7 @@ import * as tslib_1 from "tslib";
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Boards } from '../entities/entities';
+import { Schematics } from '../entities/Schematic';
 const httpOptions = {
     headers: new HttpHeaders().append('Content-Type', 'application/json')
 };
@@ -36,6 +37,9 @@ let DataService = class DataService {
     }
     loadDashboards() {
         return this.http.get("api/dashboards").toPromise();
+    }
+    loadSchematics() {
+        return this.http.get("api/schematics").toPromise();
     }
     loadOperationsGroups(from, to) {
         if (from != null && to != null && from.toString() != "" && to.toString() != "") {
@@ -84,7 +88,7 @@ let DataService = class DataService {
     }
     sendOperation(operation) {
         let json = JSON.stringify(operation);
-        console.log(json);
+        //console.log(json);
         return this.http.post(`api/operations`, json, httpOptions).toPromise();
     }
     sendOperationsGroup(operationsGroup) {
@@ -96,6 +100,18 @@ let DataService = class DataService {
         let json = JSON.stringify(filter);
         //console.log(json);
         return this.http.post(`api/filters`, json, httpOptions).toPromise();
+    }
+    sendSchematics(schematics) {
+        let tmp = new Schematics();
+        tmp.Schematics = schematics;
+        let json = JSON.stringify(tmp);
+        //console.log(json);
+        return this.http.post(`api/schematics`, json, httpOptions).toPromise();
+    }
+    sendSchematic(schematic) {
+        let json = schematic.toJson();
+        console.log(json);
+        return this.http.post(`api/schematics`, json, httpOptions).toPromise();
     }
     deleteFilter(filter) {
         //console.log(json);
@@ -113,7 +129,7 @@ let DataService = class DataService {
     postFile(id, fileToUpload) {
         const formData = new FormData();
         formData.append('files', fileToUpload, fileToUpload.name);
-        console.log(formData);
+        //console.log(formData)
         return this.http.post(`api/import/${id}`, formData).toPromise();
     }
 };

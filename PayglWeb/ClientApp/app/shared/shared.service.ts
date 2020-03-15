@@ -6,6 +6,7 @@ import { DataService } from './data.service';
 import { DashboardOutput } from '../entities/DashboardOutput';
 import { IDashboardOutput } from '../entities/IDashboardOutput';
 import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
+import { Schematic } from '../entities/Schematic';
 
 @Injectable()
 export class SharedService {
@@ -22,6 +23,7 @@ export class SharedService {
     dashboardsOutputs: IDashboardOutput[] = [];
     dashboardOutput: IDashboardOutput;
     importedOperations: Operation[] = [];
+    schematics: Schematic[] = []
 
     constructor(private data: DataService) { }
 
@@ -68,6 +70,17 @@ export class SharedService {
         this.dashboards = []
         tmp = await this.data.loadDashboards()
         tmp.forEach(a => this.dashboards.push(Dashboard.createFromJson(a)))
+    }
+
+    async loadSchematics() {
+        if (!this.isInitialize) {
+            await this.loadAttributes()
+        }
+        let tmp: any[]
+        this.schematics = []
+        tmp = await this.data.loadSchematics()
+        //console.log(tmp)
+        tmp.forEach(a => this.schematics.push(Schematic.createFromJson(a, this.frequencies, this.importances, this.tags)))
     }
 
     async loadOperationsGroups(from?: string, to?: string) {
@@ -154,6 +167,14 @@ export class SharedService {
 
     async sendDashboards(boards: Dashboard[]) {
         this.data.sendDashboards(boards)
+    }
+
+    async sendSchematics(schematics: Schematic[]) {
+        this.data.sendSchematics(schematics)
+    }
+
+    async sendSchematic(schematic: Schematic) {
+        this.data.sendSchematic(schematic)
     }
 
     async loadOperationsFromCsv(id: number, fileToUpload: File) {

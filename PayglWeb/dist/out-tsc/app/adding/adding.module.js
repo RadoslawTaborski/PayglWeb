@@ -10,6 +10,7 @@ import { ApplicationStateService } from '../shared/application-state.service';
 import { OperationEditDialogComponent } from './operation-edit-dialog/operation-edit-dialog.component';
 import { GroupEditDialogComponent } from './group-edit-dialog/group-edit-dialog.component';
 import { ImportComponent } from './import/import.component';
+import { SettingsModule } from '../settings/settings.module';
 let AddingModule = class AddingModule {
 };
 AddingModule = tslib_1.__decorate([
@@ -17,7 +18,8 @@ AddingModule = tslib_1.__decorate([
         declarations: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent, ImportComponent],
         imports: [
             CommonModule,
-            FormsModule
+            FormsModule,
+            SettingsModule
         ],
         exports: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent, ImportComponent],
         providers: [
