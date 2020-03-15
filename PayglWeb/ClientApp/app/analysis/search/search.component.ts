@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
     public filter: Filter;
     public saveMode: boolean = false;
 
-    constructor(private shared: SharedService, private state: ApplicationStateService, private activatedRoute: ActivatedRoute) {
+    constructor(private shared: SharedService, public state: ApplicationStateService, private activatedRoute: ActivatedRoute) {
         this.getRouteParams();
     }
 

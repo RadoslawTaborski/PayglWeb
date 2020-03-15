@@ -13,7 +13,7 @@ export class OperationComponent implements OnInit {
     public clicked: OperationLike[] = []
     editedOperation: OperationLike;
 
-    constructor(private state: ApplicationStateService) {}
+    constructor(public state: ApplicationStateService) {}
 
     ngOnInit(): void {
         //console.log(this.operation)

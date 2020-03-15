@@ -17,7 +17,8 @@ import { SettingsModule } from '../settings/settings.module';
     imports: [
         CommonModule,
         FormsModule,
-        SettingsModule
+        SettingsModule,
+        FormsModule
     ],
     exports: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent, ImportComponent],
     providers: [

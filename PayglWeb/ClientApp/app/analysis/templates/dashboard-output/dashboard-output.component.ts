@@ -18,7 +18,7 @@ export class DashboardOutputComponent implements OnInit {
     public canDisplayCharts: boolean = false;
     public chartsArePossible: boolean = false;
 
-    constructor(private state: ApplicationStateService) { }
+    constructor(public state: ApplicationStateService) { }
 
     ngOnInit() {
 

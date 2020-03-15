@@ -19,7 +19,8 @@ AddingModule = tslib_1.__decorate([
         imports: [
             CommonModule,
             FormsModule,
-            SettingsModule
+            SettingsModule,
+            FormsModule
         ],
         exports: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent, ImportComponent],
         providers: [

@@ -25,7 +25,7 @@ export class GroupComponent implements OnInit {
     public selectedTag: any = ""
     public selectedTags: Tag[] = []
 
-    constructor(private shared: SharedService, private state: ApplicationStateService) { }
+    constructor(private shared: SharedService, public state: ApplicationStateService) { }
 
     async ngOnInit() {
         await this.shared.loadAttributes()

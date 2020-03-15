@@ -22,7 +22,7 @@ export class AnalysisComponent implements OnInit {
     public selectedDashboard: Dashboard = null;
     public output: IDashboardOutput = null;
 
-    constructor(private shared: SharedService, private state: ApplicationStateService) {
+    constructor(private shared: SharedService, public state: ApplicationStateService) {
         eval("window.myService=this;")
     }
 

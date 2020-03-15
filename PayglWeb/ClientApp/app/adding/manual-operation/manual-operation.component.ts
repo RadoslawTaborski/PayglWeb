@@ -36,7 +36,7 @@ export class ManualOperationComponent implements OnInit {
     public editSchematic: boolean = false
     public editedSchematic: Schematic = null
 
-    constructor(private shared: SharedService, private state: ApplicationStateService) {
+    constructor(private shared: SharedService, public state: ApplicationStateService) {
     }
 
     async ngOnInit() {
