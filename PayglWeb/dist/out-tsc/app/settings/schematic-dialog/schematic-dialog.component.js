@@ -1,6 +1,5 @@
 import * as tslib_1 from "tslib";
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { SchematicType } from '../../entities/Schematic';
 let SchematicDialogComponent = class SchematicDialogComponent {
     constructor(shared, state) {
         this.shared = shared;
@@ -45,7 +44,7 @@ let SchematicDialogComponent = class SchematicDialogComponent {
         this.schematic.Context.Frequency = this.selectedFrequency;
         this.schematic.Context.Importance = this.selectedImportance;
         this.schematic.Context.Tags = this.selectedTags;
-        this.schematic.Type = new SchematicType(this.selectedType, "todo"); //TODO:
+        this.schematic.Type = this.shared.tmpSchematicType(this.selectedType);
         this.emitOutput(this.schematic);
     }
     getFrequencies() {

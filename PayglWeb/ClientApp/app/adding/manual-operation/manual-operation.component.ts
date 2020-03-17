@@ -35,6 +35,7 @@ export class ManualOperationComponent implements OnInit {
 
     public editSchematic: boolean = false
     public editedSchematic: Schematic = null
+    public editGroup: boolean = false;
 
     constructor(private shared: SharedService, public state: ApplicationStateService) {
     }
@@ -108,7 +109,7 @@ export class ManualOperationComponent implements OnInit {
         this.description = this.operation.Description
         this.amount = this.operation.Amount
         this.date = this.operation.Date.substring(0, 10)
-        if (this.operation.Frequency!=null)
+        if (this.operation.Frequency != null)
             this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0]
         if (this.operation.Importance != null)
             this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
@@ -240,21 +241,57 @@ export class ManualOperationComponent implements OnInit {
 
     createGroup() {
         console.log("group")
+        this.editGroup = true
     }
 
     createSchematic() {
         console.log("add")
-        this.editedSchematic = new Schematic(null, null, new SchematicContext("", "", "", null, null, []), this.shared.tmpCreatingUser())
+        if (this.description.indexOf(';') > -1) {
+            const splited = this.description.split(';');
+            const contractor = splited[0].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const title = splited[1].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext(contractor, title, this.description, null, null, []), this.shared.tmpCreatingUser())
+        } else {
+            this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext("", "", this.description, null, null, []), this.shared.tmpCreatingUser())
+        }
         this.editSchematic = true
     }
 
-    async getResponse($event) {
+    async getResponseSchematic($event) {
         console.log("event", $event)
         if ($event != null) {
             await this.save($event)
         }
+        this.updateOperation($event);
         this.editSchematic = false;
         this.editedSchematic = null;
+    }
+
+    async getResponseGroup($event) {
+        console.log("event", $event)
+        if ($event != null) {
+            await this.shared.loadOperationsGroups();
+            console.log(this.getOperationsGroups())
+            this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Description == $event.Description && t.Date.substr(0,10) == $event.Date)[0]
+            this.onGroupChange(this.selectedOperationGroup);
+        }
+    }
+
+    updateOperation(event: any) {
+        console.log(event)
+        this.description = event.Context.Description;
+        if (event.Context.Frequency != null)
+            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == event.Context.Frequency.Id)[0]
+        if (event.Context.Importance != null)
+            this.selectedImportance = this.getImportances().filter(t => t.Id == event.Context.Importance.Id)[0]
+        this.selectedTags = []
+        for (let tag of event.Context.Tags) {
+            console.log(tag)
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Id)[0])
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1]
+        }
     }
 
     async save(schematic: Schematic) {

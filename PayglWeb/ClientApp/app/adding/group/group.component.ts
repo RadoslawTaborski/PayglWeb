@@ -3,6 +3,7 @@ import { SharedService } from '../../shared/shared.service';
 import { Frequency, Importance, Tag, TagRelation, User, Language, Details, TransferType, TransactionType, Filter, Dashboard } from '../../entities/entities';
 import { OperationsGroup } from '../../entities/OperationsGroup';
 import { ApplicationStateService } from '../../shared/application-state.service';
+import { Operation } from '../../entities/Operation';
 
 @Component({
   selector: 'app-group',
@@ -10,8 +11,9 @@ import { ApplicationStateService } from '../../shared/application-state.service'
   styleUrls: ['./group.component.css']
 })
 export class GroupComponent implements OnInit {
-    @Input() operation: OperationsGroup
-    @Output() finishedOutput = new EventEmitter<boolean>();
+    @Input() operationGroup: OperationsGroup
+    @Input() operation: Operation
+    @Output() finishedOutput = new EventEmitter();
 
     btnName: string;
     title: string;
@@ -31,6 +33,7 @@ export class GroupComponent implements OnInit {
         await this.shared.loadAttributes()
         this.title = "Dodaj grupę"
         this.btnName = "Dodaj"
+        this.setImportModIfPossible()
         this.setEditModIfPossible()
         this.isLoaded = true;
         //console.log(this.isLoaded)
@@ -41,21 +44,43 @@ export class GroupComponent implements OnInit {
         this.setEditModIfPossible()
     }
 
-    emitOutput() {
+    emitOutput(value: any) {
         console.log("emited: finished")
-        this.finishedOutput.emit(true);
+        this.finishedOutput.emit(value);
     }
 
     setEditModIfPossible() {
-        if (this.operation == null || this.operation == undefined) {
+        if (this.operationGroup == null || this.operationGroup == undefined) {
             return
         }
         this.title = "Edytuj grupę"
         this.btnName = "Edytuj"
+        this.description = this.operationGroup.Description
+        this.date = this.operationGroup.Date.substring(0, 10)
+        this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operationGroup.Frequency.Id)[0]
+        this.selectedImportance = this.getImportances().filter(t => t.Id == this.operationGroup.Importance.Id)[0]
+        this.selectedTags = []
+        console.log(this.operationGroup.Tags)
+        for (let tag of this.operationGroup.Tags) {
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1]
+        }
+    }
+
+    setImportModIfPossible() {
+        if (this.operation == null || this.operation == undefined) {
+            return
+        }
+        this.title = "Dodaj grupę"
+        this.btnName = "Dodaj"
         this.description = this.operation.Description
         this.date = this.operation.Date.substring(0, 10)
-        this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0]
-        this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
+        if (this.operation.Frequency != null)
+            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0]
+        if (this.operation.Importance != null)
+            this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
         this.selectedTags = []
         console.log(this.operation.Tags)
         for (let tag of this.operation.Tags) {
@@ -119,18 +144,19 @@ export class GroupComponent implements OnInit {
 
     async onAdd() {
         if (this.selectedTags.length > 0) {
-            if (this.operation != undefined && this.operation != null) {
-                this.update(this.operation)
+            if (this.operationGroup != undefined && this.operationGroup != null) {
             } else {
-                let operation = new OperationsGroup()
-                this.update(operation)
+                this.operationGroup = new OperationsGroup()
+            }
+            await this.update(this.operationGroup)
+
+            if (this.operation == undefined && this.operation != null) {
+                let tmp = (<HTMLFormElement>document.getElementById("form"))
+                this.clear()
+                tmp.reset()
             }
 
-            let tmp = (<HTMLFormElement>document.getElementById("form"))
-            this.clear()
-            tmp.reset()
-
-            await this.emitOutput()
+            this.emitOutput(this.operationGroup)
         }
     }
 

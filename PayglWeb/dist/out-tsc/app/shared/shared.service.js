@@ -5,7 +5,7 @@ import { OperationsGroup } from "../entities/OperationsGroup";
 import { Operation } from "../entities/Operation";
 import { DashboardOutput } from '../entities/DashboardOutput';
 import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
-import { Schematic } from '../entities/Schematic';
+import { Schematic, SchematicType } from '../entities/Schematic';
 let SharedService = class SharedService {
     constructor(data) {
         this.data = data;
@@ -204,6 +204,15 @@ let SharedService = class SharedService {
         let userDetails = new Details(1, "Taborski", "Radosław");
         let user = new User(1, "rado", language, userDetails);
         return user;
+    }
+    tmpSchematicType(id) {
+        if (id === 1) {
+            return new SchematicType(id, "ignored");
+        }
+        else if (id === 2) {
+            return new SchematicType(id, "schematic");
+        }
+        return null;
     }
 };
 SharedService = tslib_1.__decorate([

@@ -216,7 +216,15 @@ let ManualOperationComponent = class ManualOperationComponent {
     }
     createSchematic() {
         console.log("add");
-        this.editedSchematic = new Schematic(null, null, new SchematicContext("", "", "", null, null, []), this.shared.tmpCreatingUser());
+        if (this.description.indexOf(';') > -1) {
+            const splited = this.description.split(';');
+            const contractor = splited[0].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const title = splited[1].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext(contractor, title, this.description, null, null, []), this.shared.tmpCreatingUser());
+        }
+        else {
+            this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext("", "", this.description, null, null, []), this.shared.tmpCreatingUser());
+        }
         this.editSchematic = true;
     }
     getResponse($event) {
@@ -225,9 +233,13 @@ let ManualOperationComponent = class ManualOperationComponent {
             if ($event != null) {
                 yield this.save($event);
             }
+            this.updateOperation($event);
             this.editSchematic = false;
             this.editedSchematic = null;
         });
+    }
+    updateOperation($event) {
+        debugger;
     }
     save(schematic) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

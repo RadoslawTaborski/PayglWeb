@@ -64,7 +64,7 @@ let ImportComponent = class ImportComponent {
     delete(schematic) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             console.log("delete");
-            if (confirm("Czy na pewno chcesz usunąć ten schemat ?")) {
+            if (confirm("Czy na pewno chcesz usunąć ten schemat?")) {
                 this.editedSchematic = schematic;
                 this.editedSchematic.IsDirty = true;
                 this.editedSchematic.IsMarkForDeletion = true;
@@ -74,13 +74,13 @@ let ImportComponent = class ImportComponent {
             }
         });
     }
-    getResponse($event) {
+    getResponse(ev) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log("event", $event);
-            if ($event != null) {
-                yield this.save($event);
-                if ($event.Id == null) {
-                    this.schematics.push($event);
+            debugger;
+            if (ev != null) {
+                yield this.save(ev);
+                if (ev.Id == null) {
+                    this.schematics.push(ev);
                 }
             }
             this.editSchematic = false;

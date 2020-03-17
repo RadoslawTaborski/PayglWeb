@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { OperationsGroup } from '../../entities/OperationsGroup';
 
 @Component({
@@ -9,27 +9,24 @@ import { OperationsGroup } from '../../entities/OperationsGroup';
 export class GroupEditDialogComponent implements OnInit {
     @Input() visible: boolean
     @Input() operation: OperationsGroup
+    @Output() addEvent = new EventEmitter();
 
     constructor() { }
 
     ngOnInit() {
         this.visible = true;
-        console.log("hello world")
     }
 
     ngOnChanges() {
         this.visible = true;
-        console.log("hello world")
     }
 
     close() {
-        //console.log("close")
         this.visible = false;
     }
 
-    getResponseFromOperation($event) {
-        //console.log("got: " + $event)
-
+    getResponseFromGroup($event) {
+        this.addEvent.emit($event);
         this.close()
     }
 }

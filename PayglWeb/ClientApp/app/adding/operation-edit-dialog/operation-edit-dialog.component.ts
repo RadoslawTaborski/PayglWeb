@@ -16,12 +16,10 @@ export class OperationEditDialogComponent implements OnInit {
 
     ngOnInit() {
         this.visible = true;
-        console.log("hello world")
     }
 
     ngOnChanges() {
         this.visible = true;
-        console.log("hello world")
     }
 
     close() {

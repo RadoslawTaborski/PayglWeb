@@ -59,7 +59,7 @@ export class SchematicDialogComponent implements OnInit {
         this.schematic.Context.Frequency = this.selectedFrequency
         this.schematic.Context.Importance = this.selectedImportance
         this.schematic.Context.Tags = this.selectedTags
-        this.schematic.Type = new SchematicType(this.selectedType, "todo") //TODO:
+        this.schematic.Type = this.shared.tmpSchematicType(this.selectedType)
         this.emitOutput(this.schematic);
     }
 

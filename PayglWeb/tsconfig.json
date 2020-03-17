@@ -1,6 +1,9 @@
 {
   "exclude": ["./node_modules/"],
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "disableTypeScriptVersionCheck": true,
+ },
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

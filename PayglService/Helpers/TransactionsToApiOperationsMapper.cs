@@ -36,11 +36,11 @@ namespace PayglService.Helpers
 
             if (transaction.Amount < 0)
             {
-                result = new ApiOperation(null, null, user, -1 * transaction.Amount, transactionsType[1], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), transaction.ContractorData +" " + transaction.Title);
+                result = new ApiOperation(null, null, user, -1 * transaction.Amount, transactionsType[1], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), transaction.ContractorData +"; " + transaction.Title);
             }
             else
             {
-                result = new ApiOperation(null, null, user, transaction.Amount, transactionsType[0], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), transaction.ContractorData + " " + transaction.Title);
+                result = new ApiOperation(null, null, user, transaction.Amount, transactionsType[0], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), transaction.ContractorData + "; " + transaction.Title);
             }
 
             if (schematic != null)

@@ -74,7 +74,7 @@ export class ImportComponent implements OnInit {
 
     async delete(schematic: Schematic) {
         console.log("delete")
-        if (confirm("Czy na pewno chcesz usunąć ten schemat ?")) {
+        if (confirm("Czy na pewno chcesz usunąć ten schemat?")) {
             this.editedSchematic = schematic
             this.editedSchematic.IsDirty = true
             this.editedSchematic.IsMarkForDeletion = true
@@ -84,12 +84,12 @@ export class ImportComponent implements OnInit {
         }
     }
 
-    async getResponse($event) {
-        console.log("event", $event)
-        if ($event != null) {
-            await this.save($event)
-            if ($event.Id == null) {
-                this.schematics.push($event)
+    async getResponse(ev) {
+        debugger;
+        if (ev != null) {
+            await this.save(ev)
+            if (ev.Id == null) {
+                this.schematics.push(ev)
             }
         }
         this.editSchematic = false;

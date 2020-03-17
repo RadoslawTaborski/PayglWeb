@@ -6,7 +6,7 @@ import { DataService } from './data.service';
 import { DashboardOutput } from '../entities/DashboardOutput';
 import { IDashboardOutput } from '../entities/IDashboardOutput';
 import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
-import { Schematic } from '../entities/Schematic';
+import { Schematic, SchematicType } from '../entities/Schematic';
 
 @Injectable()
 export class SharedService {
@@ -154,27 +154,27 @@ export class SharedService {
     }
 
     async sendOperationsGroup(operationsGroup: OperationsGroup) {
-        this.data.sendOperationsGroup(operationsGroup)
+        await this.data.sendOperationsGroup(operationsGroup)
     }
 
     async sendFilter(filter: Filter) {
-        this.data.sendFilter(filter)
+        await this.data.sendFilter(filter)
     }
 
     async deleteFilter(filter: Filter) {
-        this.data.deleteFilter(filter)
+        await this.data.deleteFilter(filter)
     }
 
     async sendDashboards(boards: Dashboard[]) {
-        this.data.sendDashboards(boards)
+        await this.data.sendDashboards(boards)
     }
 
     async sendSchematics(schematics: Schematic[]) {
-        this.data.sendSchematics(schematics)
+        await this.data.sendSchematics(schematics)
     }
 
     async sendSchematic(schematic: Schematic) {
-        this.data.sendSchematic(schematic)
+        await this.data.sendSchematic(schematic)
     }
 
     async loadOperationsFromCsv(id: number, fileToUpload: File) {
@@ -196,5 +196,15 @@ export class SharedService {
         let user = new User(1, "rado", language, userDetails)
 
         return user
+    }
+
+    tmpSchematicType(id: number): SchematicType {
+        if (id === 1) {
+            return new SchematicType(id, "ignored")
+        } else if (id === 2) {
+            return new SchematicType(id, "schematic")
+        }
+
+        return null
     }
 }
