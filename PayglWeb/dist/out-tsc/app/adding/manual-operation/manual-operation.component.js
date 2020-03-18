@@ -21,6 +21,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.selectedOperationGroup = null;
         this.editSchematic = false;
         this.editedSchematic = null;
+        this.editGroup = false;
     }
     ngOnInit() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -213,6 +214,7 @@ let ManualOperationComponent = class ManualOperationComponent {
     }
     createGroup() {
         console.log("group");
+        this.editGroup = true;
     }
     createSchematic() {
         console.log("add");
@@ -227,7 +229,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         }
         this.editSchematic = true;
     }
-    getResponse($event) {
+    getResponseSchematic($event) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             console.log("event", $event);
             if ($event != null) {
@@ -238,8 +240,32 @@ let ManualOperationComponent = class ManualOperationComponent {
             this.editedSchematic = null;
         });
     }
-    updateOperation($event) {
-        debugger;
+    getResponseGroup($event) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            console.log("event", $event);
+            if ($event != null) {
+                yield this.shared.loadOperationsGroups();
+                console.log(this.getOperationsGroups());
+                this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Description == $event.Description && t.Date.substr(0, 10) == $event.Date)[0];
+                this.onGroupChange(this.selectedOperationGroup);
+            }
+        });
+    }
+    updateOperation(event) {
+        console.log(event);
+        this.description = event.Context.Description;
+        if (event.Context.Frequency != null)
+            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == event.Context.Frequency.Id)[0];
+        if (event.Context.Importance != null)
+            this.selectedImportance = this.getImportances().filter(t => t.Id == event.Context.Importance.Id)[0];
+        this.selectedTags = [];
+        for (let tag of event.Context.Tags) {
+            console.log(tag);
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Id)[0]);
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1];
+        }
     }
     save(schematic) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

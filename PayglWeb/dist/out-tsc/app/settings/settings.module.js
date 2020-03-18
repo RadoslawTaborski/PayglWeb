@@ -20,7 +20,7 @@ SettingsModule = tslib_1.__decorate([
         providers: [
             SharedService,
             DataService,
-            ApplicationStateService
+            ApplicationStateService,
         ]
     })
 ], SettingsModule);

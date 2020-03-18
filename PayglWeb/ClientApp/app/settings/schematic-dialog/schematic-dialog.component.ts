@@ -14,6 +14,8 @@ export class SchematicDialogComponent implements OnInit {
     @Input() schematic: Schematic
     @Output() finishedOutput = new EventEmitter<Schematic>();
 
+    startTitle: string = null
+    startDescription: string = null
     description: string = null
     titleRegex: string = null
     descriptionRegex: string = null
@@ -34,6 +36,11 @@ export class SchematicDialogComponent implements OnInit {
             console.log("onChanges")
             console.log(this.schematic)
             this.description = this.schematic.Context.Description
+            let intiValues = this.schematic.Context.Description.split(';');
+            if (intiValues.length === 2) {
+                this.startTitle = intiValues[1]
+                this.startDescription = intiValues[0]
+            }
             this.titleRegex = this.schematic.Context.TitleRegex
             this.descriptionRegex = this.schematic.Context.DescriptionRegex
             this.selectedFrequency = this.schematic.Context.Frequency
@@ -87,5 +94,38 @@ export class SchematicDialogComponent implements OnInit {
     onTagClick(toRemove) {
         //console.log(toRemove);
         this.selectedTags = this.selectedTags.filter(obj => obj !== toRemove)
+    }
+
+    regexIsCorrect(regex: string, value: string): boolean {
+        try {
+            const reg = new RegExp(regex)
+            if (value) {
+                if (reg.test(value)) {
+                    return true
+                } else {
+                    return false;
+                }
+            }
+            else if (reg.test("")) {
+                return true;
+            }
+        } catch{
+            return false
+        }
+
+        return true
+    };
+
+    isPrepared(): boolean {
+        if (!this.description || (!this.titleRegex && !this.descriptionRegex)) {
+            return false;
+        }
+        if (this.descriptionRegex && !this.regexIsCorrect(this.descriptionRegex, this.startDescription)) {
+            return false;
+        }
+        if (this.titleRegex && !this.regexIsCorrect(this.titleRegex, this.startTitle)) {
+            return false;
+        }
+        return true;
     }
 }

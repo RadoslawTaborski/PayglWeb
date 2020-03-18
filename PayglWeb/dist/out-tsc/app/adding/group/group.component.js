@@ -20,6 +20,7 @@ let GroupComponent = class GroupComponent {
             yield this.shared.loadAttributes();
             this.title = "Dodaj grupę";
             this.btnName = "Dodaj";
+            this.setImportModIfPossible();
             this.setEditModIfPossible();
             this.isLoaded = true;
             //console.log(this.isLoaded)
@@ -29,20 +30,41 @@ let GroupComponent = class GroupComponent {
         //console.log(this.operation)
         this.setEditModIfPossible();
     }
-    emitOutput() {
+    emitOutput(value) {
         console.log("emited: finished");
-        this.finishedOutput.emit(true);
+        this.finishedOutput.emit(value);
     }
     setEditModIfPossible() {
-        if (this.operation == null || this.operation == undefined) {
+        if (this.operationGroup == null || this.operationGroup == undefined) {
             return;
         }
         this.title = "Edytuj grupę";
         this.btnName = "Edytuj";
+        this.description = this.operationGroup.Description;
+        this.date = this.operationGroup.Date.substring(0, 10);
+        this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operationGroup.Frequency.Id)[0];
+        this.selectedImportance = this.getImportances().filter(t => t.Id == this.operationGroup.Importance.Id)[0];
+        this.selectedTags = [];
+        console.log(this.operationGroup.Tags);
+        for (let tag of this.operationGroup.Tags) {
+            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0]);
+        }
+        if (this.selectedTags.length != 0) {
+            this.selectedTag = this.selectedTags[this.selectedTags.length - 1];
+        }
+    }
+    setImportModIfPossible() {
+        if (this.operation == null || this.operation == undefined) {
+            return;
+        }
+        this.title = "Dodaj grupę";
+        this.btnName = "Dodaj";
         this.description = this.operation.Description;
         this.date = this.operation.Date.substring(0, 10);
-        this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
-        this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
+        if (this.operation.Frequency != null)
+            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
+        if (this.operation.Importance != null)
+            this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
         this.selectedTags = [];
         console.log(this.operation.Tags);
         for (let tag of this.operation.Tags) {
@@ -96,17 +118,18 @@ let GroupComponent = class GroupComponent {
     onAdd() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (this.selectedTags.length > 0) {
-                if (this.operation != undefined && this.operation != null) {
-                    this.update(this.operation);
+                if (this.operationGroup != undefined && this.operationGroup != null) {
                 }
                 else {
-                    let operation = new OperationsGroup();
-                    this.update(operation);
+                    this.operationGroup = new OperationsGroup();
                 }
-                let tmp = document.getElementById("form");
-                this.clear();
-                tmp.reset();
-                yield this.emitOutput();
+                yield this.update(this.operationGroup);
+                if (this.operation == undefined && this.operation != null) {
+                    let tmp = document.getElementById("form");
+                    this.clear();
+                    tmp.reset();
+                }
+                this.emitOutput(this.operationGroup);
             }
         });
     }
@@ -129,6 +152,9 @@ let GroupComponent = class GroupComponent {
         });
     }
 };
+tslib_1.__decorate([
+    Input()
+], GroupComponent.prototype, "operationGroup", void 0);
 tslib_1.__decorate([
     Input()
 ], GroupComponent.prototype, "operation", void 0);

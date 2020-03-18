@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
     providers: [
         SharedService,
         DataService,
-        ApplicationStateService
+        ApplicationStateService,
     ]
 })
 export class SettingsModule { }

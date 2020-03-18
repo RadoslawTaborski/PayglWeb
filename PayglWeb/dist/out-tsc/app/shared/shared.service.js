@@ -158,32 +158,32 @@ let SharedService = class SharedService {
     }
     sendOperationsGroup(operationsGroup) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.data.sendOperationsGroup(operationsGroup);
+            yield this.data.sendOperationsGroup(operationsGroup);
         });
     }
     sendFilter(filter) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.data.sendFilter(filter);
+            yield this.data.sendFilter(filter);
         });
     }
     deleteFilter(filter) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.data.deleteFilter(filter);
+            yield this.data.deleteFilter(filter);
         });
     }
     sendDashboards(boards) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.data.sendDashboards(boards);
+            yield this.data.sendDashboards(boards);
         });
     }
     sendSchematics(schematics) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.data.sendSchematics(schematics);
+            yield this.data.sendSchematics(schematics);
         });
     }
     sendSchematic(schematic) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.data.sendSchematic(schematic);
+            yield this.data.sendSchematic(schematic);
         });
     }
     loadOperationsFromCsv(id, fileToUpload) {

@@ -68,6 +68,19 @@ let SchematicDialogComponent = class SchematicDialogComponent {
         //console.log(toRemove);
         this.selectedTags = this.selectedTags.filter(obj => obj !== toRemove);
     }
+    regexIsCorrect(regex, value) {
+        if (value != undefined && value != null) {
+            if (regex.test(value)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else
+            true;
+    }
+    ;
 };
 tslib_1.__decorate([
     Input()

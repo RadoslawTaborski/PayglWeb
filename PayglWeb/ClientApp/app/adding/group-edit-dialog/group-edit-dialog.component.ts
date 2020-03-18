@@ -14,11 +14,9 @@ export class GroupEditDialogComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.visible = true;
     }
 
     ngOnChanges() {
-        this.visible = true;
     }
 
     close() {
