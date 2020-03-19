@@ -206,10 +206,10 @@ let SharedService = class SharedService {
         return user;
     }
     tmpSchematicType(id) {
-        if (id === 1) {
+        if (id == 1) {
             return new SchematicType(id, "ignored");
         }
-        else if (id === 2) {
+        else if (id == 2) {
             return new SchematicType(id, "schematic");
         }
         return null;

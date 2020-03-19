@@ -52,7 +52,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.finishedOutput.emit(result);
     }
     isAddMode() {
-        console.log(this.mode, this.mode == OperationMode.Add || this.mode == null);
+        //console.log(this.mode, this.mode == OperationMode.Add || this.mode == null)
         return this.mode == OperationMode.Add || this.mode == null;
     }
     setEditModIfPossible() {
@@ -234,8 +234,8 @@ let ManualOperationComponent = class ManualOperationComponent {
             console.log("event", $event);
             if ($event != null) {
                 yield this.save($event);
+                this.updateOperation($event);
             }
-            this.updateOperation($event);
             this.editSchematic = false;
             this.editedSchematic = null;
         });

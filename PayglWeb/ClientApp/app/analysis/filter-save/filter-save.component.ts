@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+﻿import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Filter } from '../../entities/entities';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { SharedService } from '../../shared/shared.service';
@@ -9,9 +9,10 @@ import { Message, MessageType } from '../templates/message/Message';
   templateUrl: './filter-save.component.html',
   styleUrls: ['./filter-save.component.css']
 })
-export class FilterSaveComponent implements OnInit {
+export class FilterSaveComponent implements OnInit, OnChanges {
     @Input() visible: boolean
     @Input() filter: Filter
+    @Input() isNew: boolean = true;
     @Output() finishedOutput = new EventEmitter<boolean>();
 
     isLoaded: boolean = false;
@@ -22,8 +23,6 @@ export class FilterSaveComponent implements OnInit {
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     ngOnInit() {
-        this.name = this.filter.Name
-        this.isLoaded = true;
     }
 
     ngOnChanges() {
@@ -32,12 +31,12 @@ export class FilterSaveComponent implements OnInit {
     }
 
     close() {
-        this.emitOutput()
+        this.emitOutput(false)
     }
 
-    emitOutput() {
+    emitOutput(success: boolean) {
         console.log("emited: finished")
-        this.finishedOutput.emit(true);
+        this.finishedOutput.emit(success);
     }
 
     async save() {
@@ -47,8 +46,9 @@ export class FilterSaveComponent implements OnInit {
             filterCopy.Name = this.name
             filterCopy.IsDirty = true
             await this.shared.sendFilter(filterCopy)
+            this.isNew = true;
             this.showInfo = false;
-            this.emitOutput()
+            this.emitOutput(true)
         } else {
             this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki")
             this.showInfo = true;

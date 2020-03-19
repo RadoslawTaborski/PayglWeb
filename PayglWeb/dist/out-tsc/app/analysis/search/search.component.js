@@ -13,6 +13,8 @@ let SearchComponent = class SearchComponent {
         this.query = "";
         this.sum = 0;
         this.saveMode = false;
+        this.isError = false;
+        this.isQueryLoaded = false;
         this.getRouteParams();
     }
     getRouteParams() {
@@ -105,8 +107,15 @@ let SearchComponent = class SearchComponent {
     search() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this.sum = 0;
+            this.isError = false;
             this.isLoaded = false;
-            yield this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo);
+            try {
+                yield this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo);
+                this.isQueryLoaded = true;
+            }
+            catch (_a) {
+                this.isError = true;
+            }
             this.isLoaded = true;
         });
     }
@@ -130,6 +139,10 @@ let SearchComponent = class SearchComponent {
     }
     getResponseFromSave($event) {
         this.saveMode = false;
+    }
+    inpQueryChanged() {
+        console.log(this.isQueryLoaded, this.isError);
+        this.isQueryLoaded = false;
     }
 };
 SearchComponent = tslib_1.__decorate([

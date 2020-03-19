@@ -16,7 +16,7 @@
                             <input [(ngModel)]="name" name="inpName" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control" type="text" autocomplete="off" placeholder="nazwa" />
                         </div>
                         <div class="div-row" style="padding-bottom:10px;">
-                            <button class="btn btn-primary" style="float: right; margin-left: 3px;" (click)="save()">Zapisz</button>
+                            <button *ngIf="!isNew" class="btn btn-primary" style="float: right; margin-left: 3px;" (click)="save()">Zapisz</button>
                             <button class="btn btn-primary" style="float: right; margin-left: 3px;" (click)="saveAs()">Zapisz jako</button>
                         </div>
                     </div>

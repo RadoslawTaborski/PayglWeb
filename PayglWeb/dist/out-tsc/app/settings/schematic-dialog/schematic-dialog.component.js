@@ -21,8 +21,8 @@ let SchematicDialogComponent = class SchematicDialogComponent {
     }
     ngOnChanges() {
         if (this.visible == true) {
-            console.log("onChanges");
-            console.log(this.schematic);
+            //console.log("onChanges")
+            //console.log(this.schematic)
             this.description = this.schematic.Context.Description;
             let intiValues = this.schematic.Context.Description.split(';');
             if (intiValues.length === 2) {
@@ -34,10 +34,11 @@ let SchematicDialogComponent = class SchematicDialogComponent {
             this.selectedFrequency = this.schematic.Context.Frequency;
             this.selectedImportance = this.schematic.Context.Importance;
             this.selectedTags = this.schematic.Context.Tags;
+            this.selectedType = 2;
         }
     }
     emitOutput(schematic) {
-        console.log("emited: finished");
+        //console.log("emited: finished")
         this.finishedOutput.emit(schematic);
     }
     close() {
@@ -45,13 +46,17 @@ let SchematicDialogComponent = class SchematicDialogComponent {
     }
     ok() {
         this.schematic.IsDirty = true;
-        this.schematic.Context.Description = this.description;
+        this.schematic.Type = this.shared.tmpSchematicType(this.selectedType);
         this.schematic.Context.TitleRegex = this.titleRegex;
         this.schematic.Context.DescriptionRegex = this.descriptionRegex;
-        this.schematic.Context.Frequency = this.selectedFrequency;
-        this.schematic.Context.Importance = this.selectedImportance;
-        this.schematic.Context.Tags = this.selectedTags;
-        this.schematic.Type = this.shared.tmpSchematicType(this.selectedType);
+        console.log(this.schematic, this.selectedType == 2, this.selectedType === 2, this.selectedType == 1, this.selectedType === 1);
+        if (this.selectedType == 2) {
+            this.schematic.Context.Description = this.description;
+            this.schematic.Context.Frequency = this.selectedFrequency;
+            this.schematic.Context.Importance = this.selectedImportance;
+            this.schematic.Context.Tags = this.selectedTags;
+        }
+        //console.log(this.selectedType)
         this.emitOutput(this.schematic);
     }
     getFrequencies() {

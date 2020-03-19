@@ -57,13 +57,13 @@ let ImportComponent = class ImportComponent {
         return this.clickedSchematic.includes(schematic);
     }
     edit(schematic) {
-        console.log("edit");
+        //console.log("edit")
         this.editedSchematic = schematic;
         this.editSchematic = true;
     }
     delete(schematic) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log("delete");
+            //console.log("delete")
             if (confirm("Czy na pewno chcesz usunąć ten schemat?")) {
                 this.editedSchematic = schematic;
                 this.editedSchematic.IsDirty = true;
@@ -88,12 +88,12 @@ let ImportComponent = class ImportComponent {
     }
     save(schematic) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log("save");
+            //console.log("save")
             yield this.shared.sendSchematic(schematic);
         });
     }
     addIgnored() {
-        console.log("add");
+        // console.log("add")
         this.editedSchematic = new Schematic(null, null, new SchematicContext("", "", "", null, null, []), this.shared.tmpCreatingUser());
         this.editSchematic = true;
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { OperationsGroup } from '../../entities/OperationsGroup';
@@ -25,6 +25,9 @@ export class SearchComponent implements OnInit {
     public sum: number = 0
     public filter: Filter;
     public saveMode: boolean = false;
+    public isError: boolean = false;
+    public isQueryLoaded = false;
+    isNew: boolean;
 
     constructor(private shared: SharedService, public state: ApplicationStateService, private activatedRoute: ActivatedRoute) {
         this.getRouteParams();
@@ -39,8 +42,10 @@ export class SearchComponent implements OnInit {
 
             if (number !== undefined && user !== undefined && name !== undefined && query !== undefined) {
                 this.filter = new Filter(number, user, name, query)
+                this.isNew = false;
             } else {
                 this.filter = new Filter(null, user, "", "")
+                this.isNew = true;
             }
         });
     }
@@ -123,9 +128,15 @@ export class SearchComponent implements OnInit {
     }
 
     async search() {
-        this.sum=0
+        this.sum = 0
+        this.isError = false
         this.isLoaded = false;
-        await this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo) 
+        try {
+            await this.shared.loadDashboardOutput(this.query, this.dateFrom, this.dateTo)
+            this.isQueryLoaded = true;
+        } catch {
+            this.isError = true;
+        }
         this.isLoaded=true
     }
 
@@ -152,6 +163,14 @@ export class SearchComponent implements OnInit {
 
     getResponseFromSave($event) {
         this.saveMode = false;
+        console.log($event)
+        if ($event = true) {
+            this.isQueryLoaded = false;
+            this.isNew = false;
+        }
     }
 
+    inpQueryChanged() {
+        this.isQueryLoaded = false;
+    }
 }
