@@ -5,6 +5,8 @@ let SchematicDialogComponent = class SchematicDialogComponent {
         this.shared = shared;
         this.state = state;
         this.finishedOutput = new EventEmitter();
+        this.startTitle = null;
+        this.startDescription = null;
         this.description = null;
         this.titleRegex = null;
         this.descriptionRegex = null;
@@ -22,6 +24,11 @@ let SchematicDialogComponent = class SchematicDialogComponent {
             console.log("onChanges");
             console.log(this.schematic);
             this.description = this.schematic.Context.Description;
+            let intiValues = this.schematic.Context.Description.split(';');
+            if (intiValues.length === 2) {
+                this.startTitle = intiValues[1];
+                this.startDescription = intiValues[0];
+            }
             this.titleRegex = this.schematic.Context.TitleRegex;
             this.descriptionRegex = this.schematic.Context.DescriptionRegex;
             this.selectedFrequency = this.schematic.Context.Frequency;
@@ -69,18 +76,43 @@ let SchematicDialogComponent = class SchematicDialogComponent {
         this.selectedTags = this.selectedTags.filter(obj => obj !== toRemove);
     }
     regexIsCorrect(regex, value) {
-        if (value != undefined && value != null) {
-            if (regex.test(value)) {
+        try {
+            const reg = new RegExp(regex);
+            if (value) {
+                if (reg.test(value)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (reg.test("")) {
                 return true;
             }
-            else {
+        }
+        catch (_a) {
+            return false;
+        }
+        return true;
+    }
+    ;
+    isPrepared() {
+        if (this.selectedType === 2) {
+            if (!this.description) {
                 return false;
             }
         }
-        else
-            true;
+        if (!this.titleRegex && !this.descriptionRegex) {
+            return false;
+        }
+        if (this.descriptionRegex && !this.regexIsCorrect(this.descriptionRegex, this.startDescription)) {
+            return false;
+        }
+        if (this.titleRegex && !this.regexIsCorrect(this.titleRegex, this.startTitle)) {
+            return false;
+        }
+        return true;
     }
-    ;
 };
 tslib_1.__decorate([
     Input()

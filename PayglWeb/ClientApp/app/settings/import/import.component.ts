@@ -67,13 +67,13 @@ export class ImportComponent implements OnInit {
     }
 
     edit(schematic: Schematic) {
-        console.log("edit")
+        //console.log("edit")
         this.editedSchematic = schematic
         this.editSchematic = true
     }
 
     async delete(schematic: Schematic) {
-        console.log("delete")
+        //console.log("delete")
         if (confirm("Czy na pewno chcesz usunąć ten schemat?")) {
             this.editedSchematic = schematic
             this.editedSchematic.IsDirty = true
@@ -96,12 +96,12 @@ export class ImportComponent implements OnInit {
     }
 
     async save(schematic: Schematic) {
-        console.log("save")
+        //console.log("save")
         await this.shared.sendSchematic(schematic)
     }
 
     addIgnored() {
-        console.log("add")
+       // console.log("add")
         this.editedSchematic = new Schematic(null, null, new SchematicContext("", "", "", null, null, []), this.shared.tmpCreatingUser())
         this.editSchematic = true
     }

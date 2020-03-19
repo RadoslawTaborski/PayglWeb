@@ -199,9 +199,9 @@ export class SharedService {
     }
 
     tmpSchematicType(id: number): SchematicType {
-        if (id === 1) {
+        if (id == 1) {
             return new SchematicType(id, "ignored")
-        } else if (id === 2) {
+        } else if (id == 2) {
             return new SchematicType(id, "schematic")
         }
 

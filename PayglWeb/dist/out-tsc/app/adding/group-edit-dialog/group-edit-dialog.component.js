@@ -5,10 +5,8 @@ let GroupEditDialogComponent = class GroupEditDialogComponent {
         this.addEvent = new EventEmitter();
     }
     ngOnInit() {
-        this.visible = true;
     }
     ngOnChanges() {
-        this.visible = true;
     }
     close() {
         this.visible = false;

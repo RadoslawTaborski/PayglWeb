@@ -68,7 +68,7 @@ export class ManualOperationComponent implements OnInit {
     }
 
     isAddMode(): boolean {
-        console.log(this.mode, this.mode == OperationMode.Add || this.mode == null)
+        //console.log(this.mode, this.mode == OperationMode.Add || this.mode == null)
         return this.mode == OperationMode.Add || this.mode == null
     }
 
@@ -261,8 +261,8 @@ export class ManualOperationComponent implements OnInit {
         console.log("event", $event)
         if ($event != null) {
             await this.save($event)
+            this.updateOperation($event);
         }
-        this.updateOperation($event);
         this.editSchematic = false;
         this.editedSchematic = null;
     }
