@@ -5,9 +5,9 @@ import { DashboardOutputLeaf } from '../../../entities/DashboardOutputLeaf';
 import { DashboardOutput } from '../../../entities/DashboardOutput';
 
 @Component({
-  selector: 'app-dashboard-piechart',
-  templateUrl: './dashboard-piechart.component.html',
-  styleUrls: ['./dashboard-piechart.component.css']
+    selector: 'app-dashboard-piechart',
+    templateUrl: './dashboard-piechart.component.html',
+    styleUrls: ['./dashboard-piechart.component.css']
 })
 export class DashboardPiechartComponent implements OnInit {
     @Input() dashboard: IDashboardOutput;

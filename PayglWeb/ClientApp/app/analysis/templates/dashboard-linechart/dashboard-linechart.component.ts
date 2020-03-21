@@ -23,7 +23,7 @@ export class DashboardLinechartComponent implements OnInit {
         this.isLoaded = true;
     }
 
-    generateChart(dashboard: IDashboardOutput, dateFrom: Date, dateTo:Date): Chart {
+    generateChart(dashboard: IDashboardOutput, dateFrom: Date, dateTo: Date): Chart {
         let lineChartData: LineChartData = LineChartData.createFromDashboard(dashboard, dateFrom, dateTo)
 
         let result = new Chart('lineChart', {
@@ -192,8 +192,8 @@ class LineChartData {
             let targetDate: Date = new Date(dateFrom)
             targetDate.setDate(1)
             while (targetDate <= dateTo) {
-                result.push(targetDate.toISOString().substring(0,7))
-                targetDate.setMonth(targetDate.getMonth()+1)
+                result.push(targetDate.toISOString().substring(0, 7))
+                targetDate.setMonth(targetDate.getMonth() + 1)
             }
         }
         return result;

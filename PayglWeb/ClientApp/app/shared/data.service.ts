@@ -66,7 +66,7 @@ export class DataService {
 
     loadOperations(withoutParent?: boolean, from?: string, to?: string): Promise<any[]> {
         if (from != null && to != null && from.toString() != "" && to.toString() != "" && withoutParent != null) {
-           // var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
+            // var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
             //var toFormated = to.toISOString().slice(0, 10).replace(/-/g, "");
             return this.http.get<any[]>(`api/operations/${from}/${to}/${withoutParent}`).toPromise()
         } else if (withoutParent != null) {
@@ -127,7 +127,7 @@ export class DataService {
 
     sendSchematic(schematic: Schematic): Promise<any[]> {
         let json = schematic.toJson()
-        console.log(json);
+        //console.log(json);
         return this.http.post<any>(`api/schematics`, json, httpOptions).toPromise();
     }
 

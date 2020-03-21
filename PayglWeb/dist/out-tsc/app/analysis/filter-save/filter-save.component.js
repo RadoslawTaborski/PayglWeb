@@ -5,24 +5,23 @@ let FilterSaveComponent = class FilterSaveComponent {
     constructor(shared, state) {
         this.shared = shared;
         this.state = state;
+        this.isNew = true;
         this.finishedOutput = new EventEmitter();
         this.isLoaded = false;
         this.name = "";
     }
     ngOnInit() {
-        this.name = this.filter.Name;
-        this.isLoaded = true;
     }
     ngOnChanges() {
         this.name = this.filter.Name;
         this.isLoaded = true;
     }
     close() {
-        this.emitOutput();
+        this.emitOutput(false);
     }
-    emitOutput() {
-        console.log("emited: finished");
-        this.finishedOutput.emit(true);
+    emitOutput(success) {
+        //console.log("emited: finished")
+        this.finishedOutput.emit(success);
     }
     save() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -32,8 +31,9 @@ let FilterSaveComponent = class FilterSaveComponent {
                 filterCopy.Name = this.name;
                 filterCopy.IsDirty = true;
                 yield this.shared.sendFilter(filterCopy);
+                this.isNew = true;
                 this.showInfo = false;
-                this.emitOutput();
+                this.emitOutput(true);
             }
             else {
                 this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki");
@@ -52,7 +52,7 @@ let FilterSaveComponent = class FilterSaveComponent {
                 filterCopy.IsDirty = true;
                 yield this.shared.sendFilter(filterCopy);
                 this.showInfo = false;
-                this.emitOutput();
+                this.emitOutput(true);
             }
             else {
                 this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki");
@@ -80,6 +80,9 @@ tslib_1.__decorate([
 tslib_1.__decorate([
     Input()
 ], FilterSaveComponent.prototype, "filter", void 0);
+tslib_1.__decorate([
+    Input()
+], FilterSaveComponent.prototype, "isNew", void 0);
 tslib_1.__decorate([
     Output()
 ], FilterSaveComponent.prototype, "finishedOutput", void 0);

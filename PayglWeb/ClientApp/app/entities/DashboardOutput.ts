@@ -5,7 +5,7 @@ import { Operation } from './Operation';
 import { OperationsGroup } from './OperationsGroup';
 import { OperationLike } from './OperationLike';
 
-export class DashboardOutput implements IDashboardOutput{
+export class DashboardOutput implements IDashboardOutput {
     Name: string
     Children: IDashboardOutput[]
 

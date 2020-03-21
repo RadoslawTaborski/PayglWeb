@@ -5,9 +5,9 @@ import { IFilter, DashboardFilterRelation, Filter, Dashboard } from '../../entit
 import { Message, MessageType } from '../templates/message/Message';
 
 @Component({
-  selector: 'app-dashboard-new',
-  templateUrl: './dashboard-new.component.html',
-  styleUrls: ['./dashboard-new.component.css']
+    selector: 'app-dashboard-new',
+    templateUrl: './dashboard-new.component.html',
+    styleUrls: ['./dashboard-new.component.css']
 })
 export class DashboardNewComponent implements OnInit {
     @Input() visible: boolean
@@ -39,8 +39,8 @@ export class DashboardNewComponent implements OnInit {
         return this.allDashboards.map(m => m.Name).includes(name)
     }
 
-    emitOutput(name? : string) {
-        console.log("emited: finished")
+    emitOutput(name?: string) {
+        //console.log("emited: finished")
         this.finishedOutput.emit(name);
     }
 

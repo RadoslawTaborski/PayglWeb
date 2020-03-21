@@ -48,7 +48,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         });
     }
     emitOutput(result) {
-        console.log("emited: finished");
+        //console.log("emited: finished")
         this.finishedOutput.emit(result);
     }
     isAddMode() {
@@ -149,10 +149,10 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.selectedTags = this.selectedTags.filter(obj => obj !== toRemove);
     }
     onGroupChange(selectedOperationGroup) {
-        console.log(selectedOperationGroup, null);
-        console.log(selectedOperationGroup != null);
+        //console.log(selectedOperationGroup, null)
+        //console.log(selectedOperationGroup != null)
         if (selectedOperationGroup != null) {
-            console.log("here");
+            //console.log("here")
             this.editable = false;
             this.selectedFrequency = selectedOperationGroup.Frequency;
             this.selectedImportance = selectedOperationGroup.Importance;
@@ -192,7 +192,7 @@ let ManualOperationComponent = class ManualOperationComponent {
             operation.Importance = this.selectedImportance;
             operation.Date = this.date.toLocaleString();
             operation.ReceiptPath = "";
-            console.log(this.selectedTags);
+            //console.log(this.selectedTags)
             operation.setTags(this.selectedTags);
             operation.DetailsList = [];
             operation.IsDirty = true;
@@ -213,15 +213,15 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.editable = true;
     }
     createGroup() {
-        console.log("group");
+        //console.log("group")
         this.editGroup = true;
     }
     createSchematic() {
-        console.log("add");
-        if (this.description.indexOf(';') > -1) {
-            const splited = this.description.split(';');
-            const contractor = splited[0].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-            const title = splited[1].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        //console.log("add")
+        if (this.description.indexOf('; ') > -1) {
+            const splited = this.description.split('; ');
+            const contractor = splited[0].replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const title = splited[1].replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&');
             this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext(contractor, title, this.description, null, null, []), this.shared.tmpCreatingUser());
         }
         else {
@@ -231,7 +231,7 @@ let ManualOperationComponent = class ManualOperationComponent {
     }
     getResponseSchematic($event) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log("event", $event);
+            //console.log("event", $event)
             if ($event != null) {
                 yield this.save($event);
                 this.updateOperation($event);
@@ -242,17 +242,17 @@ let ManualOperationComponent = class ManualOperationComponent {
     }
     getResponseGroup($event) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log("event", $event);
+            //console.log("event", $event)
             if ($event != null) {
                 yield this.shared.loadOperationsGroups();
-                console.log(this.getOperationsGroups());
+                //console.log(this.getOperationsGroups())
                 this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Description == $event.Description && t.Date.substr(0, 10) == $event.Date)[0];
                 this.onGroupChange(this.selectedOperationGroup);
             }
         });
     }
     updateOperation(event) {
-        console.log(event);
+        //console.log(event)
         this.description = event.Context.Description;
         if (event.Context.Frequency != null)
             this.selectedFrequency = this.getFrequencies().filter(t => t.Id == event.Context.Frequency.Id)[0];
@@ -260,7 +260,7 @@ let ManualOperationComponent = class ManualOperationComponent {
             this.selectedImportance = this.getImportances().filter(t => t.Id == event.Context.Importance.Id)[0];
         this.selectedTags = [];
         for (let tag of event.Context.Tags) {
-            console.log(tag);
+            //console.log(tag)
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Id)[0]);
         }
         if (this.selectedTags.length != 0) {
@@ -269,7 +269,7 @@ let ManualOperationComponent = class ManualOperationComponent {
     }
     save(schematic) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log("save");
+            //console.log("save")
             yield this.shared.sendSchematic(schematic);
         });
     }

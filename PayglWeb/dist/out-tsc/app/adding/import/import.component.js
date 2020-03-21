@@ -15,6 +15,7 @@ let ImportComponent = class ImportComponent {
         this.loadedOperations = [];
         this.currentIndex = 0;
         this.operation = null;
+        this.fileName = "";
     }
     ngOnInit() {
         this.isLoaded = true;
@@ -22,9 +23,15 @@ let ImportComponent = class ImportComponent {
     ngOnChanges() {
         this.isLoaded = true;
     }
-    handleFileInput(files) {
-        this.fileToUpload = files.item(0);
-        //console.log(this.fileToUpload)
+    handleFileInput(ev) {
+        console.log(ev);
+        this.fileToUpload = ev.files.item(0);
+        this.fileName = document.getElementById("file").files[0].name;
+        console.log(this.fileName);
+        var nextSibling = ev.nextElementSibling;
+        console.log(nextSibling);
+        nextSibling.innerText = this.fileName;
+        nextSibling.setAttribute("style", "color:black;");
     }
     uploadFile() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -44,7 +51,7 @@ let ImportComponent = class ImportComponent {
     }
     getOperation() {
         this.isLoaded = false;
-        if (this.currentIndex <= this.loadedOperations.length && this.currentIndex >= 0) {
+        if (this.currentIndex < this.loadedOperations.length && this.currentIndex >= 0) {
             let op = this.loadedOperations[this.currentIndex];
             if (op.TransactionType === undefined) {
                 op.TransactionType = this.getTransactionTypes(1);
@@ -53,6 +60,9 @@ let ImportComponent = class ImportComponent {
                 op.TransferType = this.getTransferTypes(1);
             }
             this.operation = op;
+        }
+        else {
+            this.fileUploaded = false;
         }
         this.isLoaded = true;
     }

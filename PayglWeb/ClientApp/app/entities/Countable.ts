@@ -1,4 +1,4 @@
-﻿import {TransactionType } from "./entities";
+﻿import { TransactionType } from "./entities";
 
 export interface Countable {
     Amount: number;

@@ -110,7 +110,7 @@ let DataService = class DataService {
     }
     sendSchematic(schematic) {
         let json = schematic.toJson();
-        console.log(json);
+        //console.log(json);
         return this.http.post(`api/schematics`, json, httpOptions).toPromise();
     }
     deleteFilter(filter) {

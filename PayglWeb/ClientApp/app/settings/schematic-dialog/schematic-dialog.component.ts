@@ -28,25 +28,29 @@ export class SchematicDialogComponent implements OnInit {
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
     ngOnInit() {
-        console.log("onInit")
+        //console.log("onInit")
     }
 
     ngOnChanges() {
         if (this.visible == true) {
             //console.log("onChanges")
             //console.log(this.schematic)
-            this.description = this.schematic.Context.Description
-            let intiValues = this.schematic.Context.Description.split(';');
-            if (intiValues.length === 2) {
-                this.startTitle = intiValues[1]
-                this.startDescription = intiValues[0]
+            if (this.schematic.Context.Description) {
+                this.description = this.schematic.Context.Description
+                this.selectedType = 2;
+                let intiValues = this.schematic.Context.Description.split('; ');
+                if (intiValues.length === 2) {
+                    this.startTitle = intiValues[1]
+                    this.startDescription = intiValues[0]
+                }
+                this.selectedFrequency = this.schematic.Context.Frequency
+                this.selectedImportance = this.schematic.Context.Importance
+                this.selectedTags = this.schematic.Context.Tags
+            } else {
+                this.selectedType = 1;
             }
             this.titleRegex = this.schematic.Context.TitleRegex
             this.descriptionRegex = this.schematic.Context.DescriptionRegex
-            this.selectedFrequency = this.schematic.Context.Frequency
-            this.selectedImportance = this.schematic.Context.Importance
-            this.selectedTags = this.schematic.Context.Tags
-            this.selectedType = 2;
         }
     }
 
@@ -64,7 +68,7 @@ export class SchematicDialogComponent implements OnInit {
         this.schematic.Type = this.shared.tmpSchematicType(this.selectedType)
         this.schematic.Context.TitleRegex = this.titleRegex
         this.schematic.Context.DescriptionRegex = this.descriptionRegex
-        console.log(this.schematic, this.selectedType == 2, this.selectedType === 2, this.selectedType == 1, this.selectedType === 1)
+        //console.log(this.schematic, this.selectedType == 2, this.selectedType === 2, this.selectedType == 1, this.selectedType === 1)
         if (this.selectedType == 2) {
             this.schematic.Context.Description = this.description
             this.schematic.Context.Frequency = this.selectedFrequency
@@ -117,7 +121,6 @@ export class SchematicDialogComponent implements OnInit {
         } catch{
             return false
         }
-
         return true
     };
 
@@ -129,7 +132,7 @@ export class SchematicDialogComponent implements OnInit {
         }
         if (!this.titleRegex && !this.descriptionRegex) {
             return false;
-            }
+        }
         if (this.descriptionRegex && !this.regexIsCorrect(this.descriptionRegex, this.startDescription)) {
             return false;
         }

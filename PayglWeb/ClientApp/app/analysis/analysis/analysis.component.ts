@@ -48,16 +48,16 @@ export class AnalysisComponent implements OnInit {
             this.clicked = []
             this.clicked.push(o)
             await this.shared.loadDashboardOutput(o.Id, this.dateFrom, this.dateTo)
-            this.output = this.shared.dashboardOutput        
+            this.output = this.shared.dashboardOutput
         } else {
-            this.clicked=[]
+            this.clicked = []
         }
     }
 
     async checkA() {
         if (this.output != null && this.output instanceof DashboardOutput) {
             (this.output as DashboardOutput).printDuplicates();
-        } 
+        }
     }
 
     async checkB() {
@@ -76,7 +76,7 @@ export class AnalysisComponent implements OnInit {
         this.isLoaded = true
     }
 
-    getAllDates(dashboard: IDashboardOutput) : string[] {
+    getAllDates(dashboard: IDashboardOutput): string[] {
         let result: string[] = []
 
         if (dashboard instanceof DashboardOutputLeaf) {

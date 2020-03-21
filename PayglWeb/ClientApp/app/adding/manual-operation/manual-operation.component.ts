@@ -63,7 +63,7 @@ export class ManualOperationComponent implements OnInit {
     }
 
     emitOutput(result: boolean) {
-        console.log("emited: finished")
+        //console.log("emited: finished")
         this.finishedOutput.emit(result);
     }
 
@@ -174,10 +174,10 @@ export class ManualOperationComponent implements OnInit {
     }
 
     onGroupChange(selectedOperationGroup: OperationsGroup) {
-        console.log(selectedOperationGroup, null)
-        console.log(selectedOperationGroup != null)
+        //console.log(selectedOperationGroup, null)
+        //console.log(selectedOperationGroup != null)
         if (selectedOperationGroup != null) {
-            console.log("here")
+            //console.log("here")
             this.editable = false;
             this.selectedFrequency = selectedOperationGroup.Frequency
             this.selectedImportance = selectedOperationGroup.Importance
@@ -216,7 +216,7 @@ export class ManualOperationComponent implements OnInit {
         operation.Importance = this.selectedImportance
         operation.Date = this.date.toLocaleString()
         operation.ReceiptPath = ""
-        console.log(this.selectedTags)
+        //console.log(this.selectedTags)
         operation.setTags(this.selectedTags)
         operation.DetailsList = []
         operation.IsDirty = true;
@@ -240,16 +240,16 @@ export class ManualOperationComponent implements OnInit {
     }
 
     createGroup() {
-        console.log("group")
+        //console.log("group")
         this.editGroup = true
     }
 
     createSchematic() {
-        console.log("add")
-        if (this.description.indexOf(';') > -1) {
-            const splited = this.description.split(';');
-            const contractor = splited[0].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-            const title = splited[1].replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        //console.log("add")
+        if (this.description.indexOf('; ') > -1) {
+            const splited = this.description.split('; ');
+            const contractor = splited[0].replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const title = splited[1].replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&');
             this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext(contractor, title, this.description, null, null, []), this.shared.tmpCreatingUser())
         } else {
             this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext("", "", this.description, null, null, []), this.shared.tmpCreatingUser())
@@ -258,7 +258,7 @@ export class ManualOperationComponent implements OnInit {
     }
 
     async getResponseSchematic($event) {
-        console.log("event", $event)
+        //console.log("event", $event)
         if ($event != null) {
             await this.save($event)
             this.updateOperation($event);
@@ -268,17 +268,17 @@ export class ManualOperationComponent implements OnInit {
     }
 
     async getResponseGroup($event) {
-        console.log("event", $event)
+        //console.log("event", $event)
         if ($event != null) {
             await this.shared.loadOperationsGroups();
-            console.log(this.getOperationsGroups())
-            this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Description == $event.Description && t.Date.substr(0,10) == $event.Date)[0]
+            //console.log(this.getOperationsGroups())
+            this.selectedOperationGroup = this.getOperationsGroups().filter(t => t.Description == $event.Description && t.Date.substr(0, 10) == $event.Date)[0]
             this.onGroupChange(this.selectedOperationGroup);
         }
     }
 
     updateOperation(event: any) {
-        console.log(event)
+        //console.log(event)
         this.description = event.Context.Description;
         if (event.Context.Frequency != null)
             this.selectedFrequency = this.getFrequencies().filter(t => t.Id == event.Context.Frequency.Id)[0]
@@ -286,7 +286,7 @@ export class ManualOperationComponent implements OnInit {
             this.selectedImportance = this.getImportances().filter(t => t.Id == event.Context.Importance.Id)[0]
         this.selectedTags = []
         for (let tag of event.Context.Tags) {
-            console.log(tag)
+            //console.log(tag)
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Id)[0])
         }
         if (this.selectedTags.length != 0) {
@@ -295,7 +295,7 @@ export class ManualOperationComponent implements OnInit {
     }
 
     async save(schematic: Schematic) {
-        console.log("save")
+        //console.log("save")
         await this.shared.sendSchematic(schematic)
     }
 }

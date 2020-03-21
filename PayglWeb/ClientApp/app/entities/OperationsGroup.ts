@@ -3,7 +3,7 @@ import { User, Frequency, Importance, TagRelation, Tag, TransactionType, Transfe
 import { OperationLike } from './OperationLike';
 import { Countable } from './Countable';
 
-export class OperationsGroup implements OperationLike, Countable{
+export class OperationsGroup implements OperationLike, Countable {
     Id: number;
     IsDirty: boolean;
     IsMarkForDeletion: boolean;
@@ -40,7 +40,7 @@ export class OperationsGroup implements OperationLike, Countable{
                 this.Amount -= operation.Amount;
             } else {
                 this.Amount += operation.Amount;
-            }        
+            }
         }
         if (this.Amount > 0) {
             this.TransactionType = transactionTypes.filter(t => t.Text == "przychód")[0];

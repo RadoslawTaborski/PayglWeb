@@ -11,7 +11,7 @@ let OperationComponent = class OperationComponent {
     }
     onOperationClick(o, isNested) {
         if (isNested) {
-            console.log(!this.clicked.includes(o));
+            //console.log(!this.clicked.includes(o))
             if (!this.clicked.includes(o)) {
                 this.clicked.push(o);
             }
@@ -44,7 +44,7 @@ let OperationComponent = class OperationComponent {
     }
     edit(o) {
         this.editedOperation = o;
-        console.log(o.Description);
+        //console.log(o.Description)
     }
 };
 tslib_1.__decorate([

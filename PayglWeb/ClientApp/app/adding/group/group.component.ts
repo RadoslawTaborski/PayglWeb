@@ -6,9 +6,9 @@ import { ApplicationStateService } from '../../shared/application-state.service'
 import { Operation } from '../../entities/Operation';
 
 @Component({
-  selector: 'app-group',
-  templateUrl: './group.component.html',
-  styleUrls: ['./group.component.css']
+    selector: 'app-group',
+    templateUrl: './group.component.html',
+    styleUrls: ['./group.component.css']
 })
 export class GroupComponent implements OnInit {
     @Input() operationGroup: OperationsGroup
@@ -45,7 +45,7 @@ export class GroupComponent implements OnInit {
     }
 
     emitOutput(value: any) {
-        console.log("emited: finished")
+        //console.log("emited: finished")
         this.finishedOutput.emit(value);
     }
 
@@ -60,7 +60,7 @@ export class GroupComponent implements OnInit {
         this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operationGroup.Frequency.Id)[0]
         this.selectedImportance = this.getImportances().filter(t => t.Id == this.operationGroup.Importance.Id)[0]
         this.selectedTags = []
-        console.log(this.operationGroup.Tags)
+        //console.log(this.operationGroup.Tags)
         for (let tag of this.operationGroup.Tags) {
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
         }
@@ -82,7 +82,7 @@ export class GroupComponent implements OnInit {
         if (this.operation.Importance != null)
             this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
         this.selectedTags = []
-        console.log(this.operation.Tags)
+        //console.log(this.operation.Tags)
         for (let tag of this.operation.Tags) {
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
         }

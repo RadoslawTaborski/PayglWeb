@@ -42,7 +42,7 @@ export class FiltersComponent implements OnInit {
             this.clicked = []
         }
         this.infoMessage = null
-        this.infoMessages=[]
+        this.infoMessages = []
     }
 
     isClicked(o: Filter): boolean {
@@ -76,7 +76,7 @@ export class FiltersComponent implements OnInit {
     filterIsUsed(o: Filter): boolean {
         let result = false;
         for (let d of this.getDashboards()) {
-            result = result || this.dashboardContainFilter(o,d)
+            result = result || this.dashboardContainFilter(o, d)
         }
 
         return result;

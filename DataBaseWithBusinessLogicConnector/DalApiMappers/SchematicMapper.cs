@@ -56,8 +56,16 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
 
         public DalSchematic ConvertToDALEntity(ApiSchematic businessEntity)
         {
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(businessEntity.Context).Replace("\\","\\\\");
-            var result = new DalSchematic(businessEntity.Id, businessEntity.Type.Id, json, businessEntity.User.Id);
+            string json;
+            if (businessEntity.Type.Id == 1)
+            {
+                json = JsonHelper.JsonFromObject(businessEntity.Context, "Frequency", "Importance", "Tags", "Description");
+            }
+            else
+            {
+                json = JsonHelper.JsonFromObject(businessEntity.Context);
+            }
+            var result = new DalSchematic(businessEntity.Id, businessEntity.Type.Id, json.Replace("\\", "\\\\"), businessEntity.User.Id);
             result.IsDirty = businessEntity.IsDirty;
             result.IsMarkForDeletion = businessEntity.IsMarkForDeletion;
 

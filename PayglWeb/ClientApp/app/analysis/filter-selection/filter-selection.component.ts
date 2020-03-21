@@ -5,9 +5,9 @@ import { IFilter, Filter, Dashboard, DashboardFilterRelation } from '../../entit
 import { Message, MessageType } from '../templates/message/Message';
 
 @Component({
-  selector: 'app-filter-selection',
-  templateUrl: './filter-selection.component.html',
-  styleUrls: ['./filter-selection.component.css']
+    selector: 'app-filter-selection',
+    templateUrl: './filter-selection.component.html',
+    styleUrls: ['./filter-selection.component.css']
 })
 export class FilterSelectionComponent implements OnInit {
     @Input() visible: boolean
@@ -16,7 +16,7 @@ export class FilterSelectionComponent implements OnInit {
     @Output() finishedOutput = new EventEmitter<IFilter>();
 
     filter: IFilter
-    selectedItems: IFilter[]=[]
+    selectedItems: IFilter[] = []
 
     isLoaded: boolean = false;
     name: string = "";
@@ -28,7 +28,7 @@ export class FilterSelectionComponent implements OnInit {
     async ngOnInit() {
         await this.shared.loadFiltersAndDashboards()
         this.selectedItems = this.getNestedFiltersAndDashboards(this.selected);
-        console.log(this.selectedItems)
+        //console.log(this.selectedItems)
         this.isLoaded = true;
         //console.log(this.selected)
     }
@@ -44,8 +44,8 @@ export class FilterSelectionComponent implements OnInit {
         }
     }
 
-    private getNestedFiltersAndDashboards(dashboard: Dashboard): IFilter[]{
-        let result : IFilter[] = []
+    private getNestedFiltersAndDashboards(dashboard: Dashboard): IFilter[] {
+        let result: IFilter[] = []
         this.findAllFilters(result, dashboard.Relations)
         result.push(dashboard)
         return result
@@ -68,7 +68,7 @@ export class FilterSelectionComponent implements OnInit {
     }
 
     emitOutput() {
-        console.log("emited: finished")
+        //console.log("emited: finished")
         this.finishedOutput.emit(this.filter);
     }
 

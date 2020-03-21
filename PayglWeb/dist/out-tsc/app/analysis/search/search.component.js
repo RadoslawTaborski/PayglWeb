@@ -25,9 +25,11 @@ let SearchComponent = class SearchComponent {
             let query = params.query;
             if (number !== undefined && user !== undefined && name !== undefined && query !== undefined) {
                 this.filter = new Filter(number, user, name, query);
+                this.isNew = false;
             }
             else {
                 this.filter = new Filter(null, user, "", "");
+                this.isNew = true;
             }
         });
     }
@@ -37,7 +39,7 @@ let SearchComponent = class SearchComponent {
             yield this.shared.loadAttributes();
             this.sum = 0;
             this.query = this.filter.Query;
-            console.log("query: " + this.query);
+            //console.log("query: "+this.query)
             yield this.shared.loadDashboardOutput(this.query, null, null);
             let allDates = this.getAllDates(this.shared.dashboardOutput).sort();
             if (allDates.length != 0) {
@@ -72,9 +74,9 @@ let SearchComponent = class SearchComponent {
         return result;
     }
     onOperationClick(o, isNested) {
-        console.log("click in search");
+        //console.log("click in search")
         if (isNested) {
-            console.log(!this.clicked.includes(o));
+            //console.log(!this.clicked.includes(o))
             if (!this.clicked.includes(o)) {
                 this.clicked.push(o);
             }
@@ -139,9 +141,13 @@ let SearchComponent = class SearchComponent {
     }
     getResponseFromSave($event) {
         this.saveMode = false;
+        //console.log($event)
+        if ($event = true) {
+            this.isQueryLoaded = false;
+            this.isNew = false;
+        }
     }
     inpQueryChanged() {
-        console.log(this.isQueryLoaded, this.isError);
         this.isQueryLoaded = false;
     }
 };

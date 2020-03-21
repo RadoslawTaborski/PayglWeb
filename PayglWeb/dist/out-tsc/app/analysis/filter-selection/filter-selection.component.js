@@ -15,7 +15,7 @@ let FilterSelectionComponent = class FilterSelectionComponent {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadFiltersAndDashboards();
             this.selectedItems = this.getNestedFiltersAndDashboards(this.selected);
-            console.log(this.selectedItems);
+            //console.log(this.selectedItems)
             this.isLoaded = true;
             //console.log(this.selected)
         });
@@ -51,7 +51,7 @@ let FilterSelectionComponent = class FilterSelectionComponent {
         this.emitOutput();
     }
     emitOutput() {
-        console.log("emited: finished");
+        //console.log("emited: finished")
         this.finishedOutput.emit(this.filter);
     }
     select() {

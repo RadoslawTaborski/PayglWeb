@@ -62,3 +62,23 @@ p {
     padding-left: 5px;
     padding-right: 5px;
 }
+
+#customFile .custom-file-input::after {
+    content: "Wybierz plik";
+}
+
+#customFile .custom-file-input::before {
+    content: "Click me";
+}
+
+.custom-file-input.selected::after {
+    content: "" !important;
+}
+
+.custom-file {
+    overflow: hidden;
+}
+
+.custom-file-input {
+    white-space: nowrap;
+}

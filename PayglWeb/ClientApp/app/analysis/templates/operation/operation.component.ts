@@ -4,16 +4,16 @@ import { Operation } from '../../../entities/Operation';
 import { ApplicationStateService } from '../../../shared/application-state.service';
 
 @Component({
-  selector: 'temp-operation',
-  templateUrl: './operation.component.html',
-  styleUrls: ['../templates.css']
+    selector: 'temp-operation',
+    templateUrl: './operation.component.html',
+    styleUrls: ['../templates.css']
 })
 export class OperationComponent implements OnInit {
     @Input() operation: OperationLike;
     public clicked: OperationLike[] = []
     editedOperation: OperationLike;
 
-    constructor(public state: ApplicationStateService) {}
+    constructor(public state: ApplicationStateService) { }
 
     ngOnInit(): void {
         //console.log(this.operation)
@@ -21,7 +21,7 @@ export class OperationComponent implements OnInit {
 
     onOperationClick(o: OperationLike, isNested: boolean) {
         if (isNested) {
-            console.log(!this.clicked.includes(o))
+            //console.log(!this.clicked.includes(o))
             if (!this.clicked.includes(o)) {
                 this.clicked.push(o);
             } else {
@@ -55,6 +55,6 @@ export class OperationComponent implements OnInit {
 
     edit(o: OperationLike) {
         this.editedOperation = o;
-        console.log(o.Description)
+        //console.log(o.Description)
     }
 }

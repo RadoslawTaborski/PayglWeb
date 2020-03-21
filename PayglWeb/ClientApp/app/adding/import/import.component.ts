@@ -22,6 +22,7 @@ export class ImportComponent implements OnInit {
     loadedOperations: Operation[] = []
     currentIndex: number = 0;
     operation: Operation = null;
+    fileName: string = ""
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
@@ -33,9 +34,15 @@ export class ImportComponent implements OnInit {
         this.isLoaded = true;
     }
 
-    handleFileInput(files: FileList) {
-        this.fileToUpload = files.item(0);
-        //console.log(this.fileToUpload)
+    handleFileInput(ev) {
+        console.log(ev)
+        this.fileToUpload = ev.files.item(0);
+        this.fileName = (<HTMLInputElement>document.getElementById("file")).files[0].name;
+        console.log(this.fileName)
+        var nextSibling = <HTMLLabelElement>ev.nextElementSibling
+        console.log(nextSibling)
+        nextSibling.innerText = this.fileName
+        nextSibling.setAttribute("style", "color:black;");
     }
 
     async uploadFile() {
@@ -57,7 +64,7 @@ export class ImportComponent implements OnInit {
 
     getOperation() {
         this.isLoaded = false;
-        if (this.currentIndex <= this.loadedOperations.length && this.currentIndex >= 0) {
+        if (this.currentIndex < this.loadedOperations.length && this.currentIndex >= 0) {
             let op: Operation = this.loadedOperations[this.currentIndex];
             if (op.TransactionType === undefined) {
                 op.TransactionType = this.getTransactionTypes(1)
@@ -67,6 +74,8 @@ export class ImportComponent implements OnInit {
             }
 
             this.operation = op;
+        } else {
+            this.fileUploaded = false
         }
         this.isLoaded = true;
     }
@@ -74,7 +83,7 @@ export class ImportComponent implements OnInit {
     next() {
         if (this.loadedOperations.length > this.currentIndex + 1)
             this.currentIndex++;
-                this.getOperation();
+        this.getOperation();
     }
 
     previous() {
@@ -121,7 +130,7 @@ export class ImportComponent implements OnInit {
         }
         op.setTags(o.Tags.map(t => t.Tag));
         this.loadedOperations.splice(this.currentIndex, 0, op);
-        this.loadedOperations[this.currentIndex+1] = o
+        this.loadedOperations[this.currentIndex + 1] = o
 
         this.getOperation();
 
@@ -137,7 +146,7 @@ export class ImportComponent implements OnInit {
     }
 
     round(num: number): number {
-        var str = num.toFixed(2); 
-        return Number(str); 
+        var str = num.toFixed(2);
+        return Number(str);
     }
 }

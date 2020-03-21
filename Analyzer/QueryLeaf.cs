@@ -1,5 +1,4 @@
 ﻿using DataBaseWithBusinessLogicConnector.ApiEntities;
-using DataBaseWithBusinessLogicConnector.Entities;
 using DataBaseWithBusinessLogicConnector.Interfaces;
 using DataBaseWithBusinessLogicConnector.Interfaces.Api;
 using System;
@@ -110,10 +109,10 @@ namespace Analyzer
                     switch (Operation)
                     {
                         case string w when w == SetOperations.In:
-                            result = result.Where(o => o is Operation && Right.Contains((GetPropValue(o, KeyWords.OperationProperty[key]) as IParameter)?.Text)).ToList();
+                            result = result.Where(o => o is ApiOperation && Right.Contains((GetPropValue(o, KeyWords.OperationProperty[key]) as IParameter)?.Text)).ToList();
                             break;
                         case string w when w == SetOperations.NotIn:
-                            result = result.Where(o => o is Operation && !Right.Contains((GetPropValue(o, KeyWords.OperationProperty[key]) as IParameter)?.Text)).ToList();
+                            result = result.Where(o => o is ApiOperation && !Right.Contains((GetPropValue(o, KeyWords.OperationProperty[key]) as IParameter)?.Text)).ToList();
                             break;
                         default:
                             throw new Exception(string.Format(Properties.strings.ExOperationsIsWrong, Operation));

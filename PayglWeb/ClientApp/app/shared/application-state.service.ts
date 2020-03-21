@@ -7,7 +7,7 @@ export class ApplicationStateService {
 
     constructor() {
         if (window.innerWidth < 768) {
-            console.log(window.innerWidth)
+            //console.log(window.innerWidth)
             this._type = ScreenSize.Mobile;
         } else {
             this._type = ScreenSize.Normal;

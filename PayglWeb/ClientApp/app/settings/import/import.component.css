@@ -19,11 +19,6 @@ p {
     padding-right: 5px;
 }
 
-.ignored {
-    background-color: #011f4b;
-    color: white;
-}
-
 .schematic {
     background-color: #011f4b;
     color: white;
@@ -46,5 +41,10 @@ p {
 
 .ignored2 {
     background-color: #8A0000;
+    color: white;
+}
+
+.ignoredDetails {
+    background-color: #C23B22;
     color: white;
 }

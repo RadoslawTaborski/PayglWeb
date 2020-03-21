@@ -52,13 +52,28 @@
             <div class="div-row ignored2" *ngFor="let d of getIgnored()">
                 <div *ngIf="!d.IsMarkForDeletion">
                     <div class="card-header div-row">
-                        <div class="div-row">
-                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Regex tytułu:</div>
-                            <p class="card-text inline-p">{{d.Context.TitleRegex}}</p>
-                        </div>
-                        <div class="div-row">
-                            <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Regex opisu:</div>
+                        <div class="div-row" (click)="onSchematicClick(d)">
                             <p class="card-text inline-p">{{d.Context.DescriptionRegex}}</p>
+                        </div>
+                        <div class="ignoredDetails" *ngIf="isSchematicClicked(d)">
+                            <div class="div-row">
+                                <button class="btn btn-danger" style="float: right;" (click)="delete(d)">
+                                    <i class="fa fa-close" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="div-row">
+                                <button class="btn btn-success" style="float: right;" (click)="edit(d)">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="div-row">
+                                <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Regex tytułu:</div>
+                                <p class="card-text inline-p">{{d.Context.TitleRegex}}</p>
+                            </div>
+                            <div class="div-row">
+                                <div class="card-text inline-block col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">Regex opisu:</div>
+                                <p class="card-text inline-p">{{d.Context.DescriptionRegex}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

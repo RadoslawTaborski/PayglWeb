@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.Interfaces;
 using DataBaseWithBusinessLogicConnector;
-using DataBaseWithBusinessLogicConnector.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

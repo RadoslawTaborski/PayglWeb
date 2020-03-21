@@ -55,7 +55,7 @@ export class SearchComponent implements OnInit {
         await this.shared.loadAttributes()
         this.sum = 0
         this.query = this.filter.Query;
-        console.log("query: "+this.query)
+        //console.log("query: "+this.query)
         await this.shared.loadDashboardOutput(this.query, null, null)
         let allDates = this.getAllDates(this.shared.dashboardOutput).sort()
         if (allDates.length != 0) {
@@ -67,7 +67,7 @@ export class SearchComponent implements OnInit {
 
     getOperationsLike(): OperationLike[] {
         let result: OperationLike[] = []
-        if (! (this.shared.dashboardOutput instanceof DashboardOutputLeaf)) {
+        if (!(this.shared.dashboardOutput instanceof DashboardOutputLeaf)) {
             return result
         }
         result = (this.shared.dashboardOutput as DashboardOutputLeaf).Result
@@ -81,7 +81,7 @@ export class SearchComponent implements OnInit {
             return tmp
         })
 
-        this.sum=0
+        this.sum = 0
         for (let op of result) {
             if (op.TransactionType.Text == "wydatek") {
                 this.sum -= op.Amount
@@ -94,16 +94,16 @@ export class SearchComponent implements OnInit {
     }
 
     onOperationClick(o: OperationLike, isNested: boolean) {
-        console.log("click in search")
+        //console.log("click in search")
         if (isNested) {
-            console.log(!this.clicked.includes(o))
+            //console.log(!this.clicked.includes(o))
             if (!this.clicked.includes(o)) {
                 this.clicked.push(o);
             } else {
                 const index: number = this.clicked.indexOf(o);
                 if (index !== -1) {
                     this.clicked.splice(index, 1);
-                }  
+                }
             }
         } else {
             if (!this.clicked.includes(o)) {
@@ -117,14 +117,14 @@ export class SearchComponent implements OnInit {
 
     isOperation(o: OperationLike): boolean {
         return (o instanceof Operation)
-    }   
+    }
 
     isClicked(o: OperationLike): boolean {
         return this.clicked.includes(o);
     }
 
     isExpense(o: OperationLike): boolean {
-        return o.TransactionType.Text=='wydatek'
+        return o.TransactionType.Text == 'wydatek'
     }
 
     async search() {
@@ -137,7 +137,7 @@ export class SearchComponent implements OnInit {
         } catch {
             this.isError = true;
         }
-        this.isLoaded=true
+        this.isLoaded = true
     }
 
     save(query: string) {
@@ -163,7 +163,7 @@ export class SearchComponent implements OnInit {
 
     getResponseFromSave($event) {
         this.saveMode = false;
-        console.log($event)
+        //console.log($event)
         if ($event = true) {
             this.isQueryLoaded = false;
             this.isNew = false;

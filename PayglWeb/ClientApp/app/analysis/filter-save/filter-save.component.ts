@@ -5,9 +5,9 @@ import { SharedService } from '../../shared/shared.service';
 import { Message, MessageType } from '../templates/message/Message';
 
 @Component({
-  selector: 'app-filter-save',
-  templateUrl: './filter-save.component.html',
-  styleUrls: ['./filter-save.component.css']
+    selector: 'app-filter-save',
+    templateUrl: './filter-save.component.html',
+    styleUrls: ['./filter-save.component.css']
 })
 export class FilterSaveComponent implements OnInit, OnChanges {
     @Input() visible: boolean
@@ -35,7 +35,7 @@ export class FilterSaveComponent implements OnInit, OnChanges {
     }
 
     emitOutput(success: boolean) {
-        console.log("emited: finished")
+        //console.log("emited: finished")
         this.finishedOutput.emit(success);
     }
 
@@ -65,7 +65,7 @@ export class FilterSaveComponent implements OnInit, OnChanges {
             filterCopy.IsDirty = true
             await this.shared.sendFilter(filterCopy)
             this.showInfo = false;
-            this.emitOutput()
+            this.emitOutput(true)
         } else {
             this.infoMessage = new Message(MessageType.Error, "Nazwa musi mieć minimum 3 znaki")
             this.showInfo = true;

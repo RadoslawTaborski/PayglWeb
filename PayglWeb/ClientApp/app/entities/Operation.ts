@@ -24,7 +24,7 @@ export class Operation implements OperationLike {
         this.User = user
         this.Amount = amount
         this.TransactionType = transactionType
-        this.TransferType = transferType    
+        this.TransferType = transferType
         this.Frequency = frequency
         this.Importance = importance
         this.Date = Operation.convertDate(date);
@@ -48,7 +48,7 @@ export class Operation implements OperationLike {
         operation.GroupId = data.GroupId;
         operation.User = User.createFromJson(data.User);
         operation.Amount = data.Amount;
-        if (data.TransactionType!=null)
+        if (data.TransactionType != null)
             operation.TransactionType = transactionTypes.filter(t => t.Id === data.TransactionType.Id)[0];
         if (data.TransferType != null)
             operation.TransferType = transferTypes.filter(t => t.Id === data.TransferType.Id)[0];

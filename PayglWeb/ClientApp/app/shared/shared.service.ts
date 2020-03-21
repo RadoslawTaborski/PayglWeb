@@ -31,27 +31,27 @@ export class SharedService {
         if (!this.isInitialize) {
             this.isInitialize = true
             let tmp: any[]
-            this.frequencies=[]
+            this.frequencies = []
             tmp = await this.data.loadFrequencies()
             tmp.forEach(a => this.frequencies.push(Frequency.createFromJson(a)))
             //console.log(this.frequencies);
 
-            this.importances=[]
+            this.importances = []
             tmp = await this.data.loadImportances()
             tmp.forEach(a => this.importances.push(Importance.createFromJson(a)))
             //console.log(this.importances);
 
-            this.tags=[]
+            this.tags = []
             tmp = await this.data.loadTags()
             tmp.forEach(a => this.tags.push(Tag.createFromJson(a)))
             //console.log(this.tags);
 
-            this.transactionTypes=[]
+            this.transactionTypes = []
             tmp = await this.data.loadTransactionTypes()
             tmp.forEach(a => this.transactionTypes.push(TransactionType.createFromJson(a)))
             //console.log(this.transactionTypes);
 
-            this.transferType=[]
+            this.transferType = []
             tmp = await this.data.loadTransferTypes()
             tmp.forEach(a => this.transferType.push(TransferType.createFromJson(a)))
             //console.log(this.transferType);
@@ -114,7 +114,7 @@ export class SharedService {
         this.operations = []
         for (let operation of tmp.reverse()) {
             this.operations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType))
-        } 
+        }
     }
 
     async loadDashboardOutput(query?: string | number, from?: string, to?: string) {

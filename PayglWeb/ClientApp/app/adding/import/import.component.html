@@ -2,7 +2,7 @@
     <div *ngIf="!fileUploaded" class="form-group">
         <div class="input-group mb-3">
             <div class="custom-file">
-                <input type="file" class="custom-file-input" id="file" (change)="handleFileInput($event.target.files)" />
+                <input type="file" class="custom-file-input" id="file" aria-describedby="file" (change)="handleFileInput($event.target)">
                 <label class="custom-file-label" for="file">Wybierz plik</label>
             </div>
             <div class="input-group-append">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="div-row" *ngIf="fileUploaded">
-        <app-manual-operation *ngIf = "isLoaded" [operation]="operation" [mode]="mode" (finishedOutput)="getResponseFromOperation($event)"></app-manual-operation>
+        <app-manual-operation *ngIf="isLoaded" [operation]="operation" [mode]="mode" (finishedOutput)="getResponseFromOperation($event)"></app-manual-operation>
         <div class="btn-group div-row">
             <button class="btn btn-primary" (click)="previous()">Poprzedni</button>
             <button class="btn btn-primary" (click)="next()">Następny</button>

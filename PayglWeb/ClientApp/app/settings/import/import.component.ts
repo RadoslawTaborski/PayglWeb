@@ -6,9 +6,9 @@ import { Schematic, SchematicContext } from '../../entities/Schematic';
 import { Frequency, Importance, Tag } from '../../entities/entities';
 
 @Component({
-  selector: 'app-import',
-  templateUrl: './import.component.html',
-  styleUrls: ['./import.component.css']
+    selector: 'app-import',
+    templateUrl: './import.component.html',
+    styleUrls: ['./import.component.css']
 })
 export class ImportComponent implements OnInit {
     public isLoaded: boolean = false
@@ -29,7 +29,7 @@ export class ImportComponent implements OnInit {
 
     getIgnored(): Schematic[] {
         //console.log(this.shared.schematics)
-        return this.schematics.filter(t => t.Type.Id==1);
+        return this.schematics.filter(t => t.Type.Id == 1);
     }
 
     getSchematics(): Schematic[] {
@@ -101,7 +101,7 @@ export class ImportComponent implements OnInit {
     }
 
     addIgnored() {
-       // console.log("add")
+        // console.log("add")
         this.editedSchematic = new Schematic(null, null, new SchematicContext("", "", "", null, null, []), this.shared.tmpCreatingUser())
         this.editSchematic = true
     }

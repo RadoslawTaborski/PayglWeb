@@ -186,7 +186,7 @@ export class OperationDetails {
     Quantity: number;
     Amount: number;
 
-    constructor(id?: number, name?: string, quantity?:number, amount?:number) {
+    constructor(id?: number, name?: string, quantity?: number, amount?: number) {
         this.Id = id
         this.Name = name
         this.Quantity = quantity

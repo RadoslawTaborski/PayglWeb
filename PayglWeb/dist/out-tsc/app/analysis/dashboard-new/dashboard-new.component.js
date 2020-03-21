@@ -22,7 +22,7 @@ let DashboardNewComponent = class DashboardNewComponent {
         return this.allDashboards.map(m => m.Name).includes(name);
     }
     emitOutput(name) {
-        console.log("emited: finished");
+        //console.log("emited: finished")
         this.finishedOutput.emit(name);
     }
     select() {
