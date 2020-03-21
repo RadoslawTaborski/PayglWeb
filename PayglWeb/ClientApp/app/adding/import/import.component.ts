@@ -35,12 +35,12 @@ export class ImportComponent implements OnInit {
     }
 
     handleFileInput(ev) {
-        console.log(ev)
+        //console.log(ev)
         this.fileToUpload = ev.files.item(0);
         this.fileName = (<HTMLInputElement>document.getElementById("file")).files[0].name;
-        console.log(this.fileName)
+        //console.log(this.fileName)
         var nextSibling = <HTMLLabelElement>ev.nextElementSibling
-        console.log(nextSibling)
+        //console.log(nextSibling)
         nextSibling.innerText = this.fileName
         nextSibling.setAttribute("style", "color:black;");
     }
