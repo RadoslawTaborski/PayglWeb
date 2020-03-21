@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from './search/search.component';
@@ -20,7 +20,7 @@ import { FilterSelectionComponent } from './filter-selection/filter-selection.co
 import { DashboardNewComponent } from './dashboard-new/dashboard-new.component';
 let AnalysisModule = class AnalysisModule {
 };
-AnalysisModule = tslib_1.__decorate([
+AnalysisModule = __decorate([
     NgModule({
         declarations: [SearchComponent, FiltersComponent, DashboardsComponent, AnalysisComponent, OperationComponent, OperationComponent, DashboardOutputComponent, DashboardPiechartComponent, DashboardLinechartComponent, FilterSaveComponent, FilterSelectionComponent, DashboardNewComponent],
         imports: [

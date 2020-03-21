@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component } from '@angular/core';
 import { Dashboard, Filter, DashboardFilterRelation } from '../../entities/entities';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
@@ -12,7 +12,7 @@ let DashboardsComponent = class DashboardsComponent {
         this.allDashboards = [];
     }
     ngOnInit() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadFiltersAndDashboards();
             this.allDashboards = this.shared.dashboards;
             //console.log(this.allDashboards)
@@ -129,7 +129,7 @@ let DashboardsComponent = class DashboardsComponent {
         //console.log(this.allDashboards)
     }
     save() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             if (confirm("Czy na pewno zapisać wszystkie zmiany?")) {
                 for (let i = 0; i < this.allDashboards.length; ++i) {
                     if (this.allDashboards[i].Order != i + 1) {
@@ -149,7 +149,7 @@ let DashboardsComponent = class DashboardsComponent {
                 this.showInfo = false;
                 let tmp = this.sort(this.allDashboards);
                 //console.log(tmp)
-                yield this.shared.sendDashboards(tmp).then((value) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                yield this.shared.sendDashboards(tmp).then((value) => __awaiter(this, void 0, void 0, function* () {
                     this.isLoaded = false;
                     yield this.reload();
                     this.isLoaded = true;
@@ -218,7 +218,7 @@ let DashboardsComponent = class DashboardsComponent {
         o.IsDirty = true;
     }
     reload() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             yield new Promise(resolve => setTimeout(resolve, 4000));
             this.ngOnInit();
         });
@@ -236,7 +236,7 @@ let DashboardsComponent = class DashboardsComponent {
         return Message.messageIsError(this.infoMessage);
     }
 };
-DashboardsComponent = tslib_1.__decorate([
+DashboardsComponent = __decorate([
     Component({
         selector: 'app-dashboards',
         templateUrl: './dashboards.component.html',

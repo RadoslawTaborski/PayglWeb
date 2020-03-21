@@ -14,7 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{45D5CFD6-670F-459B-A0D8-AFDAF66FF390}"
 	ProjectSection(SolutionItems) = preProject
 		Scripts\db.txt = Scripts\db.txt
-		Scripts\Diagram.png = Scripts\Diagram.png
+		C:\Users\rados\Desktop\Diagram.png = C:\Users\rados\Desktop\Diagram.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Importer", "Importer\Importer.csproj", "{410399D5-F977-4CD1-82A8-0E0501BAA57A}"

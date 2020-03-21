@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ManualOperationComponent } from './adding/manual-operation/manual-operation.component';
@@ -23,7 +23,7 @@ export const routes = [
 ];
 let AppRoutingModule = class AppRoutingModule {
 };
-AppRoutingModule = tslib_1.__decorate([
+AppRoutingModule = __decorate([
     NgModule({
         imports: [RouterModule.forRoot(routes, {
                 useHash: false,

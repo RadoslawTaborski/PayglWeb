@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component, Output, Input, EventEmitter } from '@angular/core';
 import { Message, MessageType } from '../templates/message/Message';
 let DashboardNewComponent = class DashboardNewComponent {
@@ -26,7 +26,7 @@ let DashboardNewComponent = class DashboardNewComponent {
         this.finishedOutput.emit(name);
     }
     select() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
             if (this.name.length > 2) {
                 if (!this.nameIsUsed(this.name)) {
@@ -58,16 +58,16 @@ let DashboardNewComponent = class DashboardNewComponent {
         return Message.messageIsError(this.infoMessage);
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardNewComponent.prototype, "visible", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardNewComponent.prototype, "allDashboards", void 0);
-tslib_1.__decorate([
+__decorate([
     Output()
 ], DashboardNewComponent.prototype, "finishedOutput", void 0);
-DashboardNewComponent = tslib_1.__decorate([
+DashboardNewComponent = __decorate([
     Component({
         selector: 'app-dashboard-new',
         templateUrl: './dashboard-new.component.html',

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Message, MessageType } from '../templates/message/Message';
 let FilterSaveComponent = class FilterSaveComponent {
@@ -24,7 +24,7 @@ let FilterSaveComponent = class FilterSaveComponent {
         this.finishedOutput.emit(success);
     }
     save() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
             if (this.name.length > 3) {
                 let filterCopy = this.filter;
@@ -43,7 +43,7 @@ let FilterSaveComponent = class FilterSaveComponent {
         });
     }
     saveAs() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
             if (this.name.length > 2) {
                 let filterCopy = this.filter;
@@ -74,19 +74,19 @@ let FilterSaveComponent = class FilterSaveComponent {
         return Message.messageIsError(this.infoMessage);
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], FilterSaveComponent.prototype, "visible", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], FilterSaveComponent.prototype, "filter", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], FilterSaveComponent.prototype, "isNew", void 0);
-tslib_1.__decorate([
+__decorate([
     Output()
 ], FilterSaveComponent.prototype, "finishedOutput", void 0);
-FilterSaveComponent = tslib_1.__decorate([
+FilterSaveComponent = __decorate([
     Component({
         selector: 'app-filter-save',
         templateUrl: './filter-save.component.html',

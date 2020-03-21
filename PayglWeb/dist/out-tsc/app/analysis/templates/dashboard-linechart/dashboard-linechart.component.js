@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { Component, Input } from '@angular/core';
 import { Chart } from 'chart.js';
 import { DashboardOutput } from '../../../entities/DashboardOutput';
@@ -52,16 +52,16 @@ let DashboardLinechartComponent = class DashboardLinechartComponent {
         return result;
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardLinechartComponent.prototype, "dashboard", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardLinechartComponent.prototype, "dateFrom", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardLinechartComponent.prototype, "dateTo", void 0);
-DashboardLinechartComponent = tslib_1.__decorate([
+DashboardLinechartComponent = __decorate([
     Component({
         selector: 'app-dashboard-linechart',
         templateUrl: './dashboard-linechart.component.html',

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 let SchematicDialogComponent = class SchematicDialogComponent {
     constructor(shared, state) {
@@ -124,16 +124,16 @@ let SchematicDialogComponent = class SchematicDialogComponent {
         return true;
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], SchematicDialogComponent.prototype, "visible", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], SchematicDialogComponent.prototype, "schematic", void 0);
-tslib_1.__decorate([
+__decorate([
     Output()
 ], SchematicDialogComponent.prototype, "finishedOutput", void 0);
-SchematicDialogComponent = tslib_1.__decorate([
+SchematicDialogComponent = __decorate([
     Component({
         selector: 'app-schematic-dialog',
         templateUrl: './schematic-dialog.component.html',

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TagRelation } from '../../entities/entities';
 import { OperationsGroup } from '../../entities/OperationsGroup';
@@ -16,7 +16,7 @@ let GroupComponent = class GroupComponent {
         this.selectedTags = [];
     }
     ngOnInit() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadAttributes();
             this.title = "Dodaj grupę";
             this.btnName = "Dodaj";
@@ -116,7 +116,7 @@ let GroupComponent = class GroupComponent {
         this.selectedTags = [];
     }
     onAdd() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             if (this.selectedTags.length > 0) {
                 if (this.operationGroup != undefined && this.operationGroup != null) {
                 }
@@ -134,7 +134,7 @@ let GroupComponent = class GroupComponent {
         });
     }
     update(group) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             group.Description = this.description;
             group.User = this.shared.tmpCreatingUser();
             group.Frequency = this.selectedFrequency;
@@ -152,16 +152,16 @@ let GroupComponent = class GroupComponent {
         });
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], GroupComponent.prototype, "operationGroup", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], GroupComponent.prototype, "operation", void 0);
-tslib_1.__decorate([
+__decorate([
     Output()
 ], GroupComponent.prototype, "finishedOutput", void 0);
-GroupComponent = tslib_1.__decorate([
+GroupComponent = __decorate([
     Component({
         selector: 'app-group',
         templateUrl: './group.component.html',

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { Component, Input } from '@angular/core';
 import { DashboardOutput } from '../../../entities/DashboardOutput';
 let DashboardOutputComponent = class DashboardOutputComponent {
@@ -91,16 +91,16 @@ let DashboardOutputComponent = class DashboardOutputComponent {
         this.canDisplayCharts = !this.canDisplayCharts;
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardOutputComponent.prototype, "dashboard", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardOutputComponent.prototype, "dateFrom", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardOutputComponent.prototype, "dateTo", void 0);
-DashboardOutputComponent = tslib_1.__decorate([
+DashboardOutputComponent = __decorate([
     Component({
         selector: 'temp-dashboard',
         templateUrl: './dashboard-output.component.html',

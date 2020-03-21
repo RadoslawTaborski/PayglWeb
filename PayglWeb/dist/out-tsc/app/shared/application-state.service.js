@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { Injectable } from '@angular/core';
 let ApplicationStateService = class ApplicationStateService {
     constructor() {
@@ -17,7 +17,7 @@ let ApplicationStateService = class ApplicationStateService {
         return ScreenSize.Normal == this._type;
     }
 };
-ApplicationStateService = tslib_1.__decorate([
+ApplicationStateService = __decorate([
     Injectable()
 ], ApplicationStateService);
 export { ApplicationStateService };

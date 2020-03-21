@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component } from '@angular/core';
 import { Operation } from '../../entities/Operation';
 import { DashboardOutputLeaf } from '../../entities/DashboardOutputLeaf';
@@ -34,7 +34,7 @@ let SearchComponent = class SearchComponent {
         });
     }
     ngOnInit() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
             yield this.shared.loadAttributes();
             this.sum = 0;
@@ -107,7 +107,7 @@ let SearchComponent = class SearchComponent {
         return o.TransactionType.Text == 'wydatek';
     }
     search() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             this.sum = 0;
             this.isError = false;
             this.isLoaded = false;
@@ -151,7 +151,7 @@ let SearchComponent = class SearchComponent {
         this.isQueryLoaded = false;
     }
 };
-SearchComponent = tslib_1.__decorate([
+SearchComponent = __decorate([
     Component({
         selector: 'app-search',
         templateUrl: './search.component.html',

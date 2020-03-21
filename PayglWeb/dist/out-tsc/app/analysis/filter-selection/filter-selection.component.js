@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Filter, Dashboard } from '../../entities/entities';
 import { Message } from '../templates/message/Message';
@@ -12,7 +12,7 @@ let FilterSelectionComponent = class FilterSelectionComponent {
         this.name = "";
     }
     ngOnInit() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadFiltersAndDashboards();
             this.selectedItems = this.getNestedFiltersAndDashboards(this.selected);
             //console.log(this.selectedItems)
@@ -55,7 +55,7 @@ let FilterSelectionComponent = class FilterSelectionComponent {
         this.finishedOutput.emit(this.filter);
     }
     select() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
             //console.log(this.filter)
             this.isLoaded = true;
@@ -75,19 +75,19 @@ let FilterSelectionComponent = class FilterSelectionComponent {
         return Message.messageIsError(this.infoMessage);
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], FilterSelectionComponent.prototype, "visible", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], FilterSelectionComponent.prototype, "selected", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], FilterSelectionComponent.prototype, "enableDashboards", void 0);
-tslib_1.__decorate([
+__decorate([
     Output()
 ], FilterSelectionComponent.prototype, "finishedOutput", void 0);
-FilterSelectionComponent = tslib_1.__decorate([
+FilterSelectionComponent = __decorate([
     Component({
         selector: 'app-filter-selection',
         templateUrl: './filter-selection.component.html',

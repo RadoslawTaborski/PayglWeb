@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component } from '@angular/core';
 import { Operation } from '../../entities/Operation';
 import { OperationMode } from '../manual-operation/manual-operation.component';
@@ -34,7 +34,7 @@ let ImportComponent = class ImportComponent {
         nextSibling.setAttribute("style", "color:black;");
     }
     uploadFile() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             this.isLoaded = false;
             yield this.shared.loadOperationsFromCsv(1, this.fileToUpload);
             this.loadedOperations = this.shared.importedOperations;
@@ -127,7 +127,7 @@ let ImportComponent = class ImportComponent {
         return Number(str);
     }
 };
-ImportComponent = tslib_1.__decorate([
+ImportComponent = __decorate([
     Component({
         selector: 'app-import',
         templateUrl: './import.component.html',

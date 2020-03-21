@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Operation } from "../../entities/Operation";
 import { Schematic, SchematicContext } from '../../entities/Schematic';
@@ -24,7 +24,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.editGroup = false;
     }
     ngOnInit() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadAttributes();
             yield this.shared.loadOperationsGroups();
             this.title = "Dodaj operację";
@@ -36,7 +36,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         });
     }
     ngOnChanges() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             //console.log(this.operation)
             this.isLoaded = false;
             yield this.shared.loadAttributes();
@@ -164,7 +164,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         }
     }
     onAdd() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             if (this.selectedTags.length > 0) {
                 if (this.operation != undefined && this.operation != null) {
                     this.update(this.operation);
@@ -181,7 +181,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         });
     }
     update(operation) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             operation.Description = this.description;
             operation.Amount = this.amount;
             operation.User = this.shared.tmpCreatingUser();
@@ -230,7 +230,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.editSchematic = true;
     }
     getResponseSchematic($event) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             //console.log("event", $event)
             if ($event != null) {
                 yield this.save($event);
@@ -241,7 +241,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         });
     }
     getResponseGroup($event) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             //console.log("event", $event)
             if ($event != null) {
                 yield this.shared.loadOperationsGroups();
@@ -268,22 +268,22 @@ let ManualOperationComponent = class ManualOperationComponent {
         }
     }
     save(schematic) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             //console.log("save")
             yield this.shared.sendSchematic(schematic);
         });
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], ManualOperationComponent.prototype, "operation", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], ManualOperationComponent.prototype, "mode", void 0);
-tslib_1.__decorate([
+__decorate([
     Output()
 ], ManualOperationComponent.prototype, "finishedOutput", void 0);
-ManualOperationComponent = tslib_1.__decorate([
+ManualOperationComponent = __decorate([
     Component({
         selector: 'app-manual-operation',
         templateUrl: './manual-operation.component.html',

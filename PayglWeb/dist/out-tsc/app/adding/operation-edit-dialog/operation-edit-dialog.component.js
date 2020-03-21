@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { Component, Input } from '@angular/core';
 import { OperationMode } from '../manual-operation/manual-operation.component';
 let OperationEditDialogComponent = class OperationEditDialogComponent {
@@ -20,13 +20,13 @@ let OperationEditDialogComponent = class OperationEditDialogComponent {
         this.close();
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], OperationEditDialogComponent.prototype, "visible", void 0);
-tslib_1.__decorate([
+__decorate([
     Input()
 ], OperationEditDialogComponent.prototype, "operation", void 0);
-OperationEditDialogComponent = tslib_1.__decorate([
+OperationEditDialogComponent = __decorate([
     Component({
         selector: 'app-operation-edit-dialog',
         templateUrl: './operation-edit-dialog.component.html',

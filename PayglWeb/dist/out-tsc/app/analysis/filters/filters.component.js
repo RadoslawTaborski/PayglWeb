@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component } from '@angular/core';
 import { Filter, Dashboard } from '../../entities/entities';
 import { Message, MessageType } from '../templates/message/Message';
@@ -13,7 +13,7 @@ let FiltersComponent = class FiltersComponent {
         this.infoMessage = null;
     }
     ngOnInit() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadFiltersAndDashboards();
             this.isLoaded = true;
             //console.log(this.isLoaded)
@@ -101,7 +101,7 @@ let FiltersComponent = class FiltersComponent {
         return Message.messageIsError(this.infoMessage);
     }
 };
-FiltersComponent = tslib_1.__decorate([
+FiltersComponent = __decorate([
     Component({
         selector: 'app-filters',
         templateUrl: './filters.component.html',

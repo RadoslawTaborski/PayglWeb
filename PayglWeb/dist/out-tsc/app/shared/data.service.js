@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Boards } from '../entities/entities';
@@ -118,7 +118,7 @@ let DataService = class DataService {
         return this.http.delete(`api/filters/${filter.Id}`).toPromise();
     }
     sendDashboards(boards) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             let tmpBoards = new Boards();
             tmpBoards.Dashboards = boards;
             let json = JSON.stringify(tmpBoards);
@@ -133,7 +133,7 @@ let DataService = class DataService {
         return this.http.post(`api/import/${id}`, formData).toPromise();
     }
 };
-DataService = tslib_1.__decorate([
+DataService = __decorate([
     Injectable()
 ], DataService);
 export { DataService };

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { Component, Input } from '@angular/core';
 import { Operation } from '../../../entities/Operation';
 let OperationComponent = class OperationComponent {
@@ -47,10 +47,10 @@ let OperationComponent = class OperationComponent {
         //console.log(o.Description)
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], OperationComponent.prototype, "operation", void 0);
-OperationComponent = tslib_1.__decorate([
+OperationComponent = __decorate([
     Component({
         selector: 'temp-operation',
         templateUrl: './operation.component.html',

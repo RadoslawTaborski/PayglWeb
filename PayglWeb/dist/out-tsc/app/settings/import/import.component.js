@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate } from "tslib";
 import { Component } from '@angular/core';
 import { Schematic, SchematicContext } from '../../entities/Schematic';
 let ImportComponent = class ImportComponent {
@@ -14,7 +14,7 @@ let ImportComponent = class ImportComponent {
         this.schematics = [];
     }
     ngOnInit() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             yield this.shared.loadSchematics();
             this.schematics = this.shared.schematics;
             this.isLoaded = true;
@@ -62,7 +62,7 @@ let ImportComponent = class ImportComponent {
         this.editSchematic = true;
     }
     delete(schematic) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             //console.log("delete")
             if (confirm("Czy na pewno chcesz usunąć ten schemat?")) {
                 this.editedSchematic = schematic;
@@ -75,7 +75,7 @@ let ImportComponent = class ImportComponent {
         });
     }
     getResponse(ev) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             if (ev != null) {
                 yield this.save(ev);
                 if (ev.Id == null) {
@@ -87,7 +87,7 @@ let ImportComponent = class ImportComponent {
         });
     }
     save(schematic) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             //console.log("save")
             yield this.shared.sendSchematic(schematic);
         });
@@ -98,7 +98,7 @@ let ImportComponent = class ImportComponent {
         this.editSchematic = true;
     }
 };
-ImportComponent = tslib_1.__decorate([
+ImportComponent = __decorate([
     Component({
         selector: 'app-import',
         templateUrl: './import.component.html',

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManualOperationComponent } from './manual-operation/manual-operation.component';
@@ -13,7 +13,7 @@ import { ImportComponent } from './import/import.component';
 import { SettingsModule } from '../settings/settings.module';
 let AddingModule = class AddingModule {
 };
-AddingModule = tslib_1.__decorate([
+AddingModule = __decorate([
     NgModule({
         declarations: [ManualOperationComponent, GroupComponent, OperationEditDialogComponent, GroupEditDialogComponent, ImportComponent],
         imports: [

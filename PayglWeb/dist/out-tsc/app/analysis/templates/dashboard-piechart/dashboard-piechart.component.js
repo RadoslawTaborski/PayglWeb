@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { Component, Input } from '@angular/core';
 import { Chart } from 'chart.js';
 import { DashboardOutput } from '../../../entities/DashboardOutput';
@@ -77,10 +77,10 @@ let DashboardPiechartComponent = class DashboardPiechartComponent {
         return result;
     }
 };
-tslib_1.__decorate([
+__decorate([
     Input()
 ], DashboardPiechartComponent.prototype, "dashboard", void 0);
-DashboardPiechartComponent = tslib_1.__decorate([
+DashboardPiechartComponent = __decorate([
     Component({
         selector: 'app-dashboard-piechart',
         templateUrl: './dashboard-piechart.component.html',

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImportComponent } from './import/import.component';
@@ -9,7 +9,7 @@ import { SchematicDialogComponent } from './schematic-dialog/schematic-dialog.co
 import { FormsModule } from '@angular/forms';
 let SettingsModule = class SettingsModule {
 };
-SettingsModule = tslib_1.__decorate([
+SettingsModule = __decorate([
     NgModule({
         declarations: [ImportComponent, SchematicDialogComponent],
         exports: [ImportComponent, SchematicDialogComponent],
