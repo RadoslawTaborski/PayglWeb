@@ -12,7 +12,6 @@ import { Operation } from '../../entities/Operation';
 })
 export class GroupComponent implements OnInit {
     @Input() operationGroup: OperationsGroup
-    @Input() operation: Operation
     @Output() finishedOutput = new EventEmitter();
 
     btnName: string;
@@ -33,7 +32,6 @@ export class GroupComponent implements OnInit {
         await this.shared.loadAttributes()
         this.title = "Dodaj grupę"
         this.btnName = "Dodaj"
-        this.setImportModIfPossible()
         this.setEditModIfPossible()
         this.isLoaded = true;
         //console.log(this.isLoaded)
@@ -62,28 +60,6 @@ export class GroupComponent implements OnInit {
         this.selectedTags = []
         //console.log(this.operationGroup.Tags)
         for (let tag of this.operationGroup.Tags) {
-            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
-        }
-        if (this.selectedTags.length != 0) {
-            this.selectedTag = this.selectedTags[this.selectedTags.length - 1]
-        }
-    }
-
-    setImportModIfPossible() {
-        if (this.operation == null || this.operation == undefined) {
-            return
-        }
-        this.title = "Dodaj grupę"
-        this.btnName = "Dodaj"
-        this.description = this.operation.Description
-        this.date = this.operation.Date.substring(0, 10)
-        if (this.operation.Frequency != null)
-            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0]
-        if (this.operation.Importance != null)
-            this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0]
-        this.selectedTags = []
-        //console.log(this.operation.Tags)
-        for (let tag of this.operation.Tags) {
             this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Tag.Id)[0])
         }
         if (this.selectedTags.length != 0) {
@@ -150,13 +126,11 @@ export class GroupComponent implements OnInit {
             }
             await this.update(this.operationGroup)
 
-            if (this.operation == undefined && this.operation != null) {
-                let tmp = (<HTMLFormElement>document.getElementById("form"))
-                this.clear()
-                tmp.reset()
-            }
-
             this.emitOutput(this.operationGroup)
+
+            let tmp = (<HTMLFormElement>document.getElementById("formGroup"))
+            this.clear()
+            tmp.reset()
         }
     }
 

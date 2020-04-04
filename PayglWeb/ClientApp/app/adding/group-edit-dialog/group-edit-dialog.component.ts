@@ -20,11 +20,10 @@ export class GroupEditDialogComponent implements OnInit {
     }
 
     close() {
-        this.visible = false;
+        this.addEvent.emit(null);
     }
 
     getResponseFromGroup($event) {
         this.addEvent.emit($event);
-        this.close()
     }
 }

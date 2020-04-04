@@ -46,12 +46,14 @@ export class ImportComponent implements OnInit {
     }
 
     async uploadFile() {
-        this.isLoaded = false;
-        await this.shared.loadOperationsFromCsv(1, this.fileToUpload);
-        this.loadedOperations = this.shared.importedOperations
-        this.getOperation();
-        this.fileUploaded = true;
-        this.isLoaded = true;
+        if (this.fileToUpload) {
+            this.isLoaded = false;
+            await this.shared.loadOperationsFromCsv(1, this.fileToUpload);
+            this.loadedOperations = this.shared.importedOperations
+            this.getOperation();
+            this.fileUploaded = true;
+            this.isLoaded = true;
+        }
     }
 
     getTransactionTypes(id: number): TransactionType {
@@ -64,19 +66,28 @@ export class ImportComponent implements OnInit {
 
     getOperation() {
         this.isLoaded = false;
-        if (this.currentIndex < this.loadedOperations.length && this.currentIndex >= 0) {
-            let op: Operation = this.loadedOperations[this.currentIndex];
-            if (op.TransactionType === undefined) {
-                op.TransactionType = this.getTransactionTypes(1)
-            }
-            if (op.TransferType === undefined) {
-                op.TransferType = this.getTransferTypes(1)
-            }
-
-            this.operation = op;
-        } else {
+        if (this.loadedOperations.length == 0) {
             this.fileUploaded = false
+            this.isLoaded = true;
+            return
         }
+        if (this.currentIndex >= this.loadedOperations.length) {
+            this.currentIndex = this.loadedOperations.length - 1;
+        }
+        if (this.currentIndex < 0) {
+            this.currentIndex = 0;
+        }
+
+        let op: Operation = this.loadedOperations[this.currentIndex];
+        if (op.TransactionType === undefined) {
+            op.TransactionType = this.getTransactionTypes(1)
+        }
+        if (op.TransferType === undefined) {
+            op.TransferType = this.getTransferTypes(1)
+        }
+
+        this.operation = op;
+
         this.isLoaded = true;
     }
 

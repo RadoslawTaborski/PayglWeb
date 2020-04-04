@@ -194,7 +194,7 @@ let SharedService = class SharedService {
             let tmp;
             tmp = yield this.data.postFile(id, fileToUpload);
             this.importedOperations = [];
-            for (let operation of tmp.reverse()) {
+            for (let operation of tmp) {
                 this.importedOperations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType, true));
             }
         });

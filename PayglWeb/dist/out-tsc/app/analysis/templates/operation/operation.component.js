@@ -46,6 +46,9 @@ let OperationComponent = class OperationComponent {
         this.editedOperation = o;
         //console.log(o.Description)
     }
+    getResponseFromGroup(event) {
+        this.editedOperation = undefined;
+    }
 };
 __decorate([
     Input()

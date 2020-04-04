@@ -62,7 +62,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.title = "Edytuj operację";
         this.btnName = "Edytuj";
         this.description = this.operation.Description;
-        this.amount = this.operation.Amount;
+        this.amount = Number(this.operation.Amount.toFixed(2));
         this.date = this.operation.Date.substring(0, 10);
         this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
         this.selectedImportance = this.getImportances().filter(t => t.Id == this.operation.Importance.Id)[0];
@@ -90,7 +90,7 @@ let ManualOperationComponent = class ManualOperationComponent {
         this.title = "Importuj operację";
         this.btnName = "Importuj";
         this.description = this.operation.Description;
-        this.amount = this.operation.Amount;
+        this.amount = Number(this.operation.Amount.toFixed(2));
         this.date = this.operation.Date.substring(0, 10);
         if (this.operation.Frequency != null)
             this.selectedFrequency = this.getFrequencies().filter(t => t.Id == this.operation.Frequency.Id)[0];
@@ -243,6 +243,7 @@ let ManualOperationComponent = class ManualOperationComponent {
     getResponseGroup($event) {
         return __awaiter(this, void 0, void 0, function* () {
             //console.log("event", $event)
+            this.editGroup = false;
             if ($event != null) {
                 yield this.shared.loadOperationsGroups();
                 //console.log(this.getOperationsGroups())
@@ -254,17 +255,19 @@ let ManualOperationComponent = class ManualOperationComponent {
     updateOperation(event) {
         //console.log(event)
         this.description = event.Context.Description;
-        if (event.Context.Frequency != null)
-            this.selectedFrequency = this.getFrequencies().filter(t => t.Id == event.Context.Frequency.Id)[0];
-        if (event.Context.Importance != null)
-            this.selectedImportance = this.getImportances().filter(t => t.Id == event.Context.Importance.Id)[0];
-        this.selectedTags = [];
-        for (let tag of event.Context.Tags) {
-            //console.log(tag)
-            this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Id)[0]);
-        }
-        if (this.selectedTags.length != 0) {
-            this.selectedTag = this.selectedTags[this.selectedTags.length - 1];
+        if (!this.selectedOperationGroup) {
+            if (event.Context.Frequency != null)
+                this.selectedFrequency = this.getFrequencies().filter(t => t.Id == event.Context.Frequency.Id)[0];
+            if (event.Context.Importance != null)
+                this.selectedImportance = this.getImportances().filter(t => t.Id == event.Context.Importance.Id)[0];
+            this.selectedTags = [];
+            for (let tag of event.Context.Tags) {
+                //console.log(tag)
+                this.selectedTags.push(this.getTags().filter(t => t.Id == tag.Id)[0]);
+            }
+            if (this.selectedTags.length != 0) {
+                this.selectedTag = this.selectedTags[this.selectedTags.length - 1];
+            }
         }
     }
     save(schematic) {

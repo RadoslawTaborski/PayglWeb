@@ -57,4 +57,8 @@ export class OperationComponent implements OnInit {
         this.editedOperation = o;
         //console.log(o.Description)
     }
+
+    getResponseFromGroup(event) {
+        this.editedOperation = undefined;
+    }
 }
