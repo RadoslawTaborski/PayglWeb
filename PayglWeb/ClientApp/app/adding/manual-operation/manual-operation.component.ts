@@ -176,7 +176,7 @@ export class ManualOperationComponent implements OnInit {
     onGroupChange(selectedOperationGroup: OperationsGroup) {
         //console.log(selectedOperationGroup, null)
         //console.log(selectedOperationGroup != null)
-        debugger;
+        //debugger;
         if (selectedOperationGroup != null) {
             //console.log("here")
             this.editable = false;

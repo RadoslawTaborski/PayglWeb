@@ -130,7 +130,9 @@ export class GroupComponent implements OnInit {
 
             let tmp = (<HTMLFormElement>document.getElementById("formGroup"))
             this.clear()
-            tmp.reset()
+            if (tmp) {
+                tmp.reset()
+            }
         }
     }
 

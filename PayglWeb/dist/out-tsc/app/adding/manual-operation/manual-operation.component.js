@@ -151,6 +151,7 @@ let ManualOperationComponent = class ManualOperationComponent {
     onGroupChange(selectedOperationGroup) {
         //console.log(selectedOperationGroup, null)
         //console.log(selectedOperationGroup != null)
+        //debugger;
         if (selectedOperationGroup != null) {
             //console.log("here")
             this.editable = false;

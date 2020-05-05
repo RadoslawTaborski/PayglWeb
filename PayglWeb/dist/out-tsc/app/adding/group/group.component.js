@@ -102,10 +102,11 @@ let GroupComponent = class GroupComponent {
                     this.operationGroup = new OperationsGroup();
                 }
                 yield this.update(this.operationGroup);
-                let tmp = document.getElementById("form");
+                this.emitOutput(this.operationGroup);
+                let tmp = document.getElementById("formGroup");
+                debugger;
                 this.clear();
                 tmp.reset();
-                this.emitOutput(this.operationGroup);
             }
         });
     }
