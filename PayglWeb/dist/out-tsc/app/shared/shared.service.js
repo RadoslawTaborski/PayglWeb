@@ -6,6 +6,7 @@ import { Operation } from "../entities/Operation";
 import { DashboardOutput } from '../entities/DashboardOutput';
 import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
 import { Schematic, SchematicType } from '../entities/Schematic';
+import { Bank } from '../entities/Bank';
 let SharedService = class SharedService {
     constructor(data) {
         this.data = data;
@@ -22,6 +23,7 @@ let SharedService = class SharedService {
         this.dashboardsOutputs = [];
         this.importedOperations = [];
         this.schematics = [];
+        this.banks = [];
     }
     loadAttributes() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -151,6 +153,16 @@ let SharedService = class SharedService {
             tmp.forEach(a => this.dashboardsOutputs.push(DashboardOutput.createFromJson(a, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType)));
         });
     }
+    loadBanks() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.isInitialize) {
+                yield this.loadAttributes();
+            }
+            let tmp;
+            tmp = yield this.data.loadBanks();
+            tmp.forEach(a => this.banks.push(Bank.createFromJson(a)));
+        });
+    }
     sendOperation(operation) {
         return __awaiter(this, void 0, void 0, function* () {
             this.data.sendOperation(operation);
@@ -186,17 +198,20 @@ let SharedService = class SharedService {
             yield this.data.sendSchematic(schematic);
         });
     }
-    loadOperationsFromCsv(id, fileToUpload) {
+    loadOperationsFromCsv(filesToUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.isInitialize) {
                 yield this.loadAttributes();
             }
-            let tmp;
-            tmp = yield this.data.postFile(id, fileToUpload);
+            let tmp = [];
+            for (let file of filesToUpload) {
+                tmp.push(...yield this.data.postFile(file.bankId, file.file));
+            }
             this.importedOperations = [];
             for (let operation of tmp) {
                 this.importedOperations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType, true));
             }
+            this.importedOperations.sort((a, b) => Date.parse(a.Date) - Date.parse(b.Date));
         });
     }
     tmpCreatingUser() {

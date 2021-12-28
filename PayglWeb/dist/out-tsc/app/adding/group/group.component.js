@@ -104,9 +104,10 @@ let GroupComponent = class GroupComponent {
                 yield this.update(this.operationGroup);
                 this.emitOutput(this.operationGroup);
                 let tmp = document.getElementById("formGroup");
-                debugger;
                 this.clear();
-                tmp.reset();
+                if (tmp) {
+                    tmp.reset();
+                }
             }
         });
     }

@@ -31,6 +31,10 @@ let SchematicDialogComponent = class SchematicDialogComponent {
                     this.startTitle = intiValues[1];
                     this.startDescription = intiValues[0];
                 }
+                else {
+                    this.startTitle = this.schematic.Context.Description;
+                    this.startDescription = "";
+                }
                 this.selectedFrequency = this.schematic.Context.Frequency;
                 this.selectedImportance = this.schematic.Context.Importance;
                 this.selectedTags = this.schematic.Context.Tags;

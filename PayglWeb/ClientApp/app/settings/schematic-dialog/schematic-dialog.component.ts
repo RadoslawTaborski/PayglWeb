@@ -42,6 +42,9 @@ export class SchematicDialogComponent implements OnInit {
                 if (intiValues.length === 2) {
                     this.startTitle = intiValues[1]
                     this.startDescription = intiValues[0]
+                } else {
+                    this.startTitle = this.schematic.Context.Description;
+                    this.startDescription = ""
                 }
                 this.selectedFrequency = this.schematic.Context.Frequency
                 this.selectedImportance = this.schematic.Context.Importance

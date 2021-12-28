@@ -226,7 +226,8 @@ let ManualOperationComponent = class ManualOperationComponent {
             this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext(contractor, title, this.description, null, null, []), this.shared.tmpCreatingUser());
         }
         else {
-            this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext("", "", this.description, null, null, []), this.shared.tmpCreatingUser());
+            const title = this.description.replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            this.editedSchematic = new Schematic(null, this.shared.tmpSchematicType(2), new SchematicContext("", title, this.description, null, null, []), this.shared.tmpCreatingUser());
         }
         this.editSchematic = true;
     }

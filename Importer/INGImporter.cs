@@ -34,9 +34,9 @@ namespace Importer
 
                 var date = DateTime.ParseExact(cells[0], "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 result.Add(cells[8] == ""
-                    ? new Transaction(date, cells[2].Trim(), cells[3].Trim(), cells[4], cells[5], cells[6],
+                    ? new Transaction(date, cells[2].Trim(), cells[3].Trim() + " [ING]", cells[4], cells[5], cells[6],
                         decimal.Parse(cells[10]), cells[11])
-                    : new Transaction(date, cells[2].Trim(), cells[3].Trim(), cells[4], cells[5], cells[6],
+                    : new Transaction(date, cells[2].Trim(), cells[3].Trim() + " [ING]", cells[4], cells[5], cells[6],
                         decimal.Parse(cells[8]), cells[9]));
             }
 

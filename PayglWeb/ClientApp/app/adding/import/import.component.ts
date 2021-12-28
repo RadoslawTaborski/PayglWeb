@@ -1,10 +1,11 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationStateService } from '../../shared/application-state.service';
 import { Operation } from '../../entities/Operation';
 import { OperationMode } from '../manual-operation/manual-operation.component';
 import { TagRelation, Tag, TransactionType, TransferType } from '../../entities/entities';
+import { OperationFile } from '../../entities/OperationFile';
+import { Bank } from '../../entities/Bank';
 
 @Component({
     selector: 'app-import',
@@ -17,41 +18,45 @@ export class ImportComponent implements OnInit {
     public isLoaded: boolean = false
     public modalVisible: boolean = false
     public amount: number = null
-    fileToUpload: File = null;
-    fileUploaded: boolean = false;
+    filesToUpload: OperationFile[] = [];
+    filesAdded: boolean = false;
+    filesUploaded: boolean = false;
     loadedOperations: Operation[] = []
     currentIndex: number = 0;
     operation: Operation = null;
-    fileName: string = ""
 
     constructor(private shared: SharedService, private state: ApplicationStateService) { }
 
-    ngOnInit() {
+    async ngOnInit() {
+        await this.shared.loadBanks();
         this.isLoaded = true;
     }
 
-    ngOnChanges() {
+    async ngOnChanges() { 
+        this.shared.loadBanks();
         this.isLoaded = true;
+    }
+
+    getBanks(): Bank[] {
+        return this.shared.banks;
     }
 
     handleFileInput(ev) {
         //console.log(ev)
-        this.fileToUpload = ev.files.item(0);
-        this.fileName = (<HTMLInputElement>document.getElementById("file")).files[0].name;
-        //console.log(this.fileName)
-        var nextSibling = <HTMLLabelElement>ev.nextElementSibling
-        //console.log(nextSibling)
-        nextSibling.innerText = this.fileName
-        nextSibling.setAttribute("style", "color:black;");
+        for (let file of ev.files) {
+            this.filesToUpload.push(new OperationFile(this.defaultBank(file.name), file.name, file));
+        }
+        this.filesAdded = true;
     }
 
     async uploadFile() {
-        if (this.fileToUpload) {
+        if (this.filesToUpload.length > 0) {
             this.isLoaded = false;
-            await this.shared.loadOperationsFromCsv(1, this.fileToUpload);
+            await this.shared.loadOperationsFromCsv(this.filesToUpload);
             this.loadedOperations = this.shared.importedOperations
             this.getOperation();
-            this.fileUploaded = true;
+            this.filesAdded = false;
+            this.filesUploaded = true;
             this.isLoaded = true;
         }
     }
@@ -67,7 +72,7 @@ export class ImportComponent implements OnInit {
     getOperation() {
         this.isLoaded = false;
         if (this.loadedOperations.length == 0) {
-            this.fileUploaded = false
+            this.filesUploaded = false
             this.isLoaded = true;
             return
         }
@@ -89,6 +94,19 @@ export class ImportComponent implements OnInit {
         this.operation = op;
 
         this.isLoaded = true;
+    }
+
+    defaultBank(fileName: string): number {
+        if (fileName.startsWith('Lista_transakcji')) {
+            return this.getBanks().filter(x => x.Name == "ING")[0].Id;
+        }
+        if (fileName.startsWith('Historia_transakcji')) {
+            return this.getBanks().filter(x => x.Name == "Millennium")[0].Id;
+        }
+        if (fileName.startsWith('account-statement')) {
+            return this.getBanks().filter(x => x.Name == "Revolut")[0].Id;
+        }
+        return 1;
     }
 
     next() {

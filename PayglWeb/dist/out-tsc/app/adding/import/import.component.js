@@ -2,6 +2,7 @@ import { __awaiter, __decorate } from "tslib";
 import { Component } from '@angular/core';
 import { Operation } from '../../entities/Operation';
 import { OperationMode } from '../manual-operation/manual-operation.component';
+import { OperationFile } from '../../entities/OperationFile';
 let ImportComponent = class ImportComponent {
     constructor(shared, state) {
         this.shared = shared;
@@ -10,37 +11,44 @@ let ImportComponent = class ImportComponent {
         this.isLoaded = false;
         this.modalVisible = false;
         this.amount = null;
-        this.fileToUpload = null;
-        this.fileUploaded = false;
+        this.filesToUpload = [];
+        this.filesAdded = false;
+        this.filesUploaded = false;
         this.loadedOperations = [];
         this.currentIndex = 0;
         this.operation = null;
-        this.fileName = "";
     }
     ngOnInit() {
-        this.isLoaded = true;
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.shared.loadBanks();
+            this.isLoaded = true;
+        });
     }
     ngOnChanges() {
-        this.isLoaded = true;
+        return __awaiter(this, void 0, void 0, function* () {
+            this.shared.loadBanks();
+            this.isLoaded = true;
+        });
+    }
+    getBanks() {
+        return this.shared.banks;
     }
     handleFileInput(ev) {
         //console.log(ev)
-        this.fileToUpload = ev.files.item(0);
-        this.fileName = document.getElementById("file").files[0].name;
-        //console.log(this.fileName)
-        var nextSibling = ev.nextElementSibling;
-        //console.log(nextSibling)
-        nextSibling.innerText = this.fileName;
-        nextSibling.setAttribute("style", "color:black;");
+        for (let file of ev.files) {
+            this.filesToUpload.push(new OperationFile(this.defaultBank(file.name), file.name, file));
+        }
+        this.filesAdded = true;
     }
     uploadFile() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.fileToUpload) {
+            if (this.filesToUpload.length > 0) {
                 this.isLoaded = false;
-                yield this.shared.loadOperationsFromCsv(1, this.fileToUpload);
+                yield this.shared.loadOperationsFromCsv(this.filesToUpload);
                 this.loadedOperations = this.shared.importedOperations;
                 this.getOperation();
-                this.fileUploaded = true;
+                this.filesAdded = false;
+                this.filesUploaded = true;
                 this.isLoaded = true;
             }
         });
@@ -54,7 +62,7 @@ let ImportComponent = class ImportComponent {
     getOperation() {
         this.isLoaded = false;
         if (this.loadedOperations.length == 0) {
-            this.fileUploaded = false;
+            this.filesUploaded = false;
             this.isLoaded = true;
             return;
         }
@@ -73,6 +81,18 @@ let ImportComponent = class ImportComponent {
         }
         this.operation = op;
         this.isLoaded = true;
+    }
+    defaultBank(fileName) {
+        if (fileName.startsWith('Lista_transakcji')) {
+            return this.getBanks().filter(x => x.Name == "ING")[0].Id;
+        }
+        if (fileName.startsWith('Historia_transakcji')) {
+            return this.getBanks().filter(x => x.Name == "Millennium")[0].Id;
+        }
+        if (fileName.startsWith('account-statement')) {
+            return this.getBanks().filter(x => x.Name == "Revolut")[0].Id;
+        }
+        return 1;
     }
     next() {
         if (this.loadedOperations.length > this.currentIndex + 1)

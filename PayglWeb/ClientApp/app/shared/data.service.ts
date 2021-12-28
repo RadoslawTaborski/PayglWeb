@@ -54,6 +54,10 @@ export class DataService {
         return this.http.get<any[]>("api/schematics").toPromise()
     }
 
+    loadBanks(): any[] | PromiseLike<any[]> {
+        return this.http.get<any[]>("api/banks").toPromise()
+    }
+
     loadOperationsGroups(from?: string, to?: string): Promise<any[]> {
         if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");

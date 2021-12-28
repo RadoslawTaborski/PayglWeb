@@ -33,14 +33,14 @@ namespace PayglService.Helpers
         {
             ApiOperation result;
             var schematic = FindSchematicInPattern(transaction);
-
+            var description = string.IsNullOrWhiteSpace(transaction.ContractorData) ? transaction.Title : transaction.ContractorData + "; " + transaction.Title;
             if (transaction.Amount < 0)
             {
-                result = new ApiOperation(null, null, user, -1 * transaction.Amount, transactionsType[1], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), transaction.ContractorData +"; " + transaction.Title);
+                result = new ApiOperation(null, null, user, -1 * transaction.Amount, transactionsType[1], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), description);
             }
             else
             {
-                result = new ApiOperation(null, null, user, transaction.Amount, transactionsType[0], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), transaction.ContractorData + "; " + transaction.Title);
+                result = new ApiOperation(null, null, user, transaction.Amount, transactionsType[0], transfersType[1], null, null, transaction.DateTime.ToString("yyyy-MM-dd"), "", new List<ApiRelTag>().ToArray(), new List<ApiOperationDetails>().ToArray(), description);
             }
 
             if (schematic != null)

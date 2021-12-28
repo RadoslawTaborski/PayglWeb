@@ -1,17 +1,29 @@
 ﻿<div *ngIf="isLoaded">
-    <div *ngIf="!fileUploaded" class="form-group">
+    <div *ngIf="!filesUploaded" class="form-group">
         <div class="input-group mb-3">
             <div class="custom-file">
-                <input type="file" class="custom-file-input" id="file" aria-describedby="file" (change)="handleFileInput($event.target)">
+                <input type="file" class="custom-file-input" id="file" multiple aria-describedby="file" (change)="handleFileInput($event.target)">
                 <label class="custom-file-label" for="file">Wybierz plik</label>
             </div>
-            <div class="input-group-append">
-                <span class="input-group-text" (click)="uploadFile()" id="">Importuj</span>
+        </div>
+        <div class="input-group mb-3" *ngIf="filesAdded">
+            <div class="col-lg-12">
+                <div class="bs-component">
+                    <div class="form-group" *ngFor="let file of filesToUpload">
+                        <div>{{file.fileName}}</div>
+                        <select type="number" [(ngModel)]="file.bankId" name="file.fileName" class="custom-select">
+                            <option *ngFor="let f of getBanks()" [selected]='file.bankId === f.Id' [ngValue]="f.Id">{{f.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="btn-group div-row">
+                        <button class="btn btn-primary" (click)="uploadFile()">Importuj</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="div-row" *ngIf="fileUploaded">
+    <div class="div-row" *ngIf="filesUploaded">
         <app-manual-operation *ngIf="isLoaded" [operation]="operation" [mode]="mode" (finishedOutput)="getResponseFromOperation($event)"></app-manual-operation>
         <div class="btn-group div-row">
             <button class="btn btn-primary" (click)="previous()">Poprzedni</button>

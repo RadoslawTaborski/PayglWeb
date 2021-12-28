@@ -7,6 +7,8 @@ import { DashboardOutput } from '../entities/DashboardOutput';
 import { IDashboardOutput } from '../entities/IDashboardOutput';
 import { DashboardOutputLeaf } from '../entities/DashboardOutputLeaf';
 import { Schematic, SchematicType } from '../entities/Schematic';
+import { OperationFile } from '../entities/OperationFile';
+import { Bank } from '../entities/Bank';
 
 @Injectable()
 export class SharedService {
@@ -24,6 +26,7 @@ export class SharedService {
     dashboardOutput: IDashboardOutput;
     importedOperations: Operation[] = [];
     schematics: Schematic[] = []
+    banks: Bank[] = []
 
     constructor(private data: DataService) { }
 
@@ -149,6 +152,15 @@ export class SharedService {
         tmp.forEach(a => this.dashboardsOutputs.push(DashboardOutput.createFromJson(a, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType)))
     }
 
+    async loadBanks() {
+        if (!this.isInitialize) {
+            await this.loadAttributes()
+        }
+        let tmp: any[]
+        tmp = await this.data.loadBanks();
+        tmp.forEach(a => this.banks.push(Bank.createFromJson(a)));
+    }
+
     async sendOperation(operation: Operation) {
         this.data.sendOperation(operation)
     }
@@ -177,17 +189,19 @@ export class SharedService {
         await this.data.sendSchematic(schematic)
     }
 
-    async loadOperationsFromCsv(id: number, fileToUpload: File) {
+    async loadOperationsFromCsv(filesToUpload: OperationFile[]) {
         if (!this.isInitialize) {
             await this.loadAttributes()
         }
-        let tmp: any[]
-        tmp = await this.data.postFile(id, fileToUpload)
-
+        let tmp: any[] = []
+        for (let file of filesToUpload) {
+            tmp.push(...await this.data.postFile(file.bankId, file.file))
+        }
         this.importedOperations = []
         for (let operation of tmp) {
             this.importedOperations.push(Operation.createFromJson(operation, this.frequencies, this.importances, this.tags, this.transactionTypes, this.transferType, true))
         }
+        this.importedOperations.sort((a, b) => Date.parse(a.Date) - Date.parse(b.Date))
     }
 
     tmpCreatingUser(): User {

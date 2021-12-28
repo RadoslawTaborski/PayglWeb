@@ -1,0 +1,1 @@
+{"version":3,"file":"OperationFile.js","sourceRoot":"","sources":["../../../../ClientApp/app/entities/OperationFile.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,aAAa;IAKtB,YAAY,MAAc,EAAE,QAAgB,EAAE,IAAU;QACpD,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC;QACrB,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;QACzB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAA;IACpB,CAAC;CACJ"}

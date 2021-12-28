@@ -41,6 +41,9 @@ let DataService = class DataService {
     loadSchematics() {
         return this.http.get("api/schematics").toPromise();
     }
+    loadBanks() {
+        return this.http.get("api/banks").toPromise();
+    }
     loadOperationsGroups(from, to) {
         if (from != null && to != null && from.toString() != "" && to.toString() != "") {
             //var fromFormated = from.toISOString().slice(0, 10).replace(/-/g, "");
