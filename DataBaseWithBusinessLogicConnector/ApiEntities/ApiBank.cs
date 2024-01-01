@@ -13,13 +13,15 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
         public bool IsDirty { get; set; }
         public bool IsMarkForDeletion { get; set; }
         public string Name { get; set; }
+        public string FileNamePrefix { get; set; }
 
         public ApiBank() { }
 
-        public ApiBank(int? id, string name)
+        public ApiBank(int? id, string name, string fileNamePrefix)
         {
             Id = id;
             Name = name;
+            FileNamePrefix = fileNamePrefix;
         }
 
         public void UpdateId(int? id)

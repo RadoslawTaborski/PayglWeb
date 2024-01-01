@@ -39,7 +39,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             for (var i = 0; i < data.Tables[0].Rows.Count; ++i)
             {
                 var dataRow = data.Tables[0].Rows[i].ItemArray;
-                result.Add(new DalBank(int.Parse(dataRow[0].ToString()), dataRow[1].ToString()));
+                result.Add(new DalBank(int.Parse(dataRow[0].ToString()), dataRow[1].ToString(), dataRow[2].ToString()));
             }
 
             return result;
@@ -54,7 +54,7 @@ namespace DataBaseWithBusinessLogicConnector.DbAdapters
             if (data.Tables.Count > 0)
             {
                 var dataRow = data.Tables[0].Rows[0].ItemArray;
-                result = new DalBank(int.Parse(dataRow[0].ToString()), dataRow[1].ToString());
+                result = new DalBank(int.Parse(dataRow[0].ToString()), dataRow[1].ToString(), dataRow[2].ToString());
             }
 
             return result;

@@ -83,14 +83,9 @@ let ImportComponent = class ImportComponent {
         this.isLoaded = true;
     }
     defaultBank(fileName) {
-        if (fileName.startsWith('Lista_transakcji')) {
-            return this.getBanks().filter(x => x.Name == "ING")[0].Id;
-        }
-        if (fileName.startsWith('Historia_transakcji')) {
-            return this.getBanks().filter(x => x.Name == "Millennium")[0].Id;
-        }
-        if (fileName.startsWith('account-statement')) {
-            return this.getBanks().filter(x => x.Name == "Revolut")[0].Id;
+        let banks = this.getBanks().filter(x => fileName.startsWith(x.FileNamePrefix));
+        if (banks.length > 0) {
+            return banks[0].Id;
         }
         return 1;
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Importer
 {
@@ -26,7 +27,7 @@ namespace Importer
                 }
                 currentLine = currentLine.Replace("\"", "");
                 currentLine = currentLine.Replace("\'", "");
-                var cells = currentLine.Split(new char[] { ';' });
+                var cells = Regex.Split(currentLine, "[;]{1}(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
                 if (cells[0] == "")
                 {
                     break;

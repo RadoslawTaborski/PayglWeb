@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Importer
 {
@@ -14,7 +15,7 @@ namespace Importer
             foreach (var line in lines.Skip(1))
             {
                 var currentLine = line;
-                var cells = SkipQuotations(currentLine.Split(new char[] { ',' }));
+                var cells = SkipQuotations(Regex.Split(currentLine, "[,]{1}(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))"));
                 if (cells[0] == "")
                 {
                     break;
@@ -22,8 +23,8 @@ namespace Importer
 
                 var date = DateTime.ParseExact(cells[1], "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 result.Add(cells[7] == ""
-                    ? new Transaction(date, cells[5], cells[6] + " [Millenium]", cells[4], cells[0], cells[3], decimal.Parse(cells[8], System.Globalization.CultureInfo.InvariantCulture), cells[10])
-                    : new Transaction(date, cells[5], cells[6] + " [Millenium]", cells[4], cells[0], cells[3], decimal.Parse(cells[7], System.Globalization.CultureInfo.InvariantCulture), cells[10]));
+                    ? new Transaction(date, cells[5], cells[6] + " [Millennium]", cells[4], cells[0], cells[3], decimal.Parse(cells[8], System.Globalization.CultureInfo.InvariantCulture), cells[10])
+                    : new Transaction(date, cells[5], cells[6] + " [Millennium]", cells[4], cells[0], cells[3], decimal.Parse(cells[7], System.Globalization.CultureInfo.InvariantCulture), cells[10]));
             }
 
             return result;

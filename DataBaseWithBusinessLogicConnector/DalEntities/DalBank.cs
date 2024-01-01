@@ -13,11 +13,13 @@ namespace DataBaseWithBusinessLogicConnector.DalEntities
         public bool IsDirty { get; set; }
         public bool IsMarkForDeletion { get; set; }
         public string Name { get; private set; }
+        public string FileNamePrefix { get; private set; }
 
-        public DalBank(int? id, string name)
+        public DalBank(int? id, string name, string fileNamePrefix)
         {
             Id = id;
             Name = name;
+            FileNamePrefix = fileNamePrefix;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DataBaseWithBusinessLogicConnector.DalApiMappers
 
         public ApiBank ConvertToApiEntity(DalBank dataEntity)
         {
-            var result = new ApiBank(dataEntity.Id, dataEntity.Name);
+            var result = new ApiBank(dataEntity.Id, dataEntity.Name, dataEntity.FileNamePrefix);
             result.IsDirty = dataEntity.IsDirty;
             result.IsMarkForDeletion = dataEntity.IsMarkForDeletion;
             return result;

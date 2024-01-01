@@ -4,16 +4,17 @@ namespace Importer
 {
     public abstract class ImportFactory
     {
-        public static ImportFactory GetFactory(string type)
+        public static ImportFactory GetFactory(string type) => type switch
         {
-            return type switch
-            {
-                IngFactory.ID => new IngFactory(),
-                MillenniumFactory.ID => new MillenniumFactory(),
-                RevolutFactory.ID => new RevolutFactory(),
-                _ => throw new NotImplementedException(),
-            };
-        }
+            IngFactory.ID => new IngFactory(),
+            MillenniumFactory.ID => new MillenniumFactory(),
+            PKOFactory.ID => new PKOFactory(),
+            RevolutFactory.ID => new RevolutFactory(),
+            AliorFactory.ID => new AliorFactory(),
+            AliorCantorFactory.ID => new AliorCantorFactory(),
+            IngCreditCardFactory.ID => new IngCreditCardFactory(),
+            _ => throw new NotImplementedException(),
+        };
 
         public abstract IImporter CreateImporter();
     }
