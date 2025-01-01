@@ -65,7 +65,7 @@ namespace DataBaseWithBusinessLogicConnector.ApiEntities
             }
             if (amount < 0)
             {
-                TransactionType = types.First(t => t.Text == strings.expense);
+                TransactionType = types.First(t => t.Text == strings.expense) ?? throw new Exception("");
                 amount = Math.Abs(amount);
             }
             else
